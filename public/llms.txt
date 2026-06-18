@@ -1,0 +1,17 @@
+# MDDocs
+
+MDDocs is an open-source documentation system built with mdui 2, Vue 3, Vite, and Markdown.
+
+## Start here
+
+- Overview: /docs/2/
+- Installation: /docs/2/getting-started/installation
+- Usage: /docs/2/getting-started/usage
+- AI overview: /docs/2/ai/overview
+
+## Chinese docs
+
+- 概述: /zh-cn/docs/2/
+- 安装: /zh-cn/docs/2/getting-started/installation
+- 快速入门: /zh-cn/docs/2/getting-started/usage
+- AI 概览: /zh-cn/docs/2/ai/overview

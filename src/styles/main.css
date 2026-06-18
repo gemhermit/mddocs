@@ -189,8 +189,21 @@ html.mdui-theme-auto {
 }
 
 body {
-  background: var(--surface);
+  background: rgb(var(--mdui-color-surface));
   color: var(--text-primary);
+}
+
+#app,
+mdui-layout,
+mdui-layout-main,
+.layout-main,
+.main,
+.contents {
+  background: rgb(var(--mdui-color-surface));
+}
+
+.drawer::part(panel) {
+  background: rgb(var(--mdui-color-surface));
 }
 
 /* ========== AppBar ========== */
@@ -471,12 +484,12 @@ body {
   border: 0;
   border-radius: var(--mdui-shape-corner-full);
   color: rgb(var(--mdui-color-on-surface-variant));
-  background: rgb(var(--mdui-color-surface-container-high));
-  box-shadow: var(--mdui-elevation-level1);
+  background: transparent;
+  box-shadow: none;
   cursor: pointer;
   opacity: 0;
   transform: translateY(-0.25rem);
-  transition: opacity 0.16s ease, transform 0.16s ease, background-color 0.16s ease;
+  transition: color 0.16s ease, opacity 0.16s ease, transform 0.16s ease;
 }
 
 .code-container:hover .code-copy-button,
@@ -485,9 +498,14 @@ body {
   transform: translateY(0);
 }
 
-.code-copy-button:hover,
+.code-copy-button:hover {
+  background: transparent;
+  color: rgb(var(--mdui-color-on-surface));
+}
+
 .code-copy-button.copied {
-  background: rgb(var(--mdui-color-secondary-container));
+  background: transparent;
+  color: rgb(var(--mdui-color-primary));
 }
 
 .code-copy-button mdui-icon {

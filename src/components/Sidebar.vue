@@ -1,6 +1,6 @@
 <template>
   <mdui-list class="list">
-    <mdui-collapse :value="openSections" @change="openSections = $event.detail" accordion>
+    <mdui-collapse :value="openSection" @change="setOpenSectionFromEvent" accordion>
       <mdui-collapse-item
         v-for="section in sections"
         :key="section.value"
@@ -9,7 +9,7 @@
         <mdui-list-item slot="header" rounded>
           <mdui-icon slot="icon" :name="section.icon"></mdui-icon>
           {{ t(section.titleKey) }}
-          <mdui-icon slot="end-icon" name="expand_more" class="arrow" :class="{ 'arrow-active': openSections.includes(section.value) }"></mdui-icon>
+          <mdui-icon slot="end-icon" name="expand_more" class="arrow" :class="{ 'arrow-active': openSection === section.value }"></mdui-icon>
         </mdui-list-item>
         <div class="sublist">
           <mdui-list-item
@@ -43,17 +43,62 @@ const sections = docsSections
 const docsBase = computed(() => getDocsBase(locale.value))
 const activeDocId = computed(() => findDocPageByPath(route.path)?.id || 'introduction')
 
-const openSections = ref(['getting-started'])
+const openSectionStorageKey = 'mdui-docs-sidebar-open-section'
+const legacyOpenSectionsStorageKey = 'mdui-docs-sidebar-open-sections'
+const hasStoredOpenSection = ref(false)
+
+function normalizeOpenSection(value) {
+  const sectionValue = Array.isArray(value) ? value[0] : value
+  return sections.some((section) => section.value === sectionValue) ? sectionValue : ''
+}
+
+function readStoredOpenSection() {
+  if (typeof localStorage === 'undefined') return ''
+
+  try {
+    let stored = localStorage.getItem(openSectionStorageKey)
+
+    if (stored === null) {
+      stored = localStorage.getItem(legacyOpenSectionsStorageKey)
+    }
+
+    if (stored === null) return ''
+
+    hasStoredOpenSection.value = true
+    return normalizeOpenSection(JSON.parse(stored))
+  } catch {
+    return ''
+  }
+}
+
+function writeStoredOpenSection(value) {
+  if (typeof localStorage === 'undefined') return
+  localStorage.setItem(openSectionStorageKey, JSON.stringify(normalizeOpenSection(value)))
+}
+
+const openSection = ref(readStoredOpenSection())
 
 function docHref(path) {
   return path ? `${docsBase.value}/${path}` : `${docsBase.value}/`
 }
 
+function setOpenSection(value, persist = true) {
+  openSection.value = normalizeOpenSection(value)
+  if (persist) {
+    hasStoredOpenSection.value = true
+    writeStoredOpenSection(openSection.value)
+  }
+}
+
+function setOpenSectionFromEvent(event) {
+  setOpenSection(event.target?.value || '')
+}
+
 watch(() => route.path, () => {
   for (const section of sections) {
     if (section.items.some(item => item.id === activeDocId.value)) {
-      if (!openSections.value.includes(section.value)) {
-        openSections.value = [section.value]
+      if (!hasStoredOpenSection.value && openSection.value !== section.value) {
+        setOpenSection(section.value, false)
       }
       break
     }

@@ -1,50 +1,64 @@
 # Introduction
 
-Let's begin by incorporating mdui into a basic page template using a CDN.
+MDDocs is an open-source documentation system built with mdui 2, Vue 3, Vite, and Markdown. It is designed for component libraries, toolkits, framework plugins, and internal platform docs.
 
-> You are currently reading the documentation for mdui 2!
->
-> For mdui 1 documentation, please visit [www.mdui.org/docs/](https://www.mdui.org/docs/).
+This project is not the mdui component library documentation itself. It is a ready-to-customize documentation site with layout, routes, navigation, table of contents, and a Markdown content pipeline already wired up.
 
-## Getting Started {#getting-started}
+## Use Cases {#use-cases}
 
-To use mdui, import the CSS and JS files from the CDN.
+- Publish bilingual documentation for an open-source project.
+- Keep documentation content readable and versionable in Markdown.
+- Reuse the Material Design 3 visual language from mdui 2.
+- Use built-in sidebar navigation, page table of contents, previous/next links, and code-copy interactions.
+- Maintain docs content and site code in the same repository.
 
-For npm installation instructions, refer to the [Installation](/docs/2/getting-started/installation) section.
+## What Is Included {#what-is-included}
 
-**Importing Files**
+MDDocs includes:
 
-Add the following lines to your page's `<head>` tag:
+- App bar, sidebar, page table of contents, and bottom navigation built with mdui 2.
+- Markdown content under `src/content/docs`.
+- English and Chinese routes: `/docs/2` and `/zh-cn/docs/2`.
+- Automatic table of contents generation from page headings.
+- Active heading highlighting while scrolling.
+- Code highlighting and hover copy buttons.
+- Mobile drawer navigation with independent scrolling.
+- Light, dark, and system theme switching.
 
-```html
-<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
-<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+## Content Structure {#content-structure}
+
+Documentation content lives in `src/content/docs`:
+
+```text
+src/content/docs/
+├── en/
+│   ├── introduction.md
+│   ├── ai/
+│   ├── components/
+│   ├── frameworks/
+│   ├── functions/
+│   └── getting-started/
+│       ├── installation.md
+│       ├── usage.md
+│       ├── project-structure.md
+│       └── markdown-content.md
+└── zh-cn/
+    ├── introduction.md
+    ├── ai/
+    ├── components/
+    ├── frameworks/
+    ├── functions/
+    └── getting-started/
+        ├── installation.md
+        ├── usage.md
+        ├── project-structure.md
+        └── markdown-content.md
 ```
 
-To utilize the icon attribute, for example `icon="search"` in `<mdui-button icon="search"></mdui-button>`, include the CSS file for the icon. Refer to [Using Material Icons](/docs/2/components/icon#usage-material-icons) for more information.
+Markdown files are collected at build time with `import.meta.glob`. Sidebar order and previous/next navigation are controlled by `src/data/docs.js`, and docs routes are generated from that data.
 
-mdui operates independently of third-party libraries and is ready to use once the files are included.
+## Next Steps {#next}
 
-## Simplest Page Template {#template}
+To run the project locally, continue with [Installation](/docs/2/getting-started/installation).
 
-Below is the simplest page template. You can add more components and content to build your website.
-
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
-    <meta name="renderer" content="webkit"/>
-
-    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
-    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
-    <!-- Include the icon's CSS file if using the icon attribute -->
-
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <mdui-button>Hello, world!</mdui-button>
-  </body>
-</html>
-```
+To start replacing content and adding pages, read [Usage](/docs/2/getting-started/usage).

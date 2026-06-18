@@ -1,173 +1,76 @@
 # Installation
 
-mdui can be installed via npm or directly included from a CDN. The recommended method is npm.
+This page explains how to install and run the MDDocs documentation system locally.
 
-## Install via npm {#npm}
+## Requirements {#requirements}
+
+Before you begin, make sure you have:
+
+- Node.js 18 or later.
+- npm 9 or later.
+- Git.
+
+Check your versions with:
 
 ```bash
-npm install mdui --save
+node -v
+npm -v
+git --version
 ```
 
-### Full Import {#full-import}
+## Clone the Project {#clone}
 
-To utilize all mdui components, import the following two files in your project's entry file:
+Clone the repository:
 
-```js
-import 'mdui/mdui.css';
-import 'mdui';
+```bash
+git clone https://github.com/gemhermit/mddocs.git
+cd mddocs
 ```
 
-You can also import specific functions from mdui. For example, to import the [`snackbar`](/docs/2/functions/snackbar) function:
+If you are creating your own documentation site from this project, fork the repository first and clone your fork.
 
-```js
-import { snackbar } from 'mdui';
+## Install Dependencies {#install-dependencies}
+
+Run this from the project root:
+
+```bash
+npm install
 ```
 
-<mdui-collapse>
-  <mdui-collapse-item>
-    <mdui-button slot="header" variant="text">List all importable functions from mdui</mdui-button>
-    <pre><code class="language-js">import {
-  $,
-  dialog,
-  alert,
-  confirm,
-  prompt,
-  snackbar,
-  getTheme,
-  setTheme,
-  getColorFromImage,
-  setColorScheme,
-  removeColorScheme,
-  loadLocale,
-  setLocale,
-  getLocale,
-  throttle,
-  observeResize,
-  breakpoint
-} from 'mdui';</code></pre>
-  </mdui-collapse-item>
-</mdui-collapse>
+The project uses Vue, Vite, Vue Router, mdui, markdown-it, and highlight.js to render the documentation layout, parse Markdown, and highlight code blocks.
 
-### Cherry-picking Import {#cherry-picking}
+## Start the Dev Server {#dev-server}
 
-To optimize your project size, import only the necessary components and functions. For example, if you only need the [`<mdui-button>`](/docs/2/components/button) component and [`snackbar`](/docs/2/functions/snackbar) function, import them as follows:
+Start the local development server:
 
-```js
-// Always import the CSS file
-import 'mdui/mdui.css';
-// Import the <mdui-button> component
-import 'mdui/components/button.js';
-// Import the snackbar function
-import { snackbar } from 'mdui/functions/snackbar.js';
+```bash
+npm run dev
 ```
 
-Each component or function documentation page provides details on how to cherry-pick imports.
+The default URL is:
 
-<mdui-collapse>
-  <mdui-collapse-item>
-    <mdui-button slot="header" variant="text">List all components and functions supported for cherry-picking import</mdui-button>
-    <pre><code class="language-js">import 'mdui/components/avatar.js';
-import 'mdui/components/badge.js';
-import 'mdui/components/bottom-app-bar.js';
-import 'mdui/components/button.js';
-import 'mdui/components/button-icon.js';
-import 'mdui/components/card.js';
-import 'mdui/components/checkbox.js';
-import 'mdui/components/chip.js';
-import 'mdui/components/circular-progress.js';
-import 'mdui/components/collapse/collapse.js';
-import 'mdui/components/collapse/collapse-item.js';
-import 'mdui/components/dialog.js';
-import 'mdui/components/divider.js';
-import 'mdui/components/dropdown.js';
-import 'mdui/components/fab.js';
-import 'mdui/components/icon.js';
-import 'mdui/components/layout.js';
-import 'mdui/components/layout-item.js';
-import 'mdui/components/layout-main.js';
-import 'mdui/components/linear-progress.js';
-import 'mdui/components/list-item.js';
-import 'mdui/components/list-subheader.js';
-import 'mdui/components/list.js';
-import 'mdui/components/menu-item.js';
-import 'mdui/components/menu.js';
-import 'mdui/components/navigation-bar-item.js';
-import 'mdui/components/navigation-bar.js';
-import 'mdui/components/navigation-drawer.js';
-import 'mdui/components/navigation-rail.js';
-import 'mdui/components/navigation-rail-item.js';
-import 'mdui/components/radio.js';
-import 'mdui/components/radio-group.js';
-import 'mdui/components/range-slider.js';
-import 'mdui/components/ripple.js';
-import 'mdui/components/segmented-button.js';
-import 'mdui/components/segmented-button-group.js';
-import 'mdui/components/select.js';
-import 'mdui/components/slider.js';
-import 'mdui/components/snackbar.js';
-import 'mdui/components/switch.js';
-import 'mdui/components/tab.js';
-import 'mdui/components/tab-panel.js';
-import 'mdui/components/tabs.js';
-import 'mdui/components/text-field.js';
-import 'mdui/components/tooltip.js';
-import 'mdui/components/top-app-bar-title.js';
-import 'mdui/components/top-app-bar.js';
-import { $ } from 'mdui/jq.js';
-import { alert } from 'mdui/functions/alert.js';
-import { breakpoint } from 'mdui/functions/breakpoint.js';
-import { confirm } from 'mdui/functions/confirm.js';
-import { dialog } from 'mdui/functions/dialog.js';
-import { getColorFromImage } from 'mdui/functions/getColorFromImage.js';
-import { getLocale } from 'mdui/functions/getLocale.js';
-import { getTheme } from 'mdui/functions/getTheme.js';
-import { loadLocale } from 'mdui/functions/loadLocale.js';
-import { observeResize } from 'mdui/functions/observeResize.js';
-import { prompt } from 'mdui/functions/prompt.js';
-import { removeColorScheme } from 'mdui/functions/removeColorScheme.js';
-import { setColorScheme } from 'mdui/functions/setColorScheme.js';
-import { setLocale } from 'mdui/functions/setLocale.js';
-import { setTheme } from 'mdui/functions/setTheme.js';
-import { snackbar } from 'mdui/functions/snackbar.js';
-import { throttle } from 'mdui/functions/throttle.js';</code></pre>
-  </mdui-collapse-item>
-</mdui-collapse>
-
-## CDN {#cdn}
-
-mdui can also be included directly via a CDN using `<link>` and `<script>` tags. Alternatively, you can download the CSS and JavaScript files for server deployment. Once included, all mdui components are available for use.
-
-### Global Build {#global-build}
-
-The global build of mdui exposes all functions as properties on the global `mdui` object.
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
-<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
-
-<mdui-button class="btn">Click me</mdui-button>
-
-<script>
-  document.querySelector('.btn').addEventListener('click', () => {
-    mdui.snackbar({ message: 'Button clicked' });
-  });
-</script>
+```text
+http://localhost:3000
 ```
 
-### ES Module Build {#es-module}
+If the port is already in use, Vite will suggest another available port.
 
-The ES module build of mdui allows you to import it using ES module syntax from the CDN.
+## Build for Production {#build}
 
-```html
-<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+Create a production build:
 
-<mdui-button class="btn">Click me</mdui-button>
-
-<script type="module">
-  import { snackbar } from 'https://unpkg.com/mdui@2/mdui.esm.js';
-
-  document.querySelector('.btn').addEventListener('click', () => {
-    snackbar({ message: 'Button clicked' });
-  });
-</script>
+```bash
+npm run build
 ```
+
+The static output is written to `dist/` and can be deployed to any static hosting service.
+
+## Preview the Production Build {#preview}
+
+After building, run:
+
+```bash
+npm run preview
+```
+
+This serves the `dist/` output locally so you can verify the production build.

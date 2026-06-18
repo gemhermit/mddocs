@@ -1,173 +1,76 @@
 # 安装
 
-mdui 可以通过 npm 安装，也可以直接从 CDN 引入。推荐使用 npm 安装。
+这一页介绍如何安装并本地运行 MDDocs 文档系统。
 
-## 通过 npm 安装 {#npm}
+## 环境要求 {#requirements}
+
+在开始之前，请确保本机已经安装：
+
+- Node.js 18 或更高版本。
+- npm 9 或更高版本。
+- Git。
+
+你可以通过以下命令检查版本：
 
 ```bash
-npm install mdui --save
+node -v
+npm -v
+git --version
 ```
 
-### 完整引入 {#full-import}
+## 获取项目 {#clone}
 
-在项目的入口文件中引入以下两个文件，即可使用所有 mdui 组件：
+从仓库克隆项目：
 
-```js
-import 'mdui/mdui.css';
-import 'mdui';
+```bash
+git clone https://github.com/gemhermit/mddocs.git
+cd mddocs
 ```
 
-你也可以从 mdui 中单独引入特定的函数。例如，要引入 [`snackbar`](/zh-cn/docs/2/functions/snackbar) 函数：
+如果你是基于此项目创建自己的文档站，可以 fork 后再克隆你的仓库。
 
-```js
-import { snackbar } from 'mdui';
+## 安装依赖 {#install-dependencies}
+
+在项目根目录执行：
+
+```bash
+npm install
 ```
 
-<mdui-collapse>
-  <mdui-collapse-item>
-    <mdui-button slot="header" variant="text">列出所有可从 mdui 引入的函数</mdui-button>
-    <pre><code class="language-js">import {
-  $,
-  dialog,
-  alert,
-  confirm,
-  prompt,
-  snackbar,
-  getTheme,
-  setTheme,
-  getColorFromImage,
-  setColorScheme,
-  removeColorScheme,
-  loadLocale,
-  setLocale,
-  getLocale,
-  throttle,
-  observeResize,
-  breakpoint
-} from 'mdui';</code></pre>
-  </mdui-collapse-item>
-</mdui-collapse>
+项目依赖包含 Vue、Vite、Vue Router、mdui、markdown-it 和 highlight.js。这些依赖用于渲染页面、解析 Markdown、生成文档布局和高亮代码块。
 
-### 按需引入 {#cherry-picking}
+## 启动开发服务器 {#dev-server}
 
-为了优化项目体积，你可以只引入需要的组件和函数。例如，如果只需要 [`<mdui-button>`](/zh-cn/docs/2/components/button) 组件和 [`snackbar`](/zh-cn/docs/2/functions/snackbar) 函数：
+启动本地开发服务：
 
-```js
-// 始终引入 CSS 文件
-import 'mdui/mdui.css';
-// 引入 <mdui-button> 组件
-import 'mdui/components/button.js';
-// 引入 snackbar 函数
-import { snackbar } from 'mdui/functions/snackbar.js';
+```bash
+npm run dev
 ```
 
-每个组件或函数的文档页面中都提供了按需引入的说明。
+默认访问地址为：
 
-<mdui-collapse>
-  <mdui-collapse-item>
-    <mdui-button slot="header" variant="text">列出所有支持按需引入的组件和函数</mdui-button>
-    <pre><code class="language-js">import 'mdui/components/avatar.js';
-import 'mdui/components/badge.js';
-import 'mdui/components/bottom-app-bar.js';
-import 'mdui/components/button.js';
-import 'mdui/components/button-icon.js';
-import 'mdui/components/card.js';
-import 'mdui/components/checkbox.js';
-import 'mdui/components/chip.js';
-import 'mdui/components/circular-progress.js';
-import 'mdui/components/collapse/collapse.js';
-import 'mdui/components/collapse/collapse-item.js';
-import 'mdui/components/dialog.js';
-import 'mdui/components/divider.js';
-import 'mdui/components/dropdown.js';
-import 'mdui/components/fab.js';
-import 'mdui/components/icon.js';
-import 'mdui/components/layout.js';
-import 'mdui/components/layout-item.js';
-import 'mdui/components/layout-main.js';
-import 'mdui/components/linear-progress.js';
-import 'mdui/components/list-item.js';
-import 'mdui/components/list-subheader.js';
-import 'mdui/components/list.js';
-import 'mdui/components/menu-item.js';
-import 'mdui/components/menu.js';
-import 'mdui/components/navigation-bar-item.js';
-import 'mdui/components/navigation-bar.js';
-import 'mdui/components/navigation-drawer.js';
-import 'mdui/components/navigation-rail.js';
-import 'mdui/components/navigation-rail-item.js';
-import 'mdui/components/radio.js';
-import 'mdui/components/radio-group.js';
-import 'mdui/components/range-slider.js';
-import 'mdui/components/ripple.js';
-import 'mdui/components/segmented-button.js';
-import 'mdui/components/segmented-button-group.js';
-import 'mdui/components/select.js';
-import 'mdui/components/slider.js';
-import 'mdui/components/snackbar.js';
-import 'mdui/components/switch.js';
-import 'mdui/components/tab.js';
-import 'mdui/components/tab-panel.js';
-import 'mdui/components/tabs.js';
-import 'mdui/components/text-field.js';
-import 'mdui/components/tooltip.js';
-import 'mdui/components/top-app-bar-title.js';
-import 'mdui/components/top-app-bar.js';
-import { $ } from 'mdui/jq.js';
-import { alert } from 'mdui/functions/alert.js';
-import { breakpoint } from 'mdui/functions/breakpoint.js';
-import { confirm } from 'mdui/functions/confirm.js';
-import { dialog } from 'mdui/functions/dialog.js';
-import { getColorFromImage } from 'mdui/functions/getColorFromImage.js';
-import { getLocale } from 'mdui/functions/getLocale.js';
-import { getTheme } from 'mdui/functions/getTheme.js';
-import { loadLocale } from 'mdui/functions/loadLocale.js';
-import { observeResize } from 'mdui/functions/observeResize.js';
-import { prompt } from 'mdui/functions/prompt.js';
-import { removeColorScheme } from 'mdui/functions/removeColorScheme.js';
-import { setColorScheme } from 'mdui/functions/setColorScheme.js';
-import { setLocale } from 'mdui/functions/setLocale.js';
-import { setTheme } from 'mdui/functions/setTheme.js';
-import { snackbar } from 'mdui/functions/snackbar.js';
-import { throttle } from 'mdui/functions/throttle.js';</code></pre>
-  </mdui-collapse-item>
-</mdui-collapse>
-
-## CDN {#cdn}
-
-mdui 也可以通过 CDN 直接引入。使用 `<link>` 和 `<script>` 标签即可。引入后，所有 mdui 组件都可以直接使用。
-
-### 全局构建 {#global-build}
-
-mdui 的全局构建将所有函数暴露在全局 `mdui` 对象上。
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
-<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
-
-<mdui-button class="btn">Click me</mdui-button>
-
-<script>
-  document.querySelector('.btn').addEventListener('click', () => {
-    mdui.snackbar({ message: 'Button clicked' });
-  });
-</script>
+```text
+http://localhost:3000
 ```
 
-### ES Module 构建 {#es-module}
+如果端口被占用，Vite 会提示可用的新端口。
 
-mdui 的 ES Module 构建允许你使用 ES module 语法从 CDN 引入。
+## 构建生产版本 {#build}
 
-```html
-<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+构建静态产物：
 
-<mdui-button class="btn">Click me</mdui-button>
-
-<script type="module">
-  import { snackbar } from 'https://unpkg.com/mdui@2/mdui.esm.js';
-
-  document.querySelector('.btn').addEventListener('click', () => {
-    snackbar({ message: 'Button clicked' });
-  });
-</script>
+```bash
+npm run build
 ```
+
+构建结果会输出到 `dist/` 目录，可以部署到任意静态站点服务。
+
+## 本地预览构建结果 {#preview}
+
+构建后可以执行：
+
+```bash
+npm run preview
+```
+
+这会用本地服务器预览 `dist/` 目录中的生产产物。

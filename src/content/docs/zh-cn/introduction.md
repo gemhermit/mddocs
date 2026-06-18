@@ -1,50 +1,63 @@
 # 概述
 
-让我们通过 mdui 的 CDN 和一个最简单的页面模板来开始使用 mdui。
+MDDocs 是一个基于 mdui 2、Vue 3、Vite 和 Markdown 的开源文档系统。它适合用来搭建组件库、工具库、框架插件或内部平台的说明文档。
 
-> 你正在阅读的是 mdui 2 的文档！
->
-> 若要阅读 mdui 1 的文档，请访问 [www.mdui.org/docs/](https://www.mdui.org/docs/)。
+这个项目不是 mdui 组件库本身的使用教程，而是一个已经搭好界面、路由、目录和内容管线的文档站模板。你可以在此基础上替换内容、扩展导航，并发布成自己的开源文档站。
 
-## 快速入门 {#getting-started}
+## 适合什么场景 {#use-cases}
 
-使用 mdui 最简单的方式是直接从 CDN 引入 CSS 和 JS 文件。
+- 为开源项目提供中英文文档。
+- 用 Markdown 管理可版本化的说明内容。
+- 复用 mdui 2 的 Material Design 3 视觉风格。
+- 需要左侧导航、右侧目录、章节翻页和代码复制等文档站能力。
+- 希望文档内容和站点代码放在同一个仓库中维护。
 
-如果你想使用 npm 安装 mdui，请参考 [安装](/zh-cn/docs/2/getting-started/installation) 章节。
+## 系统包含什么 {#what-is-included}
 
-**引入文件**
+MDDocs 默认包含以下能力：
 
-将下面代码添加到页面的 `<head>` 标签中：
+- 基于 mdui 2 的 AppBar、侧边栏、目录和卡片式章节导航。
+- `src/content/docs` 下的 Markdown 内容组织。
+- 中英文路径支持：`/docs/2` 和 `/zh-cn/docs/2`。
+- 根据页面标题自动生成右侧目录，并在滚动时高亮当前位置。
+- 代码块高亮和 hover 复制按钮。
+- 移动端抽屉导航、独立滚动和遮罩层处理。
+- 明亮、深色和跟随系统的主题切换。
 
-```html
-<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
-<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+## 内容如何组织 {#content-structure}
+
+文档内容放在 `src/content/docs` 目录中：
+
+```text
+src/content/docs/
+├── en/
+│   ├── introduction.md
+│   ├── ai/
+│   ├── components/
+│   ├── frameworks/
+│   ├── functions/
+│   └── getting-started/
+│       ├── installation.md
+│       ├── usage.md
+│       ├── project-structure.md
+│       └── markdown-content.md
+└── zh-cn/
+    ├── introduction.md
+    ├── ai/
+    ├── components/
+    ├── frameworks/
+    ├── functions/
+    └── getting-started/
+        ├── installation.md
+        ├── usage.md
+        ├── project-structure.md
+        └── markdown-content.md
 ```
 
-如果你需要使用组件的图标属性（例如 `<mdui-button icon="search"></mdui-button>` 中的 `icon` 属性），则还需要引入图标的 CSS 文件，参见 [使用 Material Icons 图标](/zh-cn/docs/2/components/icon#usage-material-icons)。
+每个 Markdown 文件会在构建时被 `import.meta.glob` 收集。侧边栏和上一章/下一章顺序由 `src/data/docs.js` 控制，文档路由会根据这份数据自动生成。
 
-mdui 不依赖任何第三方库，引入上述文件后，就能正常工作了。
+## 下一步 {#next}
 
-## 最简单的页面模板 {#template}
+如果你只是想本地跑起来，请继续阅读 [安装](/zh-cn/docs/2/getting-started/installation)。
 
-下面是一个最简单的页面模板，你可以在其中添加更多组件和内容，来构建一个网站。
-
-```html
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
-    <meta name="renderer" content="webkit"/>
-
-    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
-    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
-    <!-- 引入图标 CSS 文件（如需使用图标属性） -->
-
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <mdui-button>Hello, world!</mdui-button>
-  </body>
-</html>
-```
+如果你已经启动项目，想开始替换内容，请阅读 [快速入门](/zh-cn/docs/2/getting-started/usage)。

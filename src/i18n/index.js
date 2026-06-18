@@ -3,27 +3,53 @@ import { getLocaleFromPath } from '../utils/site.js'
 
 const messages = {
   en: {
+    app: {
+      name: 'MDDocs',
+      tagline: 'Open-source docs system built on mdui 2'
+    },
     nav: {
       docs: 'Docs',
-      mdui2Docs: 'mdui 2 Docs',
-      mdui1Docs: 'mdui 1 Docs',
-      materialDesign1: 'Material Design 1'
     },
     ai: {
       tooltip: 'AI Assistant',
-      copyLlmsTxt: 'Copy llms.txt URL',
-      copyLlmsFullTxt: 'Copy llms-full.txt URL',
       viewAsMarkdown: 'View as Markdown',
       discussPageChatgpt: 'Discuss this page with ChatGPT',
       discussChatgpt: "Discuss this project's docs with ChatGPT"
     },
     home: {
-      subtitle: 'Material Design 3 (Material You) UI components, build with Web Components.',
+      eyebrow: 'Open-source docs system built on mdui 2',
+      title: 'A Markdown-first documentation system for mdui 2 projects',
+      subtitle: 'MDDocs turns mdui 2, Vue, and Markdown into a clean documentation site with sticky navigation, localized content, table of contents, and code-copy interactions.',
       getStarted: 'Get Started',
       install: 'Install',
-      github: 'Github'
+      github: 'GitHub',
+      quickstartTitle: 'Run the docs system locally',
+      quickstartDesc: 'Clone the project, install dependencies, and start the Vite dev server.',
+      quickstartAction: 'Read the quick start',
+      docsTitle: 'Explore the system',
+      docsDesc: 'Use the built-in docs structure as a starting point, then extend Markdown content, routes, navigation, and examples for your own project.',
+      featuresTitle: 'Designed for open-source docs',
+      featuresDesc: 'The interface is built with mdui 2 components and keeps content readable in Markdown, making the project easier to maintain and publish.',
+      cards: {
+        overview: {
+          title: 'Overview',
+          desc: 'Understand the documentation layout and the Markdown content pipeline.'
+        },
+        installation: {
+          title: 'Installation',
+          desc: 'Set up the project, install dependencies, and run the local docs site.'
+        },
+        usage: {
+          title: 'Usage',
+          desc: 'Add Markdown pages, wire routes, and keep the sidebar navigation in sync.'
+        }
+      }
     },
     features: {
+      markdownContent: { title: 'Markdown content', desc: 'Write documentation as Markdown files and keep content readable in pull requests.' },
+      docsNavigation: { title: 'Docs navigation', desc: 'Use sidebar sections, page table of contents, and previous/next links to organize long-form docs.' },
+      localization: { title: 'Localization ready', desc: 'Keep English and Chinese content side by side with locale-aware routes and labels.' },
+      codeExperience: { title: 'Code-friendly reading', desc: 'Highlight code blocks and show a copy button when readers hover over examples.' },
       webComponents: { title: 'Web Components', desc: 'mdui components are build with Web Components, offering simplicity similar to using a <div> tag.' },
       materialYou: { title: 'Material You', desc: 'Following Material Design 3 (Material You) guidelines for a user-friendly, visually pleasing product.' },
       dynamicColor: { title: 'Dynamic Color', desc: 'Creates a full color scheme from a color or image, usable across all mdui components.' },
@@ -38,13 +64,14 @@ const messages = {
       easeOfLearning: { title: 'Ease of Learning', desc: 'Basic knowledge of HTML, CSS, and JavaScript is sufficient to use mdui.' }
     },
     footer: {
-      community: 'Community',
-      githubIssue: 'Github issue',
-      resources: 'Resources',
-      sponsor: 'Sponsor',
-      paypal: 'PayPal',
-      alipay: 'Alipay',
-      wechat: 'WeChat'
+      description: 'An open-source documentation system for mdui 2, focused on clear docs, practical examples, and a clean content structure.',
+      basedOn: 'Built on mdui 2',
+      openSource: 'Open source docs system',
+      navigation: 'Footer navigation',
+      project: 'Project',
+      docsHome: 'Docs home',
+      repository: 'Open-source repository',
+      feedback: 'Feedback'
     },
     toc: 'On this page',
     navPrev: 'Previous',
@@ -63,34 +90,68 @@ const messages = {
       introduction: 'Introduction',
       installation: 'Installation',
       usage: 'Usage',
-      typescriptSupport: 'TypeScript Support',
-      ideSupport: 'IDE Support',
+      projectStructure: 'Project Structure',
+      markdownContent: 'Markdown Content',
       localization: 'Localization',
+      deployment: 'Deployment',
+      aiOverview: 'AI Overview',
+      aiWritingDocs: 'Writing Docs with AI',
+      themeDesign: 'Theme Design',
+      vueVite: 'Vue and Vite',
+      componentExample: 'Component Example',
+      functionExample: 'Function Example',
+      packageExample: 'Package Example',
       faq: 'Frequently Asked Questions'
     }
   },
   'zh-cn': {
+    app: {
+      name: 'MDDocs',
+      tagline: '基于 mdui 2 的开源文档系统'
+    },
     nav: {
       docs: '文档',
-      mdui2Docs: 'mdui 2 开发文档',
-      mdui1Docs: 'mdui 1 开发文档',
-      materialDesign1: 'Material Design 1'
     },
     ai: {
       tooltip: 'AI 辅助开发',
-      copyLlmsTxt: '复制 llms.txt 链接',
-      copyLlmsFullTxt: '复制 llms-full.txt 链接',
       viewAsMarkdown: '查看 Markdown 源文件',
       discussPageChatgpt: '与 ChatGPT 讨论此页面',
       discussChatgpt: '与 ChatGPT 讨论此项目文档'
     },
     home: {
-      subtitle: 'Material Design 3 (Material You) UI 组件库，使用 Web Components 构建。',
+      eyebrow: '基于 mdui 2 的开源文档系统',
+      title: '面向 mdui 2 项目的 Markdown 优先文档系统',
+      subtitle: 'MDDocs 将 mdui 2、Vue 和 Markdown 组合成清爽的文档站，内置吸顶导航、本地化内容、页面目录和代码复制交互。',
       getStarted: '快速开始',
       install: '安装',
-      github: 'Github'
+      github: 'GitHub',
+      quickstartTitle: '本地运行文档系统',
+      quickstartDesc: '克隆项目、安装依赖，然后启动 Vite 开发服务器。',
+      quickstartAction: '查看快速入门',
+      docsTitle: '浏览系统文档',
+      docsDesc: '使用内置文档结构作为起点，再按项目需要扩展 Markdown 内容、路由、导航和示例。',
+      featuresTitle: '为开源文档而设计',
+      featuresDesc: '界面基于 mdui 2 组件构建，内容保持 Markdown 可读性，让项目更容易维护和发布。',
+      cards: {
+        overview: {
+          title: '概述',
+          desc: '了解文档布局和 Markdown 内容管线。'
+        },
+        installation: {
+          title: '安装',
+          desc: '安装依赖，启动本地文档站，并准备开发环境。'
+        },
+        usage: {
+          title: '快速入门',
+          desc: '添加 Markdown 页面，接入路由，并保持侧边栏导航同步。'
+        }
+      }
     },
     features: {
+      markdownContent: { title: 'Markdown 内容', desc: '使用 Markdown 文件编写文档，让内容在代码审查和版本管理中保持清晰。' },
+      docsNavigation: { title: '文档导航', desc: '通过侧边栏分组、页面目录和上一章/下一章组织长文档。' },
+      localization: { title: '本地化就绪', desc: '中英文内容并行维护，路由和界面文案会跟随语言切换。' },
+      codeExperience: { title: '代码阅读体验', desc: '自动高亮代码块，并在示例 hover 时显示复制按钮。' },
       webComponents: { title: 'Web Components', desc: 'mdui 组件使用 Web Components 构建，使用方式和 <div> 标签一样简单。' },
       materialYou: { title: 'Material You', desc: '遵循 Material Design 3 (Material You) 规范，打造用户友好、视觉美观的产品。' },
       dynamicColor: { title: '动态配色', desc: '从颜色或图片中提取完整配色方案，应用于所有 mdui 组件。' },
@@ -105,13 +166,14 @@ const messages = {
       easeOfLearning: { title: '易于学习', desc: '只需具备基本的 HTML、CSS 和 JavaScript 知识即可使用 mdui。' }
     },
     footer: {
-      community: '社区',
-      githubIssue: 'Github issue',
-      resources: '资源',
-      sponsor: '赞助',
-      paypal: 'PayPal',
-      alipay: '支付宝',
-      wechat: '微信'
+      description: '一个基于 mdui 2 的开源文档系统，专注于清晰的文档结构、实用示例和易维护的内容组织。',
+      basedOn: '基于 mdui 2 构建',
+      openSource: '开源文档系统',
+      navigation: '页脚导航',
+      project: '项目',
+      docsHome: '文档首页',
+      repository: '开源地址',
+      feedback: '反馈问题'
     },
     toc: '本页目录',
     navPrev: '上一章',
@@ -130,9 +192,17 @@ const messages = {
       introduction: '概述',
       installation: '安装',
       usage: '快速入门',
-      typescriptSupport: 'TypeScript 支持',
-      ideSupport: 'IDE 支持',
+      projectStructure: '项目结构',
+      markdownContent: 'Markdown 内容',
       localization: '本地化',
+      deployment: '部署发布',
+      aiOverview: 'AI 概览',
+      aiWritingDocs: '用 AI 编写文档',
+      themeDesign: '主题设计',
+      vueVite: 'Vue 与 Vite',
+      componentExample: '组件示例',
+      functionExample: '函数示例',
+      packageExample: '独立包示例',
       faq: '常见问题'
     }
   }

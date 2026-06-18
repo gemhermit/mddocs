@@ -7,9 +7,10 @@ export const docsSections = [
       { id: 'introduction', titleKey: 'docs.introduction', path: '' },
       { id: 'installation', titleKey: 'docs.installation', path: 'getting-started/installation' },
       { id: 'usage', titleKey: 'docs.usage', path: 'getting-started/usage' },
-      { id: 'typescript-support', titleKey: 'docs.typescriptSupport', path: 'getting-started/typescript-support' },
-      { id: 'ide-support', titleKey: 'docs.ideSupport', path: 'getting-started/ide-support' },
+      { id: 'project-structure', titleKey: 'docs.projectStructure', path: 'getting-started/project-structure' },
+      { id: 'markdown-content', titleKey: 'docs.markdownContent', path: 'getting-started/markdown-content' },
       { id: 'localization', titleKey: 'docs.localization', path: 'getting-started/localization' },
+      { id: 'deployment', titleKey: 'docs.deployment', path: 'getting-started/deployment' },
       { id: 'faq', titleKey: 'docs.faq', path: 'getting-started/faq' }
     ]
   },
@@ -17,37 +18,50 @@ export const docsSections = [
     value: 'ai',
     titleKey: 'sidebar.buildWithAI',
     icon: 'auto_awesome',
-    items: []
+    items: [
+      { id: 'ai-overview', titleKey: 'docs.aiOverview', path: 'ai/overview' },
+      { id: 'ai-writing-docs', titleKey: 'docs.aiWritingDocs', path: 'ai/writing-docs' }
+    ]
   },
   {
     value: 'styles',
     titleKey: 'sidebar.styles',
     icon: 'layers--rounded',
-    items: []
+    items: [
+      { id: 'theme-design', titleKey: 'docs.themeDesign', path: 'styles/theme-design' }
+    ]
   },
   {
     value: 'frameworks',
     titleKey: 'sidebar.frameworks',
     icon: 'workspaces--rounded',
-    items: []
+    items: [
+      { id: 'vue-vite', titleKey: 'docs.vueVite', path: 'frameworks/vue-vite' }
+    ]
   },
   {
     value: 'components',
     titleKey: 'sidebar.components',
     icon: 'widgets--rounded',
-    items: []
+    items: [
+      { id: 'component-example', titleKey: 'docs.componentExample', path: 'components/component-example' }
+    ]
   },
   {
     value: 'functions',
     titleKey: 'sidebar.functions',
     icon: 'functions--rounded',
-    items: []
+    items: [
+      { id: 'function-example', titleKey: 'docs.functionExample', path: 'functions/function-example' }
+    ]
   },
   {
     value: 'libraries',
     titleKey: 'sidebar.libraries',
     icon: 'local_mall--rounded',
-    items: []
+    items: [
+      { id: 'package-example', titleKey: 'docs.packageExample', path: 'libraries/package-example' }
+    ]
   }
 ]
 

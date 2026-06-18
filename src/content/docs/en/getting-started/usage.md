@@ -1,113 +1,102 @@
 # Usage
 
-mdui components, as standard Web Components, can be used like `<div>` elements. Each component's documentation provides a comprehensive API, including attributes, methods, events, slots, CSS parts, and CSS custom properties.
+This page explains how to use MDDocs to write and organize your own documentation.
 
-This guide focuses on the usage of Web Components.
+## Edit Existing Docs {#edit-docs}
 
-## Attributes {#attribute}
+The simplest workflow is editing Markdown files under `src/content/docs`.
 
-Attributes are divided into HTML attributes and JavaScript properties. They usually correspond one-to-one and are synchronized. This means that updating an HTML attribute value also updates the JavaScript property value, and vice versa.
+For example, the English usage page lives at:
 
-HTML attributes can be set directly in the component's HTML string. They can be read or modified using the `getAttribute` and `setAttribute` methods:
-
-```html
-<mdui-button variant="text">Click me</mdui-button>
-
-<script>
-  const button = document.querySelector('mdui-button');
-  button.setAttribute('variant', 'outlined');
-  console.log(button.getAttribute('variant')); // outlined
-</script>
+```text
+src/content/docs/en/getting-started/usage.md
 ```
 
-JavaScript properties can be accessed directly on the component instance or set to modify the property value:
+The matching Chinese page lives at:
 
-```html
-<mdui-button variant="text">Click me</mdui-button>
-
-<script>
-  const button = document.querySelector('mdui-button');
-  button.variant = 'outlined';
-  console.log(button.variant); // outlined
-</script>
+```text
+src/content/docs/zh-cn/getting-started/usage.md
 ```
 
-Some attributes are boolean. The corresponding JavaScript property is `true` when the HTML attribute exists and `false` otherwise. However, mdui treats the string value `false` as equivalent to the boolean value `false` for compatibility with certain frameworks.
+After saving a file, the Vite dev server refreshes the page automatically.
 
-## Methods {#method}
+## Add a New Page {#add-page}
 
-Components provide public methods that trigger specific behaviors. For example, the `focus()` method of the `<mdui-text-field>` component sets the focus on the text field.
+Adding a page usually takes three steps.
 
-```html
-<mdui-text-field></mdui-text-field>
+### 1. Add Markdown Files {#add-markdown}
 
-<script>
-  const textField = document.querySelector('mdui-text-field');
-  textField.focus();
-</script>
+Create matching files for each locale:
+
+```text
+src/content/docs/en/getting-started/configuration.md
+src/content/docs/zh-cn/getting-started/configuration.md
 ```
 
-## Events {#event}
+Use a level-one heading as the page title:
 
-Components emit events in response to specific actions. For example, the `<mdui-dialog>` component emits an `open` event when it begins to open. These events can be listened to, enabling the execution of custom actions.
-
-```html
-<mdui-dialog>Dialog</mdui-dialog>
-
-<script>
-  const dialog = document.querySelector('mdui-dialog');
-  dialog.addEventListener('open', () => {
-    console.log('This event is triggered when the dialog starts opening');
-  });
-</script>
+```md
+# Configuration
 ```
 
-## Slot {#slot}
+### 2. Add Sidebar Data {#add-sidebar-data}
 
-Components often provide slots for inserting custom HTML content.
+Add the page entry in `src/data/docs.js`:
 
-The default slot is the most common, used for plain HTML or text within the component. For example, the default slot of the `<mdui-button>` component sets the button's text:
-
-```html
-<mdui-button>Click me</mdui-button>
-```
-
-Some components also offer named slots. You should specify the slot name in the HTML's `slot` attribute.
-
-```html
-<mdui-button>
-  <mdui-icon slot="start" name="settings"></mdui-icon>
-  Settings
-</mdui-button>
-```
-
-## CSS Custom Properties {#css-custom-properties}
-
-mdui utilizes CSS Custom Properties, also known as CSS variables, to establish a series of global design tokens. These tokens are referenced by various components, enabling you to adjust the styles of mdui components globally.
-
-```css
-:root {
-  --mdui-shape-corner-extra-small: 0.125rem;
-  --mdui-shape-corner-small: 0.25rem;
-  --mdui-shape-corner-medium: 0.375rem;
-  --mdui-shape-corner-large: 0.5rem;
-  --mdui-shape-corner-extra-large: 0.875rem;
+```js
+{
+  id: 'configuration',
+  titleKey: 'docs.configuration',
+  path: 'getting-started/configuration'
 }
 ```
 
-## CSS Part {#css-part}
+`path` is used for sidebar links and previous/next page navigation. Routes are generated from the sidebar data, so this is the only place you need to update for page ordering.
 
-mdui components utilize the shadow DOM for encapsulating styles and behaviors. Some components add a `part` attribute to elements within the shadow DOM. These elements can be selected and styled using the `::part` CSS selector.
+## Add Translated Labels {#add-i18n}
 
-## Component Update Mechanism {#update-mechanism}
-
-mdui components are built using [Lit](https://lit.dev/). When you modify the properties of mdui components, the components will re-render. This re-rendering is not synchronous, so multiple property changes are buffered until the next update cycle.
+If a new `titleKey` is used in sidebar data, add matching labels in `src/i18n/index.js`:
 
 ```js
-const button = document.querySelector('mdui-button');
-button.disabled = true;
-
-button.updateComplete.then(() => {
-  console.log(button.hasAttribute('disabled')); // true
-});
+docs: {
+  configuration: 'Configuration'
+}
 ```
+
+Add the Chinese label too:
+
+```js
+docs: {
+  configuration: '配置'
+}
+```
+
+## Heading Anchors {#heading-anchors}
+
+Second-level and third-level headings are shown in the page table of contents. Use `{#id}` to define a stable anchor:
+
+```md
+## Add a New Page {#add-page}
+```
+
+If no explicit anchor is provided, MDDocs generates one from the heading text.
+
+## Code Blocks {#code-blocks}
+
+Code blocks are highlighted automatically and show a copy button on hover:
+
+```bash
+npm run build
+```
+
+Prefer language tags such as `bash`, `js`, `html`, or `css`.
+
+## Deploy {#deploy}
+
+Build the site:
+
+```bash
+npm run build
+```
+
+Deploy the `dist/` directory to any static hosting platform, such as GitHub Pages, Vercel, Netlify, or your own static file server.

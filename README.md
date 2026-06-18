@@ -1,8 +1,8 @@
-# MDUI Docs
+# MDDocs
 
-Material Design 3 (Material You) UI component documentation site built with Vue 3, Vite, and mdui Web Components.
+An open-source documentation system built on mdui 2, Vue 3, Vite, and Markdown.
 
-This project recreates the MDUI documentation experience with a Markdown-first content pipeline, so the docs can stay readable and easy to maintain in an open-source repository.
+MDDocs provides a clean mdui-style documentation interface with a Markdown-first content pipeline, localized docs, sticky navigation, page table of contents, and code-copy interactions.
 
 ## Features
 

@@ -11,44 +11,42 @@
       </svg>
     </div>
 
-    <footer class="container" data-nosnippet>
-      <ul class="links mdui-prose">
-        <li class="title">{{ t('footer.community') }}</li>
-        <li><a href="https://github.com/zdhxiong/mdui/issues" target="_blank">{{ t('footer.githubIssue') }}</a></li>
-      </ul>
-      <ul class="links mdui-prose">
-        <li class="title">{{ t('footer.resources') }}</li>
-        <li><a :href="docsPath">{{ t('nav.mdui2Docs') }}</a></li>
-        <li><a href="https://www.mdui.org/docs/" target="_blank">{{ t('nav.mdui1Docs') }}</a></li>
-        <li><a href="https://www.mdui.org/design/" target="_blank">{{ t('nav.materialDesign1') }}</a></li>
-      </ul>
-      <ul class="links mdui-prose">
-        <li class="title">{{ t('footer.sponsor') }}</li>
-        <li><a href="https://www.paypal.com/paypalme/zdhxiong" target="_blank" rel="nofollow">{{ t('footer.paypal') }}</a></li>
-        <li><a href="#" rel="nofollow" @click.prevent="showAlipay = true">{{ t('footer.alipay') }}</a></li>
-        <li><a href="#" rel="nofollow" @click.prevent="showWechat = true">{{ t('footer.wechat') }}</a></li>
-      </ul>
+    <footer class="footer" data-nosnippet>
+      <div class="brand">
+        <a :href="homePath" class="logo">{{ t('app.name') }}</a>
+        <p>{{ t('footer.description') }}</p>
+        <div class="meta">
+          <span>{{ t('footer.basedOn') }}</span>
+          <span>{{ t('footer.openSource') }}</span>
+        </div>
+      </div>
+
+      <nav class="groups" :aria-label="t('footer.navigation')">
+        <ul class="links">
+          <li class="title">{{ t('footer.project') }}</li>
+          <li><a :href="docsPath">{{ t('footer.docsHome') }}</a></li>
+          <li><a :href="docsPath + '/getting-started/installation'">{{ t('docs.installation') }}</a></li>
+          <li><a :href="docsPath + '/getting-started/usage'">{{ t('docs.usage') }}</a></li>
+        </ul>
+
+        <ul class="links">
+          <li class="title">{{ t('footer.openSource') }}</li>
+          <li><a href="https://github.com/gemhermit/mddocs" target="_blank" rel="noopener">{{ t('footer.repository') }}</a></li>
+          <li><a href="https://github.com/gemhermit/mddocs/issues" target="_blank" rel="noopener">{{ t('footer.feedback') }}</a></li>
+        </ul>
+      </nav>
     </footer>
-
-    <mdui-dialog :open="showAlipay" @closed="showAlipay = false" headline="Donate via Alipay by scanning" close-on-esc close-on-overlay-click class="qrcode-dialog">
-      <img src="https://cdn.w3cbus.com/mdui/docs-2/assets/alipay-B4XhXw5Y.jpg" alt="Donate via Alipay by scanning" loading="lazy" class="qrcode-item" width="240" height="297">
-    </mdui-dialog>
-
-    <mdui-dialog :open="showWechat" @closed="showWechat = false" headline="Donate via WeChat by scanning" close-on-esc close-on-overlay-click class="qrcode-dialog">
-      <img src="https://cdn.w3cbus.com/mdui/docs-2/assets/wechat-BA1BsunO.jpg" alt="Donate via WeChat by scanning" loading="lazy" class="qrcode-item" width="240" height="297">
-    </mdui-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from '../i18n/index.js'
-import { getDocsBase } from '../utils/site.js'
+import { getDocsBase, getLocalePrefix } from '../utils/site.js'
 
 const { t, locale } = useI18n()
 const docsPath = computed(() => getDocsBase(locale.value))
-const showAlipay = ref(false)
-const showWechat = ref(false)
+const homePath = computed(() => getLocalePrefix(locale.value) || '/')
 </script>
 
 <style scoped>
@@ -63,36 +61,119 @@ const showWechat = ref(false)
   height: 8px;
 }
 
-.links {
-  display: flex;
+.footer {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) minmax(0, 2fr);
   gap: 3rem;
+  width: min(100% - 3rem, 72rem);
+  margin: 0 auto;
+  padding: 3rem 0;
+}
+
+.brand {
+  max-width: 28rem;
+}
+
+.logo {
+  display: inline-flex;
+  color: rgb(var(--mdui-color-on-surface));
+  font-size: var(--mdui-typescale-title-large-size);
+  font-weight: var(--mdui-typescale-title-large-weight);
+  letter-spacing: var(--mdui-typescale-title-large-tracking);
+  line-height: var(--mdui-typescale-title-large-line-height);
+}
+
+.brand p {
+  margin: 1rem 0 0;
+  color: rgb(var(--mdui-color-on-surface-variant));
+  line-height: 1.75;
+}
+
+.meta {
+  display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: var(--mdui-shape-corner-full);
+  color: rgb(var(--mdui-color-on-secondary-container));
+  background: rgb(var(--mdui-color-secondary-container));
+  font-size: var(--mdui-typescale-label-large-size);
+  font-weight: var(--mdui-typescale-label-large-weight);
+  letter-spacing: var(--mdui-typescale-label-large-tracking);
+  line-height: var(--mdui-typescale-label-large-line-height);
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.links {
   list-style: none;
 }
 
 .links li {
-  min-width: 120px;
+  min-width: 0;
 }
 
 .links .title {
-  font-weight: 500;
+  color: rgb(var(--mdui-color-on-surface));
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: var(--mdui-typescale-title-small-size);
+  font-weight: var(--mdui-typescale-title-small-weight);
+  letter-spacing: var(--mdui-typescale-title-small-tracking);
+  line-height: var(--mdui-typescale-title-small-line-height);
 }
 
 .links a {
   display: block;
-  padding: 0.25rem 0;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+  padding: 0.35rem 0;
+  color: rgb(var(--mdui-color-on-surface-variant));
+  font-size: var(--mdui-typescale-body-medium-size);
+  font-weight: var(--mdui-typescale-body-medium-weight);
+  letter-spacing: var(--mdui-typescale-body-medium-tracking);
+  line-height: var(--mdui-typescale-body-medium-line-height);
 }
 
-.qrcode-dialog {
-  text-align: center;
+.muted {
+  display: block;
+  padding: 0.35rem 0;
+  color: rgb(var(--mdui-color-on-surface-variant));
+  font-size: var(--mdui-typescale-body-medium-size);
+  font-weight: var(--mdui-typescale-body-medium-weight);
+  letter-spacing: var(--mdui-typescale-body-medium-tracking);
+  line-height: var(--mdui-typescale-body-medium-line-height);
 }
 
-.qrcode-item {
-  max-width: 100%;
-  border-radius: 0.5rem;
+.links a:hover {
+  color: rgb(var(--mdui-color-primary));
+}
+
+@media (max-width: 900px) {
+  .footer {
+    grid-template-columns: 1fr;
+  }
+
+  .groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .footer {
+    width: min(100% - 2rem, 72rem);
+  }
+
+  .groups {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

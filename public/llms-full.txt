@@ -1,0 +1,39 @@
+# MDDocs Full Documentation Index
+
+MDDocs is an open-source documentation system built on mdui 2. It provides a Markdown-first content workflow, bilingual routes, sticky navigation, page table of contents, previous/next links, and code-copy interactions.
+
+## English
+
+- Introduction: /docs/2/
+- Installation: /docs/2/getting-started/installation
+- Usage: /docs/2/getting-started/usage
+- Project Structure: /docs/2/getting-started/project-structure
+- Markdown Content: /docs/2/getting-started/markdown-content
+- Localization: /docs/2/getting-started/localization
+- Deployment: /docs/2/getting-started/deployment
+- FAQ: /docs/2/getting-started/faq
+- AI Overview: /docs/2/ai/overview
+- Writing Docs with AI: /docs/2/ai/writing-docs
+- Theme Design: /docs/2/styles/theme-design
+- Vue and Vite: /docs/2/frameworks/vue-vite
+- Component Example: /docs/2/components/component-example
+- Function Example: /docs/2/functions/function-example
+- Package Example: /docs/2/libraries/package-example
+
+## Chinese
+
+- 概述: /zh-cn/docs/2/
+- 安装: /zh-cn/docs/2/getting-started/installation
+- 快速入门: /zh-cn/docs/2/getting-started/usage
+- 项目结构: /zh-cn/docs/2/getting-started/project-structure
+- Markdown 内容: /zh-cn/docs/2/getting-started/markdown-content
+- 本地化: /zh-cn/docs/2/getting-started/localization
+- 部署发布: /zh-cn/docs/2/getting-started/deployment
+- 常见问题: /zh-cn/docs/2/getting-started/faq
+- AI 概览: /zh-cn/docs/2/ai/overview
+- 用 AI 编写文档: /zh-cn/docs/2/ai/writing-docs
+- 主题设计: /zh-cn/docs/2/styles/theme-design
+- Vue 与 Vite: /zh-cn/docs/2/frameworks/vue-vite
+- 组件示例: /zh-cn/docs/2/components/component-example
+- 函数示例: /zh-cn/docs/2/functions/function-example
+- 独立包示例: /zh-cn/docs/2/libraries/package-example

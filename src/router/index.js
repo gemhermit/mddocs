@@ -2,50 +2,25 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import DocsLayout from '../views/docs/DocsLayout.vue'
 import MarkdownDoc from '../views/docs/MarkdownDoc.vue'
+import { docsPages } from '../data/docs.js'
 import { useI18n } from '../i18n/index.js'
 import { getDocsBase, getLocaleFromPath } from '../utils/site.js'
 
-const docsChildren = [
-  {
-    path: '',
-    name: 'docs-introduction',
+function createDocsChildren(locale = 'en') {
+  return docsPages.map((page) => ({
+    path: page.path,
+    name: locale === 'zh-cn' ? `docs-${page.id}-zh` : `docs-${page.id}`,
     component: MarkdownDoc,
-    meta: { titleKey: 'docs.introduction', docId: 'introduction', docPath: 'introduction' }
-  },
-  {
-    path: 'getting-started/installation',
-    name: 'docs-installation',
-    component: MarkdownDoc,
-    meta: { titleKey: 'docs.installation', docId: 'installation', docPath: 'getting-started/installation' }
-  },
-  {
-    path: 'getting-started/usage',
-    name: 'docs-usage',
-    component: MarkdownDoc,
-    meta: { titleKey: 'docs.usage', docId: 'usage', docPath: 'getting-started/usage' }
-  }
-]
+    meta: {
+      titleKey: page.titleKey,
+      docId: page.id,
+      docPath: page.path || 'introduction'
+    }
+  }))
+}
 
-const zhDocsChildren = [
-  {
-    path: '',
-    name: 'docs-introduction-zh',
-    component: MarkdownDoc,
-    meta: { titleKey: 'docs.introduction', docId: 'introduction', docPath: 'introduction' }
-  },
-  {
-    path: 'getting-started/installation',
-    name: 'docs-installation-zh',
-    component: MarkdownDoc,
-    meta: { titleKey: 'docs.installation', docId: 'installation', docPath: 'getting-started/installation' }
-  },
-  {
-    path: 'getting-started/usage',
-    name: 'docs-usage-zh',
-    component: MarkdownDoc,
-    meta: { titleKey: 'docs.usage', docId: 'usage', docPath: 'getting-started/usage' }
-  }
-]
+const docsChildren = createDocsChildren()
+const zhDocsChildren = createDocsChildren('zh-cn')
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -84,11 +59,11 @@ router.afterEach((to) => {
   const { t } = useI18n()
   const titleKey = to.meta?.titleKey
   const locale = getLocaleFromPath(to.path)
-  const suffix = locale === 'zh-cn' ? 'mdui 文档' : 'mdui Docs'
+  const suffix = locale === 'zh-cn' ? '基于 mdui 2 的开源文档系统' : 'Open-source docs system built on mdui 2'
 
   document.title = titleKey
     ? `${t(titleKey)} - ${suffix}`
-    : 'mdui - Material Design 3 UI components using Web Components.'
+    : suffix
 })
 
 export default router
