@@ -1,126 +1,132 @@
 # MDUI Docs
 
-Material Design 3 (Material You) UI 组件库文档站点，基于 Vue 3 + Vite 构建。
+Material Design 3 (Material You) UI component documentation site built with Vue 3, Vite, and mdui Web Components.
 
-本项目是对 [mdui.org](https://www.mdui.org/) 的 1:1 复刻，使用 mdui 自身的 Web Components 构建文档界面。
+This project recreates the MDUI documentation experience with a Markdown-first content pipeline, so the docs can stay readable and easy to maintain in an open-source repository.
 
-## 功能特性
+## Features
 
-- 响应式设计，支持桌面端和移动端
-- 暗色模式支持（跟随系统 / 手动切换）
-- 主题色切换（预设颜色 + 自定义颜色）
-- 侧边栏导航，支持折叠展开
-- 文档页面前后导航
-- 代码高亮显示
+- Responsive documentation layout for desktop and mobile
+- Sticky app bar, sidebar, and page table of contents
+- Markdown-based documentation content
+- Heading anchors and active table-of-contents highlighting
+- Previous and next page navigation
+- Code highlighting with a hover copy button
+- Light, dark, and system theme switching
+- English and Chinese documentation content
 
-## 技术栈
+## Tech Stack
 
-- [Vue 3](https://vuejs.org/) - 前端框架
-- [Vite](https://vitejs.dev/) - 构建工具
-- [Vue Router](https://router.vuejs.org/) - 路由管理
-- [mdui](https://www.mdui.org/) - Material Design 3 Web Components 库
+- [Vue 3](https://vuejs.org/)
+- [Vite](https://vitejs.dev/)
+- [Vue Router](https://router.vuejs.org/)
+- [mdui](https://www.mdui.org/)
+- [markdown-it](https://github.com/markdown-it/markdown-it)
+- [highlight.js](https://highlightjs.org/)
 
-## 快速开始
+## Getting Started
 
-### 环境要求
+### Requirements
 
 - Node.js >= 18
 - npm >= 9
 
-### 安装依赖
+### Install
 
 ```bash
 npm install
 ```
 
-### 启动开发服务器
+### Develop
 
 ```bash
 npm run dev
 ```
 
-启动后访问 http://localhost:3000
+The dev server runs at `http://localhost:3000`.
 
-### 构建生产版本
+### Build
 
 ```bash
 npm run build
 ```
 
-构建产物将输出到 `dist/` 目录。
+The production output is written to `dist/`.
 
-### 预览构建结果
+### Preview
 
 ```bash
 npm run preview
 ```
 
-## 项目结构
+## Content
 
-```
-mddocs/
-├── public/
-│   └── favicon.svg          # 网站图标
-├── src/
-│   ├── components/           # 公共组件
-│   │   ├── AppBar.vue        # 顶部导航栏
-│   │   ├── Footer.vue        # 页脚
-│   │   ├── Sidebar.vue       # 文档侧边栏
-│   │   └── ThemeSelect.vue   # 主题色选择器
-│   ├── router/
-│   │   └── index.js          # 路由配置
-│   ├── styles/
-│   │   └── main.css          # 全局样式
-│   ├── views/
-│   │   ├── Home.vue          # 首页
-│   │   └── docs/
-│   │       ├── DocsLayout.vue    # 文档布局
-│   │       ├── Introduction.vue  # 介绍页
-│   │       ├── Installation.vue  # 安装页
-│   │       └── Usage.vue         # 使用指南
-│   ├── App.vue               # 根组件
-│   └── main.js               # 入口文件
-├── index.html                # HTML 入口
-├── package.json
-├── vite.config.js            # Vite 配置
-└── README.md
+Documentation pages live in `src/content/docs`:
+
+```text
+src/content/docs/
+├── en/
+│   ├── introduction.md
+│   └── getting-started/
+│       ├── installation.md
+│       └── usage.md
+└── zh-cn/
+    ├── introduction.md
+    └── getting-started/
+        ├── installation.md
+        └── usage.md
 ```
 
-## 添加新文档页面
+Markdown files are collected at build time with Vite's `import.meta.glob`. Fenced code blocks are highlighted automatically, and each code block shows a copy button in the top-right corner on hover.
 
-1. 在 `src/views/docs/` 下创建新的 `.vue` 文件
-2. 在 `src/router/index.js` 中添加路由
-3. 在 `src/components/Sidebar.vue` 中添加侧边栏链接
+Headings can define explicit anchors:
 
-示例：
+```md
+## Install with npm {#npm}
+```
+
+If no explicit anchor is provided, an id is generated from the heading text.
+
+## Add a Page
+
+1. Add matching Markdown files under `src/content/docs/en` and `src/content/docs/zh-cn`.
+2. Add the page entry in `src/data/docs.js` so it appears in the sidebar and previous/next navigation.
+3. Add the route in `src/router/index.js` and set `meta.docPath` to the Markdown path without `.md`.
+
+Example route:
 
 ```js
-// router/index.js
 {
-  path: 'new-page',
+  path: 'getting-started/new-page',
   name: 'docs-new-page',
-  component: () => import('../views/docs/NewPage.vue'),
-  meta: { title: 'New Page' }
+  component: MarkdownDoc,
+  meta: {
+    titleKey: 'docs.newPage',
+    docId: 'new-page',
+    docPath: 'getting-started/new-page'
+  }
 }
 ```
 
-## 自定义主题
+## Project Structure
 
-mdui 支持 Material Design 3 动态主题色。在浏览器控制台中可以测试：
-
-```js
-// 设置主题色
-mdui.setColorScheme('#6750A4')
-
-// 从图片提取颜色
-const color = await mdui.getColorFromImage('image.jpg')
-mdui.setColorScheme(color)
+```text
+mddocs/
+├── public/
+├── src/
+│   ├── components/          # shared UI components
+│   ├── content/docs/        # Markdown documentation content
+│   ├── data/docs.js         # docs sidebar and page order
+│   ├── i18n/                # localized UI strings
+│   ├── router/              # route definitions
+│   ├── styles/main.css      # global styles
+│   ├── utils/               # Markdown and highlighting helpers
+│   └── views/               # app and docs layouts
+├── index.html
+├── package.json
+└── vite.config.js
 ```
 
-## 国际化
-
-本项目支持中英文切换。默认语言为英文，可通过顶部导航栏的语言切换按钮切换。
-
-## 许可证
+## License
 
 MIT License

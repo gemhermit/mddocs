@@ -1,15 +1,15 @@
 <template>
-  <nav class="docs-sidebar">
+  <mdui-list class="list">
     <mdui-collapse :value="openSections" @change="openSections = $event.detail" accordion>
       <mdui-collapse-item
         v-for="section in sections"
-        :key="section.titleKey"
+        :key="section.value"
         :value="section.value"
       >
         <mdui-list-item slot="header" rounded>
-          <span class="material-icons" slot="icon">{{ section.icon }}</span>
+          <mdui-icon slot="icon" :name="section.icon"></mdui-icon>
           {{ t(section.titleKey) }}
-          <span class="material-icons arrow" slot="end-icon" :class="{ active: openSections.includes(section.value) }">expand_more</span>
+          <mdui-icon slot="end-icon" name="expand_more" class="arrow" :class="{ 'arrow-active': openSections.includes(section.value) }"></mdui-icon>
         </mdui-list-item>
         <div class="sublist">
           <mdui-list-item
@@ -25,19 +25,7 @@
         </div>
       </mdui-collapse-item>
     </mdui-collapse>
-
-    <div class="sidebar-links">
-      <div class="sidebar-links-title">{{ t('sidebar.resources') }}</div>
-      <mdui-list>
-        <mdui-list-item href="https://github.com/zdhxiong/mdui" target="_blank" rounded>
-          GitHub
-        </mdui-list-item>
-        <mdui-list-item href="https://www.mdui.org/docs/" target="_blank" rounded>
-          mdui 1 Docs
-        </mdui-list-item>
-      </mdui-list>
-    </div>
-  </nav>
+  </mdui-list>
 </template>
 
 <script setup>
@@ -61,7 +49,7 @@ function docHref(path) {
   return path ? `${docsBase.value}/${path}` : `${docsBase.value}/`
 }
 
-watch(() => route.path, (path) => {
+watch(() => route.path, () => {
   for (const section of sections) {
     if (section.items.some(item => item.id === activeDocId.value)) {
       if (!openSections.value.includes(section.value)) {
@@ -74,35 +62,16 @@ watch(() => route.path, (path) => {
 </script>
 
 <style scoped>
-.docs-sidebar {
-  padding: 0.5rem 0;
-}
-
-.sublist {
-  padding-left: 0.25rem;
-}
-
-.sidebar-links {
-  padding: 0.75rem 0.75rem 0;
-}
-
-.sidebar-links-title {
-  color: var(--text-tertiary);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  padding: 0 0.75rem 0.5rem;
-  text-transform: uppercase;
-}
-
 .arrow {
   margin-left: auto;
   transition: transform 0.2s;
-  opacity: 0.5;
-  font-size: 1.25rem !important;
 }
 
-.arrow.active {
+.arrow-active {
   transform: rotate(180deg);
+}
+
+.sublist {
+  margin-left: 2.5rem;
 }
 </style>

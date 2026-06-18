@@ -1,13 +1,13 @@
 <template>
   <mdui-tooltip :content="tooltipText">
     <mdui-button-icon @click="cycleTheme">
-      <span class="material-icons">{{ icon }}</span>
+      <mdui-icon :name="icon"></mdui-icon>
     </mdui-button-icon>
   </mdui-tooltip>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const theme = ref('auto')
 const icon = ref('brightness_auto')
@@ -49,10 +49,3 @@ onMounted(() => {
   }
 })
 </script>
-
-<style scoped>
-:host {
-  display: flex;
-  align-items: center;
-}
-</style>

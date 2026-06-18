@@ -13,6 +13,8 @@ const messages = {
       tooltip: 'AI Assistant',
       copyLlmsTxt: 'Copy llms.txt URL',
       copyLlmsFullTxt: 'Copy llms-full.txt URL',
+      viewAsMarkdown: 'View as Markdown',
+      discussPageChatgpt: 'Discuss this page with ChatGPT',
       discussChatgpt: "Discuss this project's docs with ChatGPT"
     },
     home: {
@@ -78,6 +80,8 @@ const messages = {
       tooltip: 'AI 辅助开发',
       copyLlmsTxt: '复制 llms.txt 链接',
       copyLlmsFullTxt: '复制 llms-full.txt 链接',
+      viewAsMarkdown: '查看 Markdown 源文件',
+      discussPageChatgpt: '与 ChatGPT 讨论此页面',
       discussChatgpt: '与 ChatGPT 讨论此项目文档'
     },
     home: {
