@@ -86,7 +86,7 @@ docs: {
 代码块会自动高亮，并在 hover 时显示复制按钮：
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 建议为代码块标注语言，例如 `bash`、`js`、`html` 或 `css`。
@@ -96,7 +96,7 @@ npm run build
 执行构建命令：
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 将 `dist/` 目录部署到静态站点平台即可。常见选择包括 GitHub Pages、Vercel、Netlify 或任意支持静态文件托管的服务器。

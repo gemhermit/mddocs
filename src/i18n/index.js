@@ -16,6 +16,15 @@ const messages = {
       discussPageChatgpt: 'Discuss this page with ChatGPT',
       discussChatgpt: "Discuss this project's docs with ChatGPT"
     },
+    search: {
+      tooltip: 'Search docs',
+      title: 'Search docs',
+      placeholder: 'Search documentation...',
+      close: 'Close search',
+      empty: 'Type a keyword to search page titles and content.',
+      noResults: 'No matching documents found.',
+      results: '{count} results'
+    },
     home: {
       eyebrow: 'Open-source docs system built on mdui 2',
       title: 'A Markdown-first documentation system for mdui 2 projects',
@@ -117,6 +126,15 @@ const messages = {
       viewAsMarkdown: '查看 Markdown 源文件',
       discussPageChatgpt: '与 ChatGPT 讨论此页面',
       discussChatgpt: '与 ChatGPT 讨论此项目文档'
+    },
+    search: {
+      tooltip: '搜索文档',
+      title: '搜索文档',
+      placeholder: '搜索文档内容...',
+      close: '关闭搜索',
+      empty: '输入关键词搜索标题和正文内容。',
+      noResults: '没有找到匹配的文档。',
+      results: '找到 {count} 条结果'
     },
     home: {
       eyebrow: '基于 mdui 2 的开源文档系统',

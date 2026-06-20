@@ -29,8 +29,8 @@
           <p>{{ t('home.quickstartDesc') }}</p>
           <pre><code>git clone https://github.com/gemhermit/mddocs.git
 cd mddocs
-npm install
-npm run dev</code></pre>
+pnpm install
+pnpm run dev</code></pre>
           <mdui-button variant="text" :href="docsPath + '/getting-started/usage'">
             {{ t('home.quickstartAction') }}
             <mdui-icon slot="end-icon" name="arrow_forward--rounded"></mdui-icon>

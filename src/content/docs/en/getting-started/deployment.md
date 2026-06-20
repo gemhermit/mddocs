@@ -7,7 +7,7 @@ MDDocs builds to static files and can be deployed to GitHub Pages, Vercel, Netli
 Run:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 The production output is written to:
@@ -23,7 +23,7 @@ Deploy the files inside `dist`.
 Preview the production build before publishing:
 
 ```bash
-npm run preview
+pnpm run preview
 ```
 
 Check the home page, English routes, Chinese routes, code-copy buttons, and mobile drawer behavior.
@@ -33,8 +33,8 @@ Check the home page, English routes, Chinese routes, code-copy buttons, and mobi
 For GitHub Pages, a CI job usually runs:
 
 ```bash
-npm ci
-npm run build
+pnpm install --frozen-lockfile
+pnpm run build
 ```
 
 Then publish the `dist` folder to Pages.
@@ -49,5 +49,5 @@ Before publishing, confirm that:
 - Both English and Chinese pages have content.
 - Page titles and browser titles are correct.
 - External links, GitHub links, and feedback links point to your project.
-- `npm run build` passes consistently.
+- `pnpm run build` passes consistently.
 

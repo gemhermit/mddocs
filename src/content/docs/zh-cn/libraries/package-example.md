@@ -15,7 +15,7 @@
 ## 安装 {#installation}
 
 ```bash
-npm install @mddocs/markdown
+pnpm install @mddocs/markdown
 ```
 
 ## 使用 {#usage}

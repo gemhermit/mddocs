@@ -41,7 +41,7 @@ The matching Chinese route is:
 Code blocks are highlighted automatically and show a copy button on hover:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 Always include a language when possible:

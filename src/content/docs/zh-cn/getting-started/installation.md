@@ -7,14 +7,14 @@
 在开始之前，请确保本机已经安装：
 
 - Node.js 18 或更高版本。
-- npm 9 或更高版本。
+- pnpm 8 或更高版本。
 - Git。
 
 你可以通过以下命令检查版本：
 
 ```bash
 node -v
-npm -v
+pnpm -v
 git --version
 ```
 
@@ -34,7 +34,7 @@ cd mddocs
 在项目根目录执行：
 
 ```bash
-npm install
+pnpm install
 ```
 
 项目依赖包含 Vue、Vite、Vue Router、mdui、markdown-it 和 highlight.js。这些依赖用于渲染页面、解析 Markdown、生成文档布局和高亮代码块。
@@ -44,7 +44,7 @@ npm install
 启动本地开发服务：
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 默认访问地址为：
@@ -60,7 +60,7 @@ http://localhost:3000
 构建静态产物：
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 构建结果会输出到 `dist/` 目录，可以部署到任意静态站点服务。
@@ -70,7 +70,7 @@ npm run build
 构建后可以执行：
 
 ```bash
-npm run preview
+pnpm run preview
 ```
 
 这会用本地服务器预览 `dist/` 目录中的生产产物。

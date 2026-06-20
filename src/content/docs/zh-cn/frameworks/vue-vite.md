@@ -35,7 +35,7 @@ const markdownModules = import.meta.glob('../../content/docs/**/*.md', {
 启动开发服务后：
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 修改 Vue 组件、CSS 或 Markdown 文件都会触发热更新。新增文件后如果页面没有出现，可以重启 dev server 让 Vite 重新收集模块。

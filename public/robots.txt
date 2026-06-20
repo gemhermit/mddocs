@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gemhermit.github.io/mddocs/sitemap.xml

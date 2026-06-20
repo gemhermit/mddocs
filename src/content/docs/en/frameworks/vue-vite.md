@@ -35,7 +35,7 @@ This keeps Markdown pages focused on content instead of repeating page chrome.
 Start the dev server with:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Vue components, CSS, and Markdown files update during development. If a newly added file does not appear, restart the dev server so Vite can collect the new module.

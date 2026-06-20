@@ -29,18 +29,18 @@ MDDocs 提供简洁的 mdui 风格文档界面，采用 Markdown 优先的内容
 ### 环境要求
 
 - Node.js >= 18
-- npm >= 9
+- pnpm >= 8
 
 ### 安装依赖
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### 开发模式
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 开发服务器运行在 `http://localhost:3000`。
@@ -48,7 +48,7 @@ npm run dev
 ### 构建
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 构建产物输出到 `dist/` 目录。
@@ -56,7 +56,7 @@ npm run build
 ### 预览
 
 ```bash
-npm run preview
+pnpm run preview
 ```
 
 ## 文档内容
@@ -82,7 +82,7 @@ Markdown 文件在构建时通过 Vite 的 `import.meta.glob` 收集。围栏代
 标题支持定义显式锚点：
 
 ```md
-## 使用 npm 安装 {#npm}
+## 使用 pnpm 安装 {#install}
 ```
 
 如果未提供显式锚点，将根据标题文本自动生成 id。

@@ -12,6 +12,8 @@
       {{ t('nav.docs') }}
     </mdui-button>
 
+    <DocSearch v-if="isDocs" />
+
     <div class="ai-menu-wrapper">
       <mdui-dropdown>
         <div slot="trigger">
@@ -55,6 +57,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ThemeSelect from './ThemeSelect.vue'
 import LangSelect from './LangSelect.vue'
+import DocSearch from './DocSearch.vue'
 import { useI18n } from '../i18n/index.js'
 import { getDocsBase, getLocalePrefix } from '../utils/site.js'
 

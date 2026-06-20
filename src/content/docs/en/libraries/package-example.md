@@ -15,7 +15,7 @@ It parses heading anchors, wraps code blocks, and outputs HTML suitable for a do
 ## Installation {#installation}
 
 ```bash
-npm install @mddocs/markdown
+pnpm install @mddocs/markdown
 ```
 
 ## Usage {#usage}

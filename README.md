@@ -29,18 +29,18 @@ MDDocs provides a clean mdui-style documentation interface with a Markdown-first
 ### Requirements
 
 - Node.js >= 18
-- npm >= 9
+- pnpm >= 8
 
 ### Install
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Develop
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 The dev server runs at `http://localhost:3000`.
@@ -48,7 +48,7 @@ The dev server runs at `http://localhost:3000`.
 ### Build
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 The production output is written to `dist/`.
@@ -56,7 +56,7 @@ The production output is written to `dist/`.
 ### Preview
 
 ```bash
-npm run preview
+pnpm run preview
 ```
 
 ## Content
@@ -82,7 +82,7 @@ Markdown files are collected at build time with Vite's `import.meta.glob`. Fence
 Headings can define explicit anchors:
 
 ```md
-## Install with npm {#npm}
+## Install with pnpm {#install}
 ```
 
 If no explicit anchor is provided, an id is generated from the heading text.

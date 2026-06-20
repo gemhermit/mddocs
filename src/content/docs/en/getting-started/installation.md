@@ -7,14 +7,14 @@ This page explains how to install and run the MDDocs documentation system locall
 Before you begin, make sure you have:
 
 - Node.js 18 or later.
-- npm 9 or later.
+- pnpm 8 or later.
 - Git.
 
 Check your versions with:
 
 ```bash
 node -v
-npm -v
+pnpm -v
 git --version
 ```
 
@@ -34,7 +34,7 @@ If you are creating your own documentation site from this project, fork the repo
 Run this from the project root:
 
 ```bash
-npm install
+pnpm install
 ```
 
 The project uses Vue, Vite, Vue Router, mdui, markdown-it, and highlight.js to render the documentation layout, parse Markdown, and highlight code blocks.
@@ -44,7 +44,7 @@ The project uses Vue, Vite, Vue Router, mdui, markdown-it, and highlight.js to r
 Start the local development server:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 The default URL is:
@@ -60,7 +60,7 @@ If the port is already in use, Vite will suggest another available port.
 Create a production build:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 The static output is written to `dist/` and can be deployed to any static hosting service.
@@ -70,7 +70,7 @@ The static output is written to `dist/` and can be deployed to any static hostin
 After building, run:
 
 ```bash
-npm run preview
+pnpm run preview
 ```
 
 This serves the `dist/` output locally so you can verify the production build.

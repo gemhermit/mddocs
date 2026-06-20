@@ -41,7 +41,7 @@ MDDocs 使用 Markdown 作为文档的主要内容格式。这样文档可以像
 代码块会自动高亮，并在 hover 时展示复制按钮：
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 建议始终标注语言：

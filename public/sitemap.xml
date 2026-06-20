@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/getting-started/installation</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/installation" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/installation" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/getting-started/usage</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/usage" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/usage" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/getting-started/project-structure</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/project-structure" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/project-structure" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/getting-started/markdown-content</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/markdown-content" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/markdown-content" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/getting-started/localization</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/localization" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/localization" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/getting-started/deployment</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/deployment" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/deployment" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/getting-started/faq</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/faq" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/faq" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/ai/overview</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/ai/overview" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/ai/overview" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/ai/writing-docs</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/ai/writing-docs" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/ai/writing-docs" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/styles/theme-design</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/styles/theme-design" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/styles/theme-design" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/frameworks/vue-vite</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/frameworks/vue-vite" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/frameworks/vue-vite" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/components/component-example</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/components/component-example" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/components/component-example" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/functions/function-example</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/functions/function-example" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/functions/function-example" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/docs/2/libraries/package-example</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/libraries/package-example" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/libraries/package-example" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/installation</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/installation" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/installation" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/usage</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/usage" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/usage" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/project-structure</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/project-structure" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/project-structure" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/markdown-content</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/markdown-content" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/markdown-content" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/localization</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/localization" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/localization" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/deployment</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/deployment" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/deployment" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/faq</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/getting-started/faq" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/getting-started/faq" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/ai/overview</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/ai/overview" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/ai/overview" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/ai/writing-docs</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/ai/writing-docs" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/ai/writing-docs" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/styles/theme-design</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/styles/theme-design" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/styles/theme-design" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/frameworks/vue-vite</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/frameworks/vue-vite" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/frameworks/vue-vite" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/components/component-example</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/components/component-example" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/components/component-example" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/functions/function-example</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/functions/function-example" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/functions/function-example" />
+  </url>
+  <url>
+    <loc>https://gemhermit.github.io/mddocs/zh-cn/docs/2/libraries/package-example</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gemhermit.github.io/mddocs/docs/2/libraries/package-example" />
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://gemhermit.github.io/mddocs/zh-cn/docs/2/libraries/package-example" />
+  </url>
+</urlset>

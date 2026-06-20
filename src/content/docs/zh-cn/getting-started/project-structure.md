@@ -75,5 +75,5 @@ src/content/docs/zh-cn/ai/overview.md
 1. 添加中英文 Markdown 文件。
 2. 在 `src/data/docs.js` 中加入侧边栏条目。
 3. 在 `src/i18n/index.js` 中加入标题翻译。
-4. 运行 `npm run build` 确认没有缺失或语法错误。
+4. 运行 `pnpm run build` 确认没有缺失或语法错误。
 

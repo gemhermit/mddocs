@@ -75,5 +75,5 @@ When adding a page, check these steps:
 1. Add the English and Chinese Markdown files.
 2. Add the sidebar entry in `src/data/docs.js`.
 3. Add translated labels in `src/i18n/index.js`.
-4. Run `npm run build` to catch missing files or syntax errors.
+4. Run `pnpm run build` to catch missing files or syntax errors.
 

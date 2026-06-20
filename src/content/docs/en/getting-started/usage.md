@@ -86,7 +86,7 @@ If no explicit anchor is provided, MDDocs generates one from the heading text.
 Code blocks are highlighted automatically and show a copy button on hover:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 Prefer language tags such as `bash`, `js`, `html`, or `css`.
@@ -96,7 +96,7 @@ Prefer language tags such as `bash`, `js`, `html`, or `css`.
 Build the site:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 Deploy the `dist/` directory to any static hosting platform, such as GitHub Pages, Vercel, Netlify, or your own static file server.
