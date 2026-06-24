@@ -64,8 +64,8 @@ src/content/docs/zh-cn/ai/overview.md
 当 `path` 是 `ai/overview` 时，对应访问地址为：
 
 ```text
-/docs/2/ai/overview
-/zh-cn/docs/2/ai/overview
+/docs/ai/overview
+/zh-cn/docs/ai/overview
 ```
 
 ## 推荐维护方式 {#maintenance}

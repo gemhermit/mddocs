@@ -1,23 +1,24 @@
 <template>
-  <mdui-layout class="layout">
+  <mdui-layout class="layout" :class="{ 'docs-sidebar-collapsed': isSidebarCollapsed }">
     <AppBar @toggle-drawer="toggleDrawer" />
 
     <mdui-navigation-drawer
       ref="drawerRef"
       class="drawer"
+      :open="drawerOpen"
       close-on-esc
       close-on-overlay-click
       order="2"
       data-nosnippet
-      @open="syncDrawerScrollLock(true)"
-      @close="syncDrawerScrollLock(false)"
-      @closed="syncDrawerScrollLock(false)"
+      @open="onDrawerOpen"
+      @close="onDrawerClose"
+      @closed="onDrawerClose"
     >
       <Sidebar @navigate="onNavigate" />
     </mdui-navigation-drawer>
 
     <mdui-layout-main class="layout-main">
-      <div class="main">
+      <div class="main" :class="{ 'docs-sidebar-collapsed': isSidebarCollapsed }">
         <main class="container mdui-prose">
           <router-view />
         </main>
@@ -49,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import AppBar from '../../components/AppBar.vue'
 import Sidebar from '../../components/Sidebar.vue'
@@ -61,27 +62,55 @@ const drawerRef = ref(null)
 const headings = ref([])
 const activeId = ref('')
 const headingOffset = 96
+const desktopMediaQuery = '(min-width: 840px)'
+
+function isDesktopViewport() {
+  return typeof window !== 'undefined' && window.matchMedia(desktopMediaQuery).matches
+}
+
+const isDesktop = ref(isDesktopViewport())
+const drawerOpen = ref(isDesktop.value)
+const isSidebarCollapsed = computed(() => isDesktop.value && !drawerOpen.value)
 
 function toggleDrawer() {
-  const drawer = drawerRef.value
-  if (drawer) {
-    drawer.open = !drawer.open
-    syncDrawerScrollLock(drawer.open)
-  }
+  setDrawerOpen(!drawerOpen.value)
 }
 
 function onNavigate() {
-  const drawer = drawerRef.value
-  if (drawer) {
-    drawer.open = false
-    syncDrawerScrollLock(false)
+  if (!isDesktop.value) {
+    setDrawerOpen(false)
   }
+}
+
+function setDrawerOpen(open) {
+  drawerOpen.value = Boolean(open)
+
+  const drawer = drawerRef.value
+  if (drawer && drawer.open !== drawerOpen.value) {
+    drawer.open = drawerOpen.value
+  }
+
+  syncDrawerScrollLock(drawerOpen.value)
+}
+
+function onDrawerOpen() {
+  drawerOpen.value = true
+  syncDrawerScrollLock(true)
+}
+
+function onDrawerClose() {
+  drawerOpen.value = false
+  syncDrawerScrollLock(false)
 }
 
 function syncDrawerScrollLock(open) {
   if (typeof document === 'undefined') return
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 840
-  document.documentElement.classList.toggle('docs-drawer-open', Boolean(open && isMobile))
+  document.documentElement.classList.toggle('docs-drawer-open', Boolean(open && !isDesktop.value))
+}
+
+function syncDrawerForViewport() {
+  isDesktop.value = isDesktopViewport()
+  setDrawerOpen(isDesktop.value)
 }
 
 function extractHeadings() {
@@ -129,6 +158,7 @@ function updateActive() {
 }
 
 let observer = null
+let viewportMedia = null
 
 function setupObserver() {
   observer?.disconnect()
@@ -153,11 +183,15 @@ watch(() => route.path, async () => {
 onMounted(() => {
   extractHeadings()
   setupObserver()
+  syncDrawerForViewport()
+  viewportMedia = window.matchMedia(desktopMediaQuery)
+  viewportMedia.addEventListener('change', syncDrawerForViewport)
   window.addEventListener('scroll', updateActive, { passive: true })
 })
 
 onUnmounted(() => {
   observer?.disconnect()
+  viewportMedia?.removeEventListener('change', syncDrawerForViewport)
   window.removeEventListener('scroll', updateActive)
   syncDrawerScrollLock(false)
 })

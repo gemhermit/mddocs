@@ -27,13 +27,13 @@ MDDocs 使用 Markdown 作为文档的主要内容格式。这样文档可以像
 站内链接可以直接使用绝对路径：
 
 ```md
-[安装](/zh-cn/docs/2/getting-started/installation)
+[安装](/zh-cn/docs/getting-started/installation)
 ```
 
 英文页面对应路径为：
 
 ```md
-[Installation](/docs/2/getting-started/installation)
+[Installation](/docs/getting-started/installation)
 ```
 
 ## 代码块 {#code-blocks}

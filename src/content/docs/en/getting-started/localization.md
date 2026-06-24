@@ -7,15 +7,15 @@ MDDocs ships with English and Simplified Chinese routes. You can keep this struc
 English docs use routes without a locale prefix:
 
 ```text
-/docs/2
-/docs/2/getting-started/usage
+/docs
+/docs/getting-started/usage
 ```
 
 Chinese docs use the `/zh-cn` prefix:
 
 ```text
-/zh-cn/docs/2
-/zh-cn/docs/2/getting-started/usage
+/zh-cn/docs
+/zh-cn/docs/getting-started/usage
 ```
 
 Locale detection lives in `src/utils/site.js`.

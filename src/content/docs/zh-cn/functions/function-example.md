@@ -14,14 +14,14 @@ function createDocLink(locale: 'en' | 'zh-cn', path: string): string
 
 ```ts
 createDocLink('zh-cn', 'getting-started/usage')
-// '/zh-cn/docs/2/getting-started/usage'
+// '/zh-cn/docs/getting-started/usage'
 ```
 
 英文路径没有语言前缀：
 
 ```ts
 createDocLink('en', 'getting-started/usage')
-// '/docs/2/getting-started/usage'
+// '/docs/getting-started/usage'
 ```
 
 ## 参数说明 {#parameters}

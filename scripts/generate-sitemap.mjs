@@ -34,13 +34,13 @@ function buildUrls() {
     for (const page of docsPages) {
       const path = page.path ? `/${page.path}` : ''
       urls.push({
-        loc: `${BASE_URL}${locale.prefix}/docs/2${path}`,
+        loc: `${BASE_URL}${locale.prefix}/docs${path}`,
         lastmod: today,
         changefreq: 'weekly',
         priority: '0.8',
         alternates: locales.map((l) => ({
           hreflang: l.code,
-          href: `${BASE_URL}${l.prefix}/docs/2${path}`,
+          href: `${BASE_URL}${l.prefix}/docs${path}`,
         })),
       })
     }

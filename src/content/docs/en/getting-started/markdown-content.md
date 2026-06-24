@@ -27,13 +27,13 @@ When no `{#id}` is provided, MDDocs generates an id from the heading text. Add e
 Internal links can use absolute paths:
 
 ```md
-[Installation](/docs/2/getting-started/installation)
+[Installation](/docs/getting-started/installation)
 ```
 
 The matching Chinese route is:
 
 ```md
-[安装](/zh-cn/docs/2/getting-started/installation)
+[安装](/zh-cn/docs/getting-started/installation)
 ```
 
 ## Code Blocks {#code-blocks}

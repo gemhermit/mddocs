@@ -31,9 +31,9 @@ You can publish `llms.txt` at the site root to list the pages AI tools should re
 
 MDDocs is an open-source documentation system built on mdui 2.
 
-- Overview: /docs/2/
-- Installation: /docs/2/getting-started/installation
-- Usage: /docs/2/getting-started/usage
+- Overview: /docs/
+- Installation: /docs/getting-started/installation
+- Usage: /docs/getting-started/usage
 ```
 
 Use `llms-full.txt` for a more complete list of pages and notes.

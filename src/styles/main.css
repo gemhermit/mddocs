@@ -269,9 +269,20 @@ mdui-layout-main,
 
 /* ========== Docs layout ========== */
 .drawer {
-  --mdui-motion-duration-long2: 0;
+  /* Drawer 自身的 transform 滑入/滑出动画 (translateX)
+     mobile 模式下打开/关闭抽屉的体验主要靠它 ——
+     不要把它设为 0,否则会"突然出现 / 慢慢消失",节奏不对称。 */
+  --mdui-motion-duration-long2: 320ms;
+  --mdui-motion-duration-short4: 280ms;
+  --mdui-motion-duration-medium4: 360ms;
   --z-index: 2200;
   z-index: var(--z-index);
+  /* 让 drawer 自己的滑入/滑出、collapse-item 的展开/收起
+     在视觉上更"跟手",用 M3 Expressive 风格的曲线
+     ——前段不急、中段平稳、末段自然减速,
+     避免默认 standard (0.2, 0, 0, 1) 那种"前冲后磨"的顿挫感 */
+  --mdui-motion-easing-emphasized: cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
 }
 
 .drawer .list {
@@ -336,21 +347,31 @@ mdui-layout-main,
   .layout-main {
     padding-left: var(--sidebar-width);
   }
+
+  .layout.docs-sidebar-collapsed .layout-main {
+    padding-left: 0;
+  }
 }
 
 /* ========== Docs content ========== */
 .main {
   display: flex;
+  align-items: flex-start;
   gap: var(--docs-gap);
-  max-width: calc(var(--sidebar-width) + 800px + var(--toc-width) + 5rem);
+  width: 100%;
+  max-width: calc(800px + var(--docs-gap) + var(--toc-width));
   margin: 0 auto;
   padding: 1.5rem 2rem 3rem;
-  transition: max-width 0.24s ease, gap 0.24s ease;
+  box-sizing: border-box;
+}
+
+.main > .container {
+  width: 100%;
+  max-width: 800px;
 }
 
 .main.docs-sidebar-collapsed {
-  max-width: calc(800px + var(--toc-width) + 4rem);
-  gap: 1rem;
+  max-width: calc(800px + var(--docs-gap) + var(--toc-width));
 }
 
 .container h1 {
@@ -516,32 +537,36 @@ mdui-layout-main,
 .contents {
   display: none;
   flex-direction: column;
-  position: fixed;
+  position: sticky;
   box-sizing: border-box;
-  top: var(--app-bar-height);
-  right: max(0px, calc((100vw - (var(--sidebar-width) + 800px + var(--toc-width) + 5rem)) / 2));
-  width: var(--toc-width);
-  min-width: var(--toc-width);
-  flex-shrink: 0;
-  height: calc(100vh - var(--app-bar-height));
+  top: calc(var(--app-bar-height) + 1rem);
+  flex: 0 0 var(--toc-width);
+  height: calc(100vh - var(--app-bar-height) - 1rem);
   padding: 1rem 1.5rem;
   align-self: flex-start;
+  overflow: hidden;
   z-index: 1;
 }
 
 .contents .title {
   padding: 0 1rem;
+  margin-bottom: 0.5rem;
   line-height: 2rem;
   color: rgb(var(--mdui-color-on-surface-variant));
 }
 
 .items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
   flex-grow: 1;
+  min-height: 0;
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .contents .divider {
-  height: 1rem;
+  height: 0.2rem;
 }
 
 .contents .item::part(container) {
@@ -639,6 +664,14 @@ mdui-layout-main,
 
 /* ========== Responsive ========== */
 @media (max-width: 1280px) {
+  .main {
+    max-width: none;
+  }
+
+  .main > .container {
+    max-width: none;
+  }
+
   .contents {
     display: none;
   }

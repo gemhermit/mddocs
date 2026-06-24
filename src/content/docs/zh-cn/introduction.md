@@ -18,7 +18,7 @@ MDDocs 默认包含以下能力：
 
 - 基于 mdui 2 的 AppBar、侧边栏、目录和卡片式章节导航。
 - `src/content/docs` 下的 Markdown 内容组织。
-- 中英文路径支持：`/docs/2` 和 `/zh-cn/docs/2`。
+- 中英文路径支持：`/docs` 和 `/zh-cn/docs`。
 - 根据页面标题自动生成右侧目录，并在滚动时高亮当前位置。
 - 代码块高亮和 hover 复制按钮。
 - 移动端抽屉导航、独立滚动和遮罩层处理。
@@ -58,6 +58,6 @@ src/content/docs/
 
 ## 下一步 {#next}
 
-如果你只是想本地跑起来，请继续阅读 [安装](/zh-cn/docs/2/getting-started/installation)。
+如果你只是想本地跑起来，请继续阅读 [安装](/zh-cn/docs/getting-started/installation)。
 
-如果你已经启动项目，想开始替换内容，请阅读 [快速入门](/zh-cn/docs/2/getting-started/usage)。
+如果你已经启动项目，想开始替换内容，请阅读 [快速入门](/zh-cn/docs/getting-started/usage)。

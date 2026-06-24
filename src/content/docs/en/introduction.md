@@ -18,7 +18,7 @@ MDDocs includes:
 
 - App bar, sidebar, page table of contents, and bottom navigation built with mdui 2.
 - Markdown content under `src/content/docs`.
-- English and Chinese routes: `/docs/2` and `/zh-cn/docs/2`.
+- English and Chinese routes: `/docs` and `/zh-cn/docs`.
 - Automatic table of contents generation from page headings.
 - Active heading highlighting while scrolling.
 - Code highlighting and hover copy buttons.
@@ -59,6 +59,6 @@ Markdown files are collected at build time with `import.meta.glob`. Sidebar orde
 
 ## Next Steps {#next}
 
-To run the project locally, continue with [Installation](/docs/2/getting-started/installation).
+To run the project locally, continue with [Installation](/docs/getting-started/installation).
 
-To start replacing content and adding pages, read [Usage](/docs/2/getting-started/usage).
+To start replacing content and adding pages, read [Usage](/docs/getting-started/usage).

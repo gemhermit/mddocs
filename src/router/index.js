@@ -26,10 +26,10 @@ const routes = [
   { path: '/', name: 'home', component: Home },
   { path: '/en/', redirect: '/' },
   { path: '/zh-cn/', name: 'home-zh', component: Home },
-  { path: '/docs', redirect: '/docs/2/' },
-  { path: '/zh-cn/docs', redirect: '/zh-cn/docs/2/' },
-  { path: '/docs/2', component: DocsLayout, children: docsChildren },
-  { path: '/zh-cn/docs/2', component: DocsLayout, children: zhDocsChildren },
+  { path: '/docs', redirect: '/docs/' },
+  { path: '/zh-cn/docs', redirect: '/zh-cn/docs/' },
+  { path: '/docs', component: DocsLayout, children: docsChildren },
+  { path: '/zh-cn/docs', component: DocsLayout, children: zhDocsChildren },
   {
     path: '/:pathMatch(.*)*',
     redirect: (to) => {

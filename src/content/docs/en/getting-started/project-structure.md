@@ -64,8 +64,8 @@ Docs routes are generated from `docsPages`. In most cases, adding an entry in `s
 When `path` is `ai/overview`, the page is available at:
 
 ```text
-/docs/2/ai/overview
-/zh-cn/docs/2/ai/overview
+/docs/ai/overview
+/zh-cn/docs/ai/overview
 ```
 
 ## Maintenance Checklist {#maintenance}

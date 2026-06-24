@@ -31,9 +31,9 @@ AI 更容易处理结构稳定的文档。建议保持：
 
 MDDocs is an open-source documentation system built on mdui 2.
 
-- Overview: /docs/2/
-- Installation: /docs/2/getting-started/installation
-- Usage: /docs/2/getting-started/usage
+- Overview: /docs/
+- Installation: /docs/getting-started/installation
+- Usage: /docs/getting-started/usage
 ```
 
 完整版本可以放到 `llms-full.txt`，包含更多页面链接和说明。

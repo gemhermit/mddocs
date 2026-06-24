@@ -74,7 +74,7 @@ export const docsPages = docsSections.flatMap((section) =>
 
 export function findDocPageByPath(pathname = '') {
   return docsPages.find((page) =>
-    pathname.endsWith(`/docs/2/${page.path}`) ||
-    (page.path === '' && pathname.match(/\/docs\/2\/?$/))
+    pathname.endsWith(`/docs/${page.path}`) ||
+    (page.path === '' && pathname.match(/\/docs\/?$/))
   )
 }

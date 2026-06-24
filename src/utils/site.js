@@ -22,5 +22,5 @@ export function toLocalePath(path = '/', locale = 'en') {
 }
 
 export function getDocsBase(locale = 'en') {
-  return `${getLocalePrefix(locale)}/docs/2`
+  return `${getLocalePrefix(locale)}/docs`
 }
