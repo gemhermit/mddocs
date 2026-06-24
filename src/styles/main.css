@@ -369,7 +369,7 @@ mdui-layout-main,
   width: 100%;
   max-width: calc(800px + var(--docs-gap) + var(--toc-width));
   margin: 0 auto;
-  padding: 1.5rem 2rem 3rem;
+  padding: 1.5rem 2rem 1rem;
   box-sizing: border-box;
 }
 
@@ -608,7 +608,7 @@ mdui-layout-main,
 .nav {
   display: flex;
   justify-content: space-between;
-  margin-top: 5.5rem;
+  margin-top: 3rem;
 }
 
 .nav .card {
@@ -693,7 +693,7 @@ mdui-layout-main,
 
 @media (max-width: 959px) {
   .main {
-    padding: 1rem 1.25rem 2rem;
+    padding: 1rem 1.25rem 1.5rem;
   }
 
   .container {
@@ -736,6 +736,6 @@ mdui-layout-main,
   }
 
   .main {
-    padding: 0.75rem 1rem 1.5rem;
+    padding: 0.75rem 1rem 1rem;
   }
 }

@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from '@/i18n/index.js'
 import { docsSections, findDocPageByPath } from '@/data/docs.js'
@@ -92,29 +92,35 @@ function findSectionForActiveId() {
   return ''
 }
 
-// 默认展开:优先用上次缓存的;没缓存过才回退到"当前 active 所在 section"。
-// 注意:即使是 ''(用户上次主动收起),也属于"用户的选择",不要被默认值覆盖。
-const openSection = ref(readStoredOpenSection() ?? findSectionForActiveId())
+const activeSection = computed(() => findSectionForActiveId())
+
+// 当前页面所在章节优先展开,避免缓存停在其它大章节时隐藏 active 项。
+const openSection = ref(activeSection.value || readStoredOpenSection() || '')
 
 function docHref(path) {
   return path ? `${docsBase.value}/${path}` : `${docsBase.value}/`
 }
 
-function toggleSection(value) {
-  // 同一个 section 再点一次就收起,这是 accordion 模式该有的行为
-  setOpenSection(openSection.value === value ? '' : value)
-}
-
-function setOpenSection(value) {
+function setOpenSection(value, persist = true) {
   openSection.value = normalizeOpenSection(value)
-  writeStoredOpenSection(openSection.value)
+  if (persist) {
+    writeStoredOpenSection(openSection.value)
+  }
 }
 
 function setOpenSectionFromEvent(event) {
+  if (event.target !== event.currentTarget) return
+
   // mdui-collapse 在 accordion 模式下,点击已展开的会 emit value 为空,
   // 点击未展开的会 emit value 为对应 value ——这个行为正是我们要的
-  setOpenSection(event.target?.value ?? '')
+  setOpenSection(event.currentTarget?.value ?? '')
 }
+
+watch(activeSection, (section) => {
+  if (section && openSection.value !== section) {
+    setOpenSection(section)
+  }
+})
 </script>
 
 <style scoped>

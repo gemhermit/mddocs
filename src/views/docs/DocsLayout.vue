@@ -93,12 +93,20 @@ function setDrawerOpen(open) {
   syncDrawerScrollLock(drawerOpen.value)
 }
 
-function onDrawerOpen() {
+function shouldHandleDrawerEvent(event) {
+  return !event || event.target === event.currentTarget
+}
+
+function onDrawerOpen(event) {
+  if (!shouldHandleDrawerEvent(event)) return
+
   drawerOpen.value = true
   syncDrawerScrollLock(true)
 }
 
-function onDrawerClose() {
+function onDrawerClose(event) {
+  if (!shouldHandleDrawerEvent(event)) return
+
   drawerOpen.value = false
   syncDrawerScrollLock(false)
 }
