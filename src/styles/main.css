@@ -52,7 +52,7 @@ pre code.hljs, pre code.nohighlight, pre code[class^="language-"] {
 }
 
 pre code.hljs {
-  padding: 0.8571em 1.1429em !important;
+  padding: 0.643em 0.875em !important;
 }
 
 :root {
@@ -127,64 +127,64 @@ a {
 
 /* ========== Theme colors ========== */
 html.mdui-theme-light {
-  --text-primary: rgba(0, 0, 0, 0.87);
-  --text-secondary: rgba(0, 0, 0, 0.6);
-  --text-tertiary: rgba(0, 0, 0, 0.45);
+  --text-primary: #000000de;
+  --text-secondary: #00000099;
+  --text-tertiary: #00000073;
   --surface: #ffffff;
-  --surface-variant: rgba(0, 0, 0, 0.03);
-  --surface-hover: rgba(0, 0, 0, 0.05);
-  --border: rgba(0, 0, 0, 0.08);
-  --code-bg: rgba(0, 0, 0, 0.04);
-  --code-inline-bg: rgba(0, 0, 0, 0.06);
-  --primary: rgb(103, 80, 164);
-  --primary-light: rgba(103, 80, 164, 0.1);
-  --primary-container: rgba(103, 80, 164, 0.05);
+  --surface-variant: #00000008;
+  --surface-hover: #0000000d;
+  --border: #00000014;
+  --code-bg: #0000000a;
+  --code-inline-bg: #0000000f;
+  --primary: #6750a4;
+  --primary-light: #6750a41a;
+  --primary-container: #6750a40d;
 }
 
 html.mdui-theme-dark {
-  --text-primary: rgba(255, 255, 255, 0.87);
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --text-primary: #ffffffde;
+  --text-secondary: #ffffffb3;
+  --text-tertiary: #ffffff80;
   --surface: #1c1b1f;
-  --surface-variant: rgba(255, 255, 255, 0.05);
-  --surface-hover: rgba(255, 255, 255, 0.08);
-  --border: rgba(255, 255, 255, 0.08);
-  --code-bg: rgba(255, 255, 255, 0.06);
-  --code-inline-bg: rgba(255, 255, 255, 0.1);
-  --primary: rgb(206, 147, 216);
-  --primary-light: rgba(206, 147, 216, 0.15);
-  --primary-container: rgba(206, 147, 216, 0.1);
+  --surface-variant: #ffffff0d;
+  --surface-hover: #ffffff14;
+  --border: #ffffff14;
+  --code-bg: #ffffff0f;
+  --code-inline-bg: #ffffff1a;
+  --primary: #ce93d8;
+  --primary-light: #ce93d826;
+  --primary-container: #ce93d81a;
 }
 
 html.mdui-theme-auto {
-  --text-primary: rgba(0, 0, 0, 0.87);
-  --text-secondary: rgba(0, 0, 0, 0.6);
-  --text-tertiary: rgba(0, 0, 0, 0.45);
+  --text-primary: #000000de;
+  --text-secondary: #00000099;
+  --text-tertiary: #00000073;
   --surface: #ffffff;
-  --surface-variant: rgba(0, 0, 0, 0.03);
-  --surface-hover: rgba(0, 0, 0, 0.05);
-  --border: rgba(0, 0, 0, 0.08);
-  --code-bg: rgba(0, 0, 0, 0.04);
-  --code-inline-bg: rgba(0, 0, 0, 0.06);
-  --primary: rgb(103, 80, 164);
-  --primary-light: rgba(103, 80, 164, 0.1);
-  --primary-container: rgba(103, 80, 164, 0.05);
+  --surface-variant: #00000008;
+  --surface-hover: #0000000d;
+  --border: #00000014;
+  --code-bg: #0000000a;
+  --code-inline-bg: #0000000f;
+  --primary: #6750a4;
+  --primary-light: #6750a41a;
+  --primary-container: #6750a40d;
 }
 
 @media (prefers-color-scheme: dark) {
   html.mdui-theme-auto {
-    --text-primary: rgba(255, 255, 255, 0.87);
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-tertiary: rgba(255, 255, 255, 0.5);
+    --text-primary: #ffffffde;
+    --text-secondary: #ffffffb3;
+    --text-tertiary: #ffffff80;
     --surface: #1c1b1f;
-    --surface-variant: rgba(255, 255, 255, 0.05);
-    --surface-hover: rgba(255, 255, 255, 0.08);
-    --border: rgba(255, 255, 255, 0.08);
-    --code-bg: rgba(255, 255, 255, 0.06);
-    --code-inline-bg: rgba(255, 255, 255, 0.1);
-    --primary: rgb(206, 147, 216);
-    --primary-light: rgba(206, 147, 216, 0.15);
-    --primary-container: rgba(206, 147, 216, 0.1);
+    --surface-variant: #ffffff0d;
+    --surface-hover: #ffffff14;
+    --border: #ffffff14;
+    --code-bg: #ffffff0f;
+    --code-inline-bg: #ffffff1a;
+    --primary: #ce93d8;
+    --primary-light: #ce93d826;
+    --primary-container: #ce93d81a;
   }
 }
 
@@ -369,7 +369,7 @@ mdui-layout-main,
   width: 100%;
   max-width: calc(800px + var(--docs-gap) + var(--toc-width));
   margin: 0 auto;
-  padding: 1.5rem 2rem 1rem;
+  padding: 1.5rem 2rem 0rem;
   box-sizing: border-box;
 }
 
@@ -435,10 +435,10 @@ mdui-layout-main,
 
 .container pre {
   background: var(--code-bg);
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 16px;
+  padding: 0.5rem 0.625rem;
   overflow-x: auto;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .container pre code {
@@ -505,17 +505,9 @@ mdui-layout-main,
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  border: 0;
-  border-radius: var(--mdui-shape-corner-full);
   color: rgb(var(--mdui-color-on-surface-variant));
-  background: transparent;
-  box-shadow: none;
-  cursor: pointer;
   opacity: 0;
   transform: translateY(-0.25rem);
   transition: color 0.16s ease, opacity 0.16s ease, transform 0.16s ease;
@@ -527,13 +519,7 @@ mdui-layout-main,
   transform: translateY(0);
 }
 
-.code-copy-button:hover {
-  background: transparent;
-  color: rgb(var(--mdui-color-on-surface));
-}
-
 .code-copy-button.copied {
-  background: transparent;
   color: rgb(var(--mdui-color-primary));
 }
 

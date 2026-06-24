@@ -85,22 +85,21 @@ export function enhanceCodeBlocks(root = document) {
       container.appendChild(pre)
     }
 
-    const button = document.createElement('button')
-    button.type = 'button'
+    const button = document.createElement('mdui-button-icon')
     button.className = 'code-copy-button'
     button.setAttribute('aria-label', 'Copy code')
-    button.innerHTML = '<mdui-icon name="content_copy--rounded"></mdui-icon>'
+    const icon = document.createElement('mdui-icon')
+    icon.setAttribute('name', 'content_copy--rounded')
+    button.appendChild(icon)
     button.addEventListener('click', async () => {
       const copied = await copyToClipboard(code.textContent || '')
       button.classList.toggle('copied', copied)
       button.classList.toggle('copy-failed', !copied)
-      button.innerHTML = copied
-        ? '<mdui-icon name="check--rounded"></mdui-icon>'
-        : '<mdui-icon name="error_outline--rounded"></mdui-icon>'
+      icon.setAttribute('name', copied ? 'check--rounded' : 'error_outline--rounded')
       window.setTimeout(() => {
         button.classList.remove('copied')
         button.classList.remove('copy-failed')
-        button.innerHTML = '<mdui-icon name="content_copy--rounded"></mdui-icon>'
+        icon.setAttribute('name', 'content_copy--rounded')
       }, 1200)
     })
 

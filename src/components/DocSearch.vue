@@ -381,7 +381,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: flex-start;
   padding: calc(var(--app-bar-height) + 1.5rem) 1.5rem 1.5rem;
-  background: rgba(0, 0, 0, 0.32);
+  background: #00000052;
 }
 
 .doc-search-panel {
