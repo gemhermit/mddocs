@@ -55,11 +55,11 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import ThemeSelect from './ThemeSelect.vue'
-import LangSelect from './LangSelect.vue'
-import DocSearch from './DocSearch.vue'
-import { useI18n } from '../i18n/index.js'
-import { getDocsBase, getLocalePrefix } from '../utils/site.js'
+import ThemeSelect from '@/components/ThemeSelect.vue'
+import LangSelect from '@/components/LangSelect.vue'
+import DocSearch from '@/components/DocSearch.vue'
+import { useI18n } from '@/i18n/index.js'
+import { getDocsBase, getLocalePrefix } from '@/utils/site.js'
 
 defineEmits(['toggle-drawer'])
 const route = useRoute()

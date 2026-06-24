@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { getLocaleFromPath } from '../utils/site.js'
+import { getLocaleFromPath } from '@/utils/site.js'
 
 const messages = {
   en: {

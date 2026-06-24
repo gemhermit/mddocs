@@ -301,6 +301,14 @@ mdui-layout-main,
   touch-action: none;
 }
 
+.layout {
+  /* mdui-layout 的 :host 默认 overflow:hidden，会成为 sticky 的滚动容器，
+     但它自身不滚动，导致右侧目录 .contents 的 position:sticky 失效、
+     随主内容一起滚走。改回 visible 让 sticky 重新相对视口生效。
+     抽屉栏为 position:fixed，不受影响。 */
+  overflow: visible;
+}
+
 .layout-main {
   overflow: visible;
 }

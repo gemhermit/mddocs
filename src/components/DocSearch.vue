@@ -47,11 +47,11 @@
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { docsPages, docsSections } from '../data/docs.js'
-import { useI18n } from '../i18n/index.js'
-import { getDocsBase } from '../utils/site.js'
+import { docsPages, docsSections } from '@/data/docs.js'
+import { useI18n } from '@/i18n/index.js'
+import { getDocsBase } from '@/utils/site.js'
 
-const markdownModules = import.meta.glob('../content/docs/**/*.md', {
+const markdownModules = import.meta.glob('/src/content/docs/**/*.md', {
   eager: true,
   query: '?raw',
   import: 'default'

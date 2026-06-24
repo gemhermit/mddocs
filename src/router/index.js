@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import DocsLayout from '../views/docs/DocsLayout.vue'
-import MarkdownDoc from '../views/docs/MarkdownDoc.vue'
-import { docsPages } from '../data/docs.js'
-import { useI18n } from '../i18n/index.js'
-import { getDocsBase, getLocaleFromPath } from '../utils/site.js'
+import Home from '@/views/Home.vue'
+import DocsLayout from '@/views/docs/DocsLayout.vue'
+import MarkdownDoc from '@/views/docs/MarkdownDoc.vue'
+import { docsPages } from '@/data/docs.js'
+import { useI18n } from '@/i18n/index.js'
+import { getDocsBase, getLocaleFromPath } from '@/utils/site.js'
 
 function createDocsChildren(locale = 'en') {
   return docsPages.map((page) => ({
@@ -26,8 +26,6 @@ const routes = [
   { path: '/', name: 'home', component: Home },
   { path: '/en/', redirect: '/' },
   { path: '/zh-cn/', name: 'home-zh', component: Home },
-  { path: '/docs', redirect: '/docs/' },
-  { path: '/zh-cn/docs', redirect: '/zh-cn/docs/' },
   { path: '/docs', component: DocsLayout, children: docsChildren },
   { path: '/zh-cn/docs', component: DocsLayout, children: zhDocsChildren },
   {

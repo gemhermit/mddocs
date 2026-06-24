@@ -52,9 +52,9 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import AppBar from '../../components/AppBar.vue'
-import Sidebar from '../../components/Sidebar.vue'
-import { useI18n } from '../../i18n/index.js'
+import AppBar from '@/components/AppBar.vue'
+import Sidebar from '@/components/Sidebar.vue'
+import { useI18n } from '@/i18n/index.js'
 
 const route = useRoute()
 const { t } = useI18n()

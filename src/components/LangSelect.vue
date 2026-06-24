@@ -8,8 +8,8 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { useI18n } from '../i18n/index.js'
-import { toLocalePath } from '../utils/site.js'
+import { useI18n } from '@/i18n/index.js'
+import { toLocalePath } from '@/utils/site.js'
 
 const router = useRouter()
 const route = useRoute()

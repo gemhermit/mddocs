@@ -41,8 +41,8 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useI18n } from '../i18n/index.js'
-import { getDocsBase, getLocalePrefix } from '../utils/site.js'
+import { useI18n } from '@/i18n/index.js'
+import { getDocsBase, getLocalePrefix } from '@/utils/site.js'
 
 const { t, locale } = useI18n()
 const docsPath = computed(() => getDocsBase(locale.value))

@@ -40,13 +40,13 @@
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useI18n } from '../../i18n/index.js'
-import { docsPages } from '../../data/docs.js'
-import { getDocsBase } from '../../utils/site.js'
-import { renderMarkdown } from '../../utils/markdown.js'
-import { highlightAll } from '../../utils/highlight.js'
+import { useI18n } from '@/i18n/index.js'
+import { docsPages } from '@/data/docs.js'
+import { getDocsBase } from '@/utils/site.js'
+import { renderMarkdown } from '@/utils/markdown.js'
+import { highlightAll } from '@/utils/highlight.js'
 
-const markdownModules = import.meta.glob('../../content/docs/**/*.md', {
+const markdownModules = import.meta.glob('/src/content/docs/**/*.md', {
   eager: true,
   query: '?raw',
   import: 'default'

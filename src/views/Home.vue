@@ -90,10 +90,10 @@ pnpm run dev</code></pre>
 
 <script setup>
 import { computed } from 'vue'
-import AppBar from '../components/AppBar.vue'
-import Footer from '../components/Footer.vue'
-import { useI18n } from '../i18n/index.js'
-import { getDocsBase } from '../utils/site.js'
+import AppBar from '@/components/AppBar.vue'
+import Footer from '@/components/Footer.vue'
+import { useI18n } from '@/i18n/index.js'
+import { getDocsBase } from '@/utils/site.js'
 
 const { t, locale } = useI18n()
 const docsPath = computed(() => getDocsBase(locale.value))

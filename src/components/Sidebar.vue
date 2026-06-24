@@ -40,9 +40,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useI18n } from '../i18n/index.js'
-import { docsSections, findDocPageByPath } from '../data/docs.js'
-import { getDocsBase } from '../utils/site.js'
+import { useI18n } from '@/i18n/index.js'
+import { docsSections, findDocPageByPath } from '@/data/docs.js'
+import { getDocsBase } from '@/utils/site.js'
 
 defineEmits(['navigate'])
 const route = useRoute()
