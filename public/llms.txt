@@ -1,17 +1,22 @@
 # MDDocs
 
-MDDocs is an open-source documentation system built with mdui 2, Vue 3, Vite, and Markdown.
+> MDDocs is an open-source documentation system built with mdui 2, Vue 3, Vite, and Markdown. Markdown-first content, bilingual routes, sticky navigation, page table of contents, and code-copy interactions.
 
-## Start here
+## English docs
 
-- Overview: /docs/2/
-- Installation: /docs/2/getting-started/installation
-- Usage: /docs/2/getting-started/usage
-- AI overview: /docs/2/ai/overview
+- [Introduction](https://gemhermit.github.io/mddocs/docs/)
+- [Installation](https://gemhermit.github.io/mddocs/docs/getting-started/installation)
+- [Usage](https://gemhermit.github.io/mddocs/docs/getting-started/usage)
+- [AI Overview](https://gemhermit.github.io/mddocs/docs/ai/overview)
 
-## Chinese docs
+## 中文文档
 
-- 概述: /zh-cn/docs/2/
-- 安装: /zh-cn/docs/2/getting-started/installation
-- 快速入门: /zh-cn/docs/2/getting-started/usage
-- AI 概览: /zh-cn/docs/2/ai/overview
+- [概述](https://gemhermit.github.io/mddocs/zh-cn/docs/)
+- [安装](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/installation)
+- [快速入门](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/usage)
+- [AI 概览](https://gemhermit.github.io/mddocs/zh-cn/docs/ai/overview)
+
+## Additional resources
+
+- [Full docs index](https://gemhermit.github.io/mddocs/llms-full.txt)
+- [Sitemap](https://gemhermit.github.io/mddocs/sitemap.xml)

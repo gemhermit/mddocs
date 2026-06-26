@@ -1,39 +1,41 @@
 # MDDocs Full Documentation Index
 
-MDDocs is an open-source documentation system built on mdui 2. It provides a Markdown-first content workflow, bilingual routes, sticky navigation, page table of contents, previous/next links, and code-copy interactions.
+> MDDocs is an open-source documentation system built on mdui 2. Markdown-first content workflow, bilingual routes, sticky navigation, page table of contents, previous/next links, and code-copy interactions.
 
 ## English
 
-- Introduction: /docs/2/
-- Installation: /docs/2/getting-started/installation
-- Usage: /docs/2/getting-started/usage
-- Project Structure: /docs/2/getting-started/project-structure
-- Markdown Content: /docs/2/getting-started/markdown-content
-- Localization: /docs/2/getting-started/localization
-- Deployment: /docs/2/getting-started/deployment
-- FAQ: /docs/2/getting-started/faq
-- AI Overview: /docs/2/ai/overview
-- Writing Docs with AI: /docs/2/ai/writing-docs
-- Theme Design: /docs/2/styles/theme-design
-- Vue and Vite: /docs/2/frameworks/vue-vite
-- Component Example: /docs/2/components/component-example
-- Function Example: /docs/2/functions/function-example
-- Package Example: /docs/2/libraries/package-example
+- [Home](https://gemhermit.github.io/mddocs/)
+- [Getting Started / Introduction](https://gemhermit.github.io/mddocs/docs/)
+- [Getting Started / Installation](https://gemhermit.github.io/mddocs/docs/getting-started/installation)
+- [Getting Started / Usage](https://gemhermit.github.io/mddocs/docs/getting-started/usage)
+- [Getting Started / Project Structure](https://gemhermit.github.io/mddocs/docs/getting-started/project-structure)
+- [Getting Started / Markdown Content](https://gemhermit.github.io/mddocs/docs/getting-started/markdown-content)
+- [Getting Started / Localization](https://gemhermit.github.io/mddocs/docs/getting-started/localization)
+- [Getting Started / Deployment](https://gemhermit.github.io/mddocs/docs/getting-started/deployment)
+- [Getting Started / Frequently Asked Questions](https://gemhermit.github.io/mddocs/docs/getting-started/faq)
+- [Build with AI / AI Overview](https://gemhermit.github.io/mddocs/docs/ai/overview)
+- [Build with AI / Writing Docs with AI](https://gemhermit.github.io/mddocs/docs/ai/writing-docs)
+- [Styles / Theme Design](https://gemhermit.github.io/mddocs/docs/styles/theme-design)
+- [Frameworks / Vue and Vite](https://gemhermit.github.io/mddocs/docs/frameworks/vue-vite)
+- [Components / Component Example](https://gemhermit.github.io/mddocs/docs/components/component-example)
+- [Functions / Function Example](https://gemhermit.github.io/mddocs/docs/functions/function-example)
+- [Libraries / Package Example](https://gemhermit.github.io/mddocs/docs/libraries/package-example)
 
-## Chinese
+## 中文
 
-- 概述: /zh-cn/docs/2/
-- 安装: /zh-cn/docs/2/getting-started/installation
-- 快速入门: /zh-cn/docs/2/getting-started/usage
-- 项目结构: /zh-cn/docs/2/getting-started/project-structure
-- Markdown 内容: /zh-cn/docs/2/getting-started/markdown-content
-- 本地化: /zh-cn/docs/2/getting-started/localization
-- 部署发布: /zh-cn/docs/2/getting-started/deployment
-- 常见问题: /zh-cn/docs/2/getting-started/faq
-- AI 概览: /zh-cn/docs/2/ai/overview
-- 用 AI 编写文档: /zh-cn/docs/2/ai/writing-docs
-- 主题设计: /zh-cn/docs/2/styles/theme-design
-- Vue 与 Vite: /zh-cn/docs/2/frameworks/vue-vite
-- 组件示例: /zh-cn/docs/2/components/component-example
-- 函数示例: /zh-cn/docs/2/functions/function-example
-- 独立包示例: /zh-cn/docs/2/libraries/package-example
+- [首页](https://gemhermit.github.io/mddocs/zh-cn/)
+- [开发指南 / 概述](https://gemhermit.github.io/mddocs/zh-cn/docs/)
+- [开发指南 / 安装](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/installation)
+- [开发指南 / 快速入门](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/usage)
+- [开发指南 / 项目结构](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/project-structure)
+- [开发指南 / Markdown 内容](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/markdown-content)
+- [开发指南 / 本地化](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/localization)
+- [开发指南 / 部署发布](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/deployment)
+- [开发指南 / 常见问题](https://gemhermit.github.io/mddocs/zh-cn/docs/getting-started/faq)
+- [AI 辅助开发 / AI 概览](https://gemhermit.github.io/mddocs/zh-cn/docs/ai/overview)
+- [AI 辅助开发 / 用 AI 编写文档](https://gemhermit.github.io/mddocs/zh-cn/docs/ai/writing-docs)
+- [样式 / 主题设计](https://gemhermit.github.io/mddocs/zh-cn/docs/styles/theme-design)
+- [与框架集成 / Vue 与 Vite](https://gemhermit.github.io/mddocs/zh-cn/docs/frameworks/vue-vite)
+- [组件 / 组件示例](https://gemhermit.github.io/mddocs/zh-cn/docs/components/component-example)
+- [函数 / 函数示例](https://gemhermit.github.io/mddocs/zh-cn/docs/functions/function-example)
+- [独立包 / 独立包示例](https://gemhermit.github.io/mddocs/zh-cn/docs/libraries/package-example)

@@ -1,3 +1,11 @@
+export const SITE_URL = 'https://gemhermit.github.io/mddocs'
+
+export function toAbsoluteUrl(path = '/') {
+  const base = SITE_URL.replace(/\/+$/, '')
+  const cleanPath = path.startsWith('/') ? path : `/${path}`
+  return `${base}${cleanPath}`
+}
+
 export function getLocaleFromPath(path = '/') {
   return path.startsWith('/zh-cn') ? 'zh-cn' : 'en'
 }

@@ -1,12 +1,14 @@
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { docsPages } from '../src/data/docs.js'
+import { docsPages, docsSections } from '../src/data/docs.js'
+import { messages } from '../src/i18n/messages.js'
+import { SITE_URL } from '../src/utils/site.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 
-const BASE_URL = (process.env.SITE_URL || 'https://gemhermit.github.io/mddocs').replace(/\/+$/, '')
+const BASE_URL = (process.env.SITE_URL || SITE_URL).replace(/\/+$/, '')
 const MAX_URLS_PER_SITEMAP = 2000
 
 const today = new Date().toISOString().slice(0, 10)
@@ -99,6 +101,90 @@ function renderRobotsTxt(sitemapUrl) {
   ].join('\n')
 }
 
+function translate(locale, key) {
+  const keys = key.split('.')
+  let val = messages[locale]
+  for (const k of keys) {
+    val = val?.[k]
+  }
+  return val || key
+}
+
+function homeUrl(localePrefix) {
+  return `${BASE_URL}${localePrefix}/`
+}
+
+function docUrl(localePrefix, pagePath) {
+  return pagePath
+    ? `${BASE_URL}${localePrefix}/docs/${pagePath}`
+    : `${BASE_URL}${localePrefix}/docs/`
+}
+
+// llms.txt: 精简入口，列出每个语言的核心页面，供 LLM 快速定位
+function renderLlmsTxt() {
+  const lines = []
+  lines.push('# MDDocs')
+  lines.push('')
+  lines.push('> MDDocs is an open-source documentation system built with mdui 2, Vue 3, Vite, and Markdown. Markdown-first content, bilingual routes, sticky navigation, page table of contents, and code-copy interactions.')
+  lines.push('')
+
+  for (const locale of locales) {
+    const langName = locale.code === 'zh-cn' ? '中文文档' : 'English docs'
+    lines.push(`## ${langName}`)
+    lines.push('')
+
+    // 核心入口：首页 + Overview + Installation + Usage + AI overview
+    const coreIds = ['introduction', 'installation', 'usage', 'ai-overview']
+    for (const page of docsPages) {
+      if (!coreIds.includes(page.id)) continue
+      const title = translate(locale.code, page.titleKey)
+      const url = docUrl(locale.prefix, page.path)
+      lines.push(`- [${title}](${url})`)
+    }
+    lines.push('')
+  }
+
+  lines.push('## Additional resources')
+  lines.push('')
+  lines.push(`- [Full docs index](${BASE_URL}/llms-full.txt)`)
+  lines.push(`- [Sitemap](${BASE_URL}/sitemap.xml)`)
+  lines.push('')
+
+  return lines.join('\n')
+}
+
+// llms-full.txt: 完整索引，按语言和章节分组
+function renderLlmsFullTxt() {
+  const lines = []
+  lines.push('# MDDocs Full Documentation Index')
+  lines.push('')
+  lines.push('> MDDocs is an open-source documentation system built on mdui 2. Markdown-first content workflow, bilingual routes, sticky navigation, page table of contents, previous/next links, and code-copy interactions.')
+  lines.push('')
+
+  for (const locale of locales) {
+    const langName = locale.code === 'zh-cn' ? '中文' : 'English'
+    lines.push(`## ${langName}`)
+    lines.push('')
+
+    // 首页
+    const homeTitle = locale.code === 'zh-cn' ? '首页' : 'Home'
+    lines.push(`- [${homeTitle}](${homeUrl(locale.prefix)})`)
+
+    // 按章节分组
+    for (const section of docsSections) {
+      const sectionTitle = translate(locale.code, section.titleKey)
+      for (const item of section.items) {
+        const title = translate(locale.code, item.titleKey)
+        const url = docUrl(locale.prefix, item.path)
+        lines.push(`- [${sectionTitle} / ${title}](${url})`)
+      }
+    }
+    lines.push('')
+  }
+
+  return lines.join('\n')
+}
+
 // --- main ---
 const publicDir = join(ROOT, 'public')
 mkdirSync(publicDir, { recursive: true })
@@ -131,3 +217,9 @@ if (chunks.length === 1) {
   console.log(`Generated sitemap.xml (index, ${chunks.length} sub-sitemaps)`)
 }
 console.log('Generated robots.txt')
+
+// llms.txt / llms-full.txt
+writeFileSync(join(publicDir, 'llms.txt'), renderLlmsTxt(), 'utf-8')
+console.log('Generated llms.txt')
+writeFileSync(join(publicDir, 'llms-full.txt'), renderLlmsFullTxt(), 'utf-8')
+console.log('Generated llms-full.txt')
