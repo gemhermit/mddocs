@@ -52,13 +52,9 @@ export function useI18n() {
     return localeFromPath
   }
 
-  function toggleLocale() {
-    setLocale(currentLocale.value === 'en' ? 'zh-cn' : 'en')
-  }
-
   const locale = computed(() => currentLocale.value)
 
-  return { t, setLocale, syncLocaleWithPath, toggleLocale, locale }
+  return { t, setLocale, syncLocaleWithPath, locale }
 }
 
 applyDocumentLanguage(currentLocale.value)

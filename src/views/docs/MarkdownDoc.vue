@@ -30,7 +30,7 @@
       <div v-else class="card next disabled">
         <div class="container">
           <div class="overline">{{ t('navNext') }} <mdui-icon name="east--rounded" class="arrow"></mdui-icon></div>
-          <div class="title">{{ locale === 'zh-cn' ? '即将上线' : 'Coming soon' }}</div>
+          <div class="title">{{ t('comingSoon') }}</div>
         </div>
       </div>
     </div>

@@ -14,8 +14,8 @@ const MAX_URLS_PER_SITEMAP = 2000
 const today = new Date().toISOString().slice(0, 10)
 
 const locales = [
-  { code: 'en', prefix: '' },
-  { code: 'zh-cn', prefix: '/zh-cn' },
+  { code: 'en', prefix: '', hreflang: 'en' },
+  { code: 'zh-cn', prefix: '/zh-cn', hreflang: 'zh-CN' },
 ]
 
 function buildUrls() {
@@ -28,7 +28,7 @@ function buildUrls() {
       changefreq: 'weekly',
       priority: '1.0',
       alternates: locales.map((l) => ({
-        hreflang: l.code,
+        hreflang: l.hreflang,
         href: `${BASE_URL}${l.prefix}/`,
       })),
     })
@@ -41,7 +41,7 @@ function buildUrls() {
         changefreq: 'weekly',
         priority: '0.8',
         alternates: locales.map((l) => ({
-          hreflang: l.code,
+          hreflang: l.hreflang,
           href: `${BASE_URL}${l.prefix}/docs${path}`,
         })),
       })

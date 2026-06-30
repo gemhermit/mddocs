@@ -82,6 +82,7 @@ export const messages = {
     toc: 'On this page',
     navPrev: 'Previous',
     navNext: 'Up Next',
+    comingSoon: 'Coming soon',
     sidebar: {
       gettingStarted: 'Getting Started',
       resources: 'Resources',
@@ -112,6 +113,12 @@ export const messages = {
     meta: {
       homeDescription: 'MDDocs is an open-source documentation system built on mdui 2, Vue, and Markdown, with localized content, sticky navigation, table of contents, and code-copy interactions.',
       docDescription: '{title} - MDDocs documentation for mdui 2 projects.'
+    },
+    notFound: {
+      title: '404',
+      description: 'The page you are looking for does not exist or has been moved.',
+      backHome: 'Back to home',
+      backDocs: 'Browse docs'
     }
   },
   'zh-cn': {
@@ -197,6 +204,7 @@ export const messages = {
     toc: '本页目录',
     navPrev: '上一章',
     navNext: '下一章',
+    comingSoon: '即将上线',
     sidebar: {
       gettingStarted: '开发指南',
       resources: '资源',
@@ -227,6 +235,12 @@ export const messages = {
     meta: {
       homeDescription: 'MDDocs 是基于 mdui 2、Vue 和 Markdown 的开源文档系统，提供本地化内容、吸顶导航、页面目录和代码复制交互。',
       docDescription: '{title} - MDDocs 文档，面向 mdui 2 项目。'
+    },
+    notFound: {
+      title: '404',
+      description: '您访问的页面不存在或已被移动。',
+      backHome: '返回首页',
+      backDocs: '浏览文档'
     }
   }
 }

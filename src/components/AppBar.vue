@@ -76,16 +76,11 @@ const siteOrigin = computed(() => {
 
 const llmsFullTxtUrl = computed(() => `${siteOrigin.value}/llms-full.txt`)
 
-const currentDocPath = computed(() => {
-  const path = route.path
-  const match = path.match(/\/docs\/2\/(.*)/)
-  return match ? match[1] : ''
-})
+const currentDocPath = computed(() => route.meta?.docPath || 'introduction')
 
 const currentMarkdownUrl = computed(() => {
-  if (!currentDocPath.value && !route.path.match(/\/docs\/2\/?$/)) return ''
-  const docPath = route.meta?.docPath || currentDocPath.value || 'introduction'
-  return `https://github.com/gemhermit/mddocs/blob/main/src/content/docs/${locale.value}/${docPath}.md`
+  if (!isDocs.value) return ''
+  return `https://github.com/gemhermit/mddocs/blob/main/src/content/docs/${locale.value}/${currentDocPath.value}.md`
 })
 
 const currentPageDiscussUrl = computed(() => {

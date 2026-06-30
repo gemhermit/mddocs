@@ -70,7 +70,7 @@ function renderPageHtml({ route, locale, page }) {
   html = html.replace(/<html\s+lang="[^"]*"/, `<html lang="${locale === 'zh-cn' ? 'zh-CN' : 'en'}"`)
 
   // title
-  const suffix = locale === 'zh-cn' ? '基于 mdui 2 的开源文档系统' : 'Open-source docs system built on mdui 2'
+  const suffix = translate(locale, 'app.tagline')
   const pageTitle = page ? translate(locale, page.titleKey) : ''
   const title = page ? `${pageTitle} - ${suffix}` : suffix
   html = html.replace(/<title>.*<\/title>/, `<title>${escapeHtml(title)}</title>`)

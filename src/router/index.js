@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import DocsLayout from '@/views/docs/DocsLayout.vue'
 import MarkdownDoc from '@/views/docs/MarkdownDoc.vue'
+import NotFound from '@/views/NotFound.vue'
 import { docsPages } from '@/data/docs.js'
 import { useI18n } from '@/i18n/index.js'
-import { getDocsBase, getLocaleFromPath, toAbsoluteUrl } from '@/utils/site.js'
+import { getLocaleFromPath, toAbsoluteUrl } from '@/utils/site.js'
 
 function createDocsChildren(locale = 'en') {
   return docsPages.map((page) => ({
@@ -30,10 +31,8 @@ const routes = [
   { path: '/zh-cn/docs', component: DocsLayout, children: zhDocsChildren },
   {
     path: '/:pathMatch(.*)*',
-    redirect: (to) => {
-      const locale = getLocaleFromPath(to.path)
-      return getDocsBase(locale)
-    }
+    name: 'not-found',
+    component: NotFound
   }
 ]
 
@@ -77,7 +76,7 @@ router.afterEach((to) => {
   const { t } = useI18n()
   const titleKey = to.meta?.titleKey
   const locale = getLocaleFromPath(to.path)
-  const suffix = locale === 'zh-cn' ? '基于 mdui 2 的开源文档系统' : 'Open-source docs system built on mdui 2'
+  const suffix = t('app.tagline')
 
   const pageTitle = titleKey ? t(titleKey) : ''
   document.title = titleKey ? `${pageTitle} - ${suffix}` : suffix
