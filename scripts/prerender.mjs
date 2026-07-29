@@ -54,6 +54,19 @@ function upsertAlternate(html, hreflang, href) {
   return html.replace('</head>', `  ${newTag}\n</head>`)
 }
 
+// Node 环境下 DOMPurify.isSupported 为 false，预渲染产物走正则兜底消毒，
+// 移除脚本标签、事件属性与 javascript: 协议，防止 markdown 中嵌入恶意代码。
+function sanitizeForPrerender(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<script[^>]*>/gi, '')
+    .replace(/<\/script>/gi, '')
+    .replace(/\son\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/\son\w+\s*=\s*'[^']*'/gi, '')
+    .replace(/\son\w+\s*=\s*[^\s>]+/gi, '')
+    .replace(/(href|src)\s*=\s*(["'])\s*javascript:[^"']*\2/gi, '$1=$2$2')
+}
+
 function renderPageHtml({ route, locale, page }) {
   let html = templateHtml
 
@@ -92,7 +105,7 @@ function renderPageHtml({ route, locale, page }) {
   let appContent = ''
   if (page) {
     const mdSource = readMd(locale, page.path)
-    const mdHtml = renderMarkdown(mdSource)
+    const mdHtml = sanitizeForPrerender(renderMarkdown(mdSource))
     appContent = `<main class="prerender-shell"><article class="container markdown-body">${mdHtml}</article></main>`
   }
   html = html.replace(/<div\s+id="app">\s*<\/div>/, `<div id="app">${appContent}</div>`)
@@ -107,7 +120,7 @@ function main() {
     const prefix = getLocalePrefix(locale)
     routes.push({ route: `${prefix}/`, locale, page: null })
     for (const page of docsPages) {
-      const path = page.path ? `${prefix}/docs/${page.path}` : `${prefix}/docs/`
+      const path = page.path ? `${prefix}/docs/${page.path}` : `${prefix}/docs`
       routes.push({ route: path, locale, page })
     }
   }

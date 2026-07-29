@@ -10,7 +10,7 @@
           <p class="lead">{{ t('home.subtitle') }}</p>
 
           <div class="actions">
-            <mdui-button :href="docsPath + '/'">
+            <mdui-button :href="docsPath">
               <mdui-icon slot="icon" name="near_me--rounded"></mdui-icon>
               {{ t('home.getStarted') }}
             </mdui-button>
@@ -103,7 +103,7 @@ const docCards = computed(() => [
     icon: 'explore--rounded',
     titleKey: 'home.cards.overview.title',
     descKey: 'home.cards.overview.desc',
-    href: `${docsPath.value}/`
+    href: `${docsPath.value}`
   },
   {
     icon: 'download--rounded',

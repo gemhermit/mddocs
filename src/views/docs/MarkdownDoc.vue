@@ -87,7 +87,16 @@ const isMissing = ref(false)
 
 const docId = computed(() => route.meta?.docId || 'introduction')
 const docPath = computed(() => route.meta?.docPath || docId.value)
-const rendered = computed(() => renderMarkdownWithMeta(source.value))
+const renderCache = new Map()
+const rendered = computed(() => {
+  const sourceValue = source.value
+  if (renderCache.has(sourceValue)) {
+    return renderCache.get(sourceValue)
+  }
+  const result = renderMarkdownWithMeta(sourceValue)
+  renderCache.set(sourceValue, result)
+  return result
+})
 const html = computed(() => sanitizeHtml(rendered.value.html))
 
 let loadToken = 0
@@ -142,7 +151,7 @@ const nextPage = computed(() => {
 })
 
 function pageHref(path) {
-  return path ? `${getDocsBase(locale.value)}/${path}` : `${getDocsBase(locale.value)}/`
+  return path ? `${getDocsBase(locale.value)}/${path}` : `${getDocsBase(locale.value)}`
 }
 
 // 标题元数据在渲染 markdown 时直接产出，响应式交给 DocsLayout 的 TOC

@@ -34,7 +34,11 @@ function applyTheme(name) {
   icon.value = themeConfig[name].icon
   theme.value = name
   setTheme(themeConfig[name].mduiValue)
-  localStorage.setItem('mdui-theme', name)
+  try {
+    localStorage.setItem('mdui-theme', name)
+  } catch {
+    // localStorage 不可用时静默降级为内存模式
+  }
 }
 
 function cycleTheme() {
@@ -44,7 +48,12 @@ function cycleTheme() {
 }
 
 onMounted(() => {
-  const saved = localStorage.getItem('mdui-theme')
+  let saved = null
+  try {
+    saved = localStorage.getItem('mdui-theme')
+  } catch {
+    // localStorage 不可用时使用默认主题
+  }
   if (saved && cycleOrder.includes(saved)) {
     applyTheme(saved)
   } else {

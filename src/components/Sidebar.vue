@@ -98,7 +98,7 @@ const activeSection = computed(() => findSectionForActiveId())
 const openSection = ref(activeSection.value || readStoredOpenSection() || '')
 
 function docHref(path) {
-  return path ? `${docsBase.value}/${path}` : `${docsBase.value}/`
+  return path ? `${docsBase.value}/${path}` : `${docsBase.value}`
 }
 
 function setOpenSection(value, persist = true) {
