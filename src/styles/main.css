@@ -305,7 +305,9 @@ mdui-layout-main,
   /* mdui-layout 的 :host 默认 overflow:hidden，会成为 sticky 的滚动容器，
      但它自身不滚动，导致右侧目录 .contents 的 position:sticky 失效、
      随主内容一起滚走。改回 visible 让 sticky 重新相对视口生效。
-     抽屉栏为 position:fixed，不受影响。 */
+     注意：mdui 的 LayoutManager 会给 drawer 写入内联 position:absolute，
+     因此下方桌面端与移动端媒体查询里都必须强制 position:fixed，
+     否则 drawer 会锚定在文档流里、跟随页面全局滚动。 */
   overflow: visible;
 }
 
@@ -315,6 +317,14 @@ mdui-layout-main,
 
 @media (max-width: 839px) {
   .drawer {
+    /* 覆盖 LayoutManager 写入的内联 position:absolute / top:64px，
+       否则 drawer（含遮罩层）会跟随页面全局滚动，
+       页面已滚动时打开抽屉还会整体偏移出视口。 */
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
     height: 100vh;
     height: 100dvh;
     max-height: 100vh;
