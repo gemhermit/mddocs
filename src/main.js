@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from '@/App.vue'
 import router from '@/router'
 import 'mdui/mdui.css'
+import '@/styles/icons.css'
 // 按需引入实际用到的 mdui 组件，避免全量打包
 import 'mdui/components/button.js'
 import 'mdui/components/button-icon.js'

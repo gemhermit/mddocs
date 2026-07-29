@@ -1,0 +1,36 @@
+/* Material Icons 字体本地托管，由 Vite 处理资源路径 */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/MaterialIcons-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Material Icons Outlined';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/MaterialIconsOutlined-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Material Icons Round';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/MaterialIconsRound-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Material Icons Sharp';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/MaterialIconsSharp-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Material Icons Two Tone';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/MaterialIconsTwoTone-Regular.woff2') format('woff2');
+}
