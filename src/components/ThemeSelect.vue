@@ -7,31 +7,34 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { setTheme } from 'mdui/functions/setTheme.js'
+import { useI18n } from '@/i18n/index.js'
 
+const { t } = useI18n()
 const theme = ref('auto')
 const icon = ref('brightness_auto')
-const tooltipText = ref('Theme: Auto')
+// tooltip 跟随当前主题与语言响应式更新
+const tooltipText = computed(() => t(`theme.${theme.value}`))
 
 const themeConfig = {
-  auto: { icon: 'brightness_auto', tooltip: 'Theme: Auto', htmlClass: 'mdui-theme-auto', mduiValue: 'auto' },
-  light: { icon: 'light_mode', tooltip: 'Theme: Light', htmlClass: 'mdui-theme-light', mduiValue: 'light' },
-  dark: { icon: 'dark_mode', tooltip: 'Theme: Dark', htmlClass: 'mdui-theme-dark', mduiValue: 'dark' }
+  auto: { icon: 'brightness_auto', htmlClass: 'mdui-theme-auto', mduiValue: 'auto' },
+  light: { icon: 'light_mode', htmlClass: 'mdui-theme-light', mduiValue: 'light' },
+  dark: { icon: 'dark_mode', htmlClass: 'mdui-theme-dark', mduiValue: 'dark' }
 }
 
 const cycleOrder = ['auto', 'light', 'dark']
 
-function applyTheme(t) {
+function applyTheme(name) {
   const html = document.documentElement
   html.classList.remove('mdui-theme-auto', 'mdui-theme-light', 'mdui-theme-dark')
-  html.classList.add(themeConfig[t].htmlClass)
-  icon.value = themeConfig[t].icon
-  tooltipText.value = themeConfig[t].tooltip
-  theme.value = t
-  if (window.mdui?.setTheme) {
-    window.mdui.setTheme(themeConfig[t].mduiValue)
-  }
-  localStorage.setItem('mdui-theme', t)
+  html.classList.add(themeConfig[name].htmlClass)
+  // 与 index.html 内联脚本保持一致，避免切换后系统控件配色不匹配
+  html.style.colorScheme = name === 'auto' ? 'light dark' : name
+  icon.value = themeConfig[name].icon
+  theme.value = name
+  setTheme(themeConfig[name].mduiValue)
+  localStorage.setItem('mdui-theme', name)
 }
 
 function cycleTheme() {

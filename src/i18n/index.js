@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { getLocaleFromPath } from '@/utils/site.js'
-import { messages } from '@/i18n/messages.js'
+import { messages, translate } from '@/i18n/messages.js'
 
 export { messages }
 
@@ -24,12 +24,7 @@ function applyDocumentLanguage(locale) {
 
 export function useI18n() {
   function t(key) {
-    const keys = key.split('.')
-    let val = messages[currentLocale.value]
-    for (const k of keys) {
-      val = val?.[k]
-    }
-    return val || key
+    return translate(currentLocale.value, key)
   }
 
   function setLocale(locale) {

@@ -7,7 +7,14 @@
 
   <Teleport to="body">
     <div v-if="isOpen" class="doc-search-overlay" @click.self="closeSearch">
-      <section class="doc-search-panel" role="dialog" aria-modal="true" :aria-label="t('search.title')">
+      <section
+        ref="panelRef"
+        class="doc-search-panel"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="t('search.title')"
+        @keydown="onPanelKeydown"
+      >
         <div class="doc-search-field">
           <mdui-icon name="search--rounded"></mdui-icon>
           <input
@@ -15,9 +22,12 @@
             v-model="query"
             class="doc-search-input"
             type="search"
+            role="combobox"
+            aria-autocomplete="list"
+            :aria-expanded="results.length > 0 ? 'true' : 'false'"
+            :aria-activedescendant="results.length ? `doc-search-option-${activeIndex}` : undefined"
             :placeholder="t('search.placeholder')"
-            @keydown.enter.prevent="openFirstResult"
-            @keydown.esc.prevent="closeSearch"
+            @keydown.enter.prevent="openActiveResult"
           >
           <mdui-button-icon class="doc-search-close" :aria-label="t('search.close')" @click="closeSearch">
             <mdui-icon name="close--rounded"></mdui-icon>
@@ -26,12 +36,17 @@
 
         <div class="doc-search-status">{{ statusText }}</div>
 
-        <div v-if="results.length" class="doc-search-results">
+        <div v-if="results.length" class="doc-search-results" role="listbox">
           <a
-            v-for="result in results"
+            v-for="(result, index) in results"
+            :id="`doc-search-option-${index}`"
             :key="result.id"
             class="doc-search-result"
+            :class="{ 'is-active': index === activeIndex }"
+            role="option"
+            :aria-selected="index === activeIndex"
             :href="result.href"
+            @mouseenter="activeIndex = index"
             @click="closeSearch"
           >
             <span class="doc-search-section">{{ result.sectionTitle }}</span>
@@ -49,53 +64,69 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { docsPages, docsSections } from '@/data/docs.js'
 import { useI18n } from '@/i18n/index.js'
+import { translate } from '@/i18n/messages.js'
 import { getDocsBase } from '@/utils/site.js'
+import { escapeHtml, escapeRegExp, slugify, stripHeadingAnchor } from '@/utils/text.js'
 
-const markdownModules = import.meta.glob('/src/content/docs/**/*.md', {
-  eager: true,
+// 懒加载全部 Markdown：首次打开搜索时才拉取并构建索引
+const markdownLoaders = import.meta.glob('/src/content/docs/**/*.md', {
   query: '?raw',
   import: 'default'
 })
 
-const docsByLocale = Object.entries(markdownModules).reduce((result, [filePath, source]) => {
-  const match = filePath.match(/\/content\/docs\/([^/]+)\/(.+)\.md$/)
-  if (match) {
-    const [, docLocale, docPath] = match
-    result[docLocale] ||= {}
-    result[docLocale][docPath] = source
-  }
-  return result
-}, {})
+const docsByLocale = ref({})
+const isIndexLoading = ref(false)
+let indexLoadPromise = null
+
+function ensureIndexLoaded() {
+  if (indexLoadPromise) return indexLoadPromise
+
+  isIndexLoading.value = true
+  indexLoadPromise = Promise.all(
+    Object.entries(markdownLoaders).map(async ([filePath, loader]) => [filePath, await loader()])
+  ).then((entries) => {
+    docsByLocale.value = entries.reduce((result, [filePath, source]) => {
+      const match = filePath.match(/\/content\/docs\/([^/]+)\/(.+)\.md$/)
+      if (match) {
+        const [, docLocale, docPath] = match
+        result[docLocale] ||= {}
+        result[docLocale][docPath] = source
+      }
+      return result
+    }, {})
+  }).catch(() => {
+    // 加载失败允许下次打开时重试
+    indexLoadPromise = null
+  }).finally(() => {
+    isIndexLoading.value = false
+  })
+
+  return indexLoadPromise
+}
 
 const router = useRouter()
 const { t, locale } = useI18n()
 const isOpen = ref(false)
 const query = ref('')
+// 输入防抖后再参与检索，避免文档规模大时每个字符都全量匹配
+const debouncedQuery = ref('')
+const activeIndex = ref(0)
 const inputRef = ref(null)
+const panelRef = ref(null)
+
+let debounceTimer = null
+watch(query, (value) => {
+  if (typeof window === 'undefined') return
+  window.clearTimeout(debounceTimer)
+  debounceTimer = window.setTimeout(() => {
+    debouncedQuery.value = value
+  }, 120)
+})
 
 const sectionTitleKeys = docsSections.reduce((result, section) => {
   result[section.value] = section.titleKey
   return result
 }, {})
-
-function stripHeadingAnchor(value = '') {
-  return value.replace(/\s*\{#[A-Za-z0-9_-]+\}\s*$/, '').trim()
-}
-
-function slugify(value = '') {
-  return String(value)
-    .trim()
-    .toLowerCase()
-    .replace(/<[^>]+>/g, '')
-    .replace(/[`"'“”‘’]/g, '')
-    .replace(/[^\p{L}\p{N}]+/gu, '-')
-    .replace(/^-+|-+$/g, '')
-}
-
-function headingIdFromLine(rawHeading = '', fallback = 'heading') {
-  const explicitId = rawHeading.match(/\s*\{#([A-Za-z0-9_-]+)\}\s*$/)?.[1]
-  return explicitId || slugify(stripHeadingAnchor(rawHeading)) || fallback
-}
 
 function stripMarkdown(source = '') {
   return source
@@ -121,17 +152,9 @@ function getQueryTerms(value = '') {
   return normalizeSearch(value).split(' ').filter(Boolean)
 }
 
-function escapeHtml(value = '') {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-}
-
-function escapeRegExp(value = '') {
-  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+function headingIdFromLine(rawHeading = '', fallback = 'heading') {
+  const explicitId = rawHeading.match(/\s*\{#([A-Za-z0-9_-]+)\}\s*$/)?.[1]
+  return explicitId || slugify(stripHeadingAnchor(rawHeading)) || fallback
 }
 
 function createHighlightedExcerpt(text = '', terms = []) {
@@ -216,13 +239,18 @@ function getSectionRecords(source = '', page) {
   })
 }
 
+// 索引按语言缓存，切换语言后再切回来不会重建；文档源加载完成后失效重建
+const searchIndexCache = new Map()
+watch(docsByLocale, () => searchIndexCache.clear())
+
 const searchIndex = computed(() => {
   const activeLocale = locale.value
-  const docs = docsByLocale[activeLocale] || {}
+  if (searchIndexCache.has(activeLocale)) return searchIndexCache.get(activeLocale)
 
-  return docsPages.flatMap((page) => {
+  const docs = docsByLocale.value[activeLocale] || {}
+  const index = docsPages.flatMap((page) => {
     const source = docs[page.path || 'introduction'] || ''
-    const pageTitle = t(page.titleKey)
+    const pageTitle = translate(activeLocale, page.titleKey)
     const bodyText = stripMarkdown(source)
     const pageRecord = {
       id: `${page.id}-page`,
@@ -236,6 +264,9 @@ const searchIndex = computed(() => {
 
     return [pageRecord, ...getSectionRecords(source, page)]
   })
+
+  searchIndexCache.set(activeLocale, index)
+  return index
 })
 
 function scoreRecord(record, terms, fullQuery) {
@@ -262,8 +293,8 @@ function resultHref(page, hash = '') {
 }
 
 const results = computed(() => {
-  const terms = getQueryTerms(query.value)
-  const fullQuery = normalizeSearch(query.value)
+  const terms = getQueryTerms(debouncedQuery.value)
+  const fullQuery = normalizeSearch(debouncedQuery.value)
   if (!terms.length) return []
 
   const scoredResults = searchIndex.value
@@ -298,7 +329,8 @@ const results = computed(() => {
 })
 
 const statusText = computed(() => {
-  const trimmedQuery = query.value.trim()
+  if (isIndexLoading.value) return t('search.loading')
+  const trimmedQuery = debouncedQuery.value.trim()
   if (!trimmedQuery) return t('search.empty')
   if (!results.value.length) return t('search.noResults')
   return t('search.results').replace('{count}', String(results.value.length))
@@ -306,19 +338,84 @@ const statusText = computed(() => {
 
 function openSearch() {
   isOpen.value = true
+  ensureIndexLoaded()
 }
 
 function closeSearch() {
   isOpen.value = false
 }
 
-async function openFirstResult() {
-  const firstResult = results.value[0]
-  if (!firstResult) return
+async function openActiveResult() {
+  const result = results.value[activeIndex.value] || results.value[0]
+  if (!result) return
 
   closeSearch()
-  await router.push(firstResult.href)
+  await router.push(result.href)
 }
+
+// ↑↓ 在结果列表中循环选择
+function moveActive(delta) {
+  const total = results.value.length
+  if (!total) return
+  activeIndex.value = (activeIndex.value + delta + total) % total
+}
+
+function getPanelFocusables() {
+  const panel = panelRef.value
+  if (!panel) return []
+  return Array.from(panel.querySelectorAll(
+    'input, a[href], button, mdui-button-icon, [tabindex]:not([tabindex="-1"])'
+  ))
+}
+
+// 焦点陷阱：Tab 在对话框内循环，不泄露到背后页面
+function trapFocus(event) {
+  const focusables = getPanelFocusables()
+  if (!focusables.length) return
+
+  const first = focusables[0]
+  const last = focusables[focusables.length - 1]
+  const current = document.activeElement
+  const insidePanel = panelRef.value?.contains(current)
+
+  if (event.shiftKey && (current === first || !insidePanel)) {
+    event.preventDefault()
+    last.focus()
+  } else if (!event.shiftKey && (current === last || !insidePanel)) {
+    event.preventDefault()
+    first.focus()
+  }
+}
+
+function onPanelKeydown(event) {
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    closeSearch()
+    return
+  }
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    moveActive(1)
+    return
+  }
+  if (event.key === 'ArrowUp') {
+    event.preventDefault()
+    moveActive(-1)
+    return
+  }
+  if (event.key === 'Tab') {
+    trapFocus(event)
+  }
+}
+
+watch(results, () => {
+  activeIndex.value = 0
+})
+
+watch(activeIndex, async (index) => {
+  await nextTick()
+  panelRef.value?.querySelector(`#doc-search-option-${index}`)?.scrollIntoView({ block: 'nearest' })
+})
 
 function isTextInput(target) {
   const tagName = target?.tagName?.toLowerCase()
@@ -338,14 +435,21 @@ function onKeydown(event) {
   }
 }
 
+let previouslyFocused = null
+
 watch(isOpen, async (open) => {
   if (typeof document !== 'undefined') {
     document.documentElement.classList.toggle('doc-search-open', open)
   }
 
   if (open) {
+    previouslyFocused = document.activeElement
     await nextTick()
     inputRef.value?.focus()
+  } else {
+    // 关闭后把焦点还给触发入口
+    previouslyFocused?.focus?.()
+    previouslyFocused = null
   }
 })
 
@@ -447,6 +551,7 @@ onUnmounted(() => {
 }
 
 .doc-search-result:hover,
+.doc-search-result.is-active,
 .doc-search-result:focus-visible {
   outline: 0;
   background: var(--surface-hover);

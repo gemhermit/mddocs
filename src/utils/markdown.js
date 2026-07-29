@@ -1,24 +1,5 @@
 import MarkdownIt from 'markdown-it'
-
-function escapeHtml(value = '') {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
-function slugify(value = '') {
-  return String(value)
-    .trim()
-    .toLowerCase()
-    .replace(/<[^>]+>/g, '')
-    .replace(/[`"'“”‘’]/g, '')
-    .replace(/[^\p{L}\p{N}]+/gu, '-')
-    .replace(/^-+|-+$/g, '')
-}
-
-const headingAnchorPattern = /\s*\{#([A-Za-z0-9_-]+)\}\s*$/
+import { escapeHtml, headingAnchorPattern, slugify } from './text.js'
 
 const md = new MarkdownIt({
   html: true,
@@ -31,6 +12,16 @@ const md = new MarkdownIt({
 })
 
 const defaultFence = md.renderer.rules.fence
+
+// 提取标题纯文本（去除行内 markdown 语法），供 TOC 直接使用
+function getInlineText(inline) {
+  const text = (inline.children || [])
+    .filter((child) => child.type === 'text' || child.type === 'code_inline')
+    .map((child) => child.content)
+    .join('')
+    .trim()
+  return text || inline.content.replace(headingAnchorPattern, '').trim()
+}
 
 md.core.ruler.push('heading_ids', (state) => {
   const seen = new Map()
@@ -58,6 +49,15 @@ md.core.ruler.push('heading_ids', (state) => {
     if (count > 0) id = `${id}-${count + 1}`
 
     token.attrSet('id', id)
+
+    // 渲染时顺便收集标题元数据，免得前端再从 DOM 里抓
+    if (Array.isArray(state.env.headings)) {
+      state.env.headings.push({
+        id,
+        level: Number(token.tag.slice(1)) || 0,
+        text: getInlineText(inline)
+      })
+    }
   })
 })
 
@@ -68,4 +68,11 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
 
 export function renderMarkdown(source = '') {
   return md.render(source)
+}
+
+// 返回 html + 标题列表，TOC 等需要结构化数据的场景用这个
+export function renderMarkdownWithMeta(source = '') {
+  const env = { headings: [] }
+  const html = md.render(source, env)
+  return { html, headings: env.headings }
 }

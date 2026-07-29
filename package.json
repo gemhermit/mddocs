@@ -7,12 +7,11 @@
     "build": "node scripts/generate-sitemap.mjs && vite build && node scripts/prerender.mjs",
     "build:fast": "node scripts/generate-sitemap.mjs && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs",
-    "type-check": "vue-tsc --noEmit",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
     "prerender": "node scripts/prerender.mjs"
   },
   "dependencies": {
+    "dompurify": "^3.4.12",
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.2.0",
     "mdui": "^2.0.0",

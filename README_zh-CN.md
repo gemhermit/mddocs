@@ -127,6 +127,10 @@ mddocs/
 └── vite.config.js
 ```
 
+## 安全说明
+
+Markdown 渲染开启了 `html: true`，允许在文档中直接写 HTML（便于嵌入 mdui 组件）。渲染结果在进入 `v-html` 前会经过 [DOMPurify](https://github.com/cure53/DOMPurify) 消毒（`src/utils/sanitize.js`），移除脚本和事件属性，同时放行 `mdui-*` 自定义元素。如果你接受不可信贡献者的文档内容，请保留该消毒逻辑；如需更严格的输出，可在 `src/utils/markdown.js` 中关闭 `html` 选项。
+
 ## 开源协议
 
 MIT License

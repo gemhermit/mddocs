@@ -2,7 +2,7 @@ import { writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { docsPages, docsSections } from '../src/data/docs.js'
-import { messages } from '../src/i18n/messages.js'
+import { translate } from '../src/i18n/messages.js'
 import { SITE_URL } from '../src/utils/site.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -99,15 +99,6 @@ function renderRobotsTxt(sitemapUrl) {
     `Sitemap: ${sitemapUrl}`,
     '',
   ].join('\n')
-}
-
-function translate(locale, key) {
-  const keys = key.split('.')
-  let val = messages[locale]
-  for (const k of keys) {
-    val = val?.[k]
-  }
-  return val || key
 }
 
 function homeUrl(localePrefix) {

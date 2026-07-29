@@ -127,6 +127,10 @@ mddocs/
 └── vite.config.js
 ```
 
+## Security Notes
+
+Markdown rendering is configured with `html: true`, so raw HTML in docs is allowed (useful for embedding mdui components). Before the result reaches `v-html`, it is sanitized with [DOMPurify](https://github.com/cure53/DOMPurify) (`src/utils/sanitize.js`), which strips scripts and event handlers while allowing `mdui-*` custom elements. If you accept docs content from untrusted contributors, keep this sanitization in place; if you want stricter output, disable `html` in `src/utils/markdown.js`.
+
 ## License
 
 MIT License

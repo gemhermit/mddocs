@@ -51,18 +51,22 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { useRoute } from 'vue-router'
 import AppBar from '@/components/AppBar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import { useI18n } from '@/i18n/index.js'
+import { useToc } from '@/composables/toc.js'
 
-const route = useRoute()
 const { t } = useI18n()
+const { headings: tocHeadings } = useToc()
 const drawerRef = ref(null)
-const headings = ref([])
 const activeId = ref('')
 const headingOffset = 96
 const desktopMediaQuery = '(min-width: 840px)'
+
+// 标题数据由 MarkdownDoc 在渲染 markdown 时直接产出，TOC 只展示 h2/h3
+const headings = computed(() =>
+  tocHeadings.value.filter((heading) => heading.id && (heading.level === 2 || heading.level === 3))
+)
 
 function isDesktopViewport() {
   return typeof window !== 'undefined' && window.matchMedia(desktopMediaQuery).matches
@@ -121,20 +125,6 @@ function syncDrawerForViewport() {
   setDrawerOpen(isDesktop.value)
 }
 
-function extractHeadings() {
-  const content = document.querySelector('.container')
-  if (!content) return
-  const els = content.querySelectorAll('h2[id], h3[id]')
-  headings.value = Array.from(els).map(el => ({
-    id: el.id,
-    text: el.textContent?.trim() || '',
-    level: el.tagName.toLowerCase() === 'h3' ? 3 : 2
-  })).filter((heading) => heading.id)
-  if (!activeId.value && headings.value.length) {
-    activeId.value = headings.value[0].id
-  }
-}
-
 function scrollTo(id) {
   const heading = document.getElementById(id)
   if (heading) {
@@ -148,59 +138,62 @@ function scrollTo(id) {
   }
 }
 
-function updateActive() {
-  const content = document.querySelector('.container')
-  if (!content) return
-  const els = Array.from(content.querySelectorAll('h2[id], h3[id]'))
+// 初始化 / 切页时按当前滚动位置对齐一次高亮（处理带 hash 直达页面中部的情况）
+function syncActiveToScroll() {
   let current = headings.value[0]?.id || ''
-
-  for (const heading of els) {
-    if (heading.getBoundingClientRect().top <= headingOffset) {
-      current = heading.id || current
+  for (const heading of headings.value) {
+    const el = document.getElementById(heading.id)
+    if (el && el.getBoundingClientRect().top <= headingOffset) {
+      current = heading.id
     } else {
       break
     }
   }
-
   if (current) activeId.value = current
 }
 
-let observer = null
+let spyObserver = null
 let viewportMedia = null
 
-function setupObserver() {
-  observer?.disconnect()
-  const content = document.querySelector('.container')
-  if (content) {
-    observer = new MutationObserver(() => extractHeadings())
-    observer.observe(content, { childList: true, subtree: true })
-  }
+// scroll spy：用 IntersectionObserver 监听标题进入阅读区域（顶部 offset 到视口 30% 之间）
+function setupScrollSpy() {
+  spyObserver?.disconnect()
+  spyObserver = null
+  if (typeof IntersectionObserver === 'undefined') return
+
+  const targets = headings.value
+    .map((heading) => document.getElementById(heading.id))
+    .filter(Boolean)
+  if (!targets.length) return
+
+  spyObserver = new IntersectionObserver((entries) => {
+    const visible = entries.filter((entry) => entry.isIntersecting)
+    if (!visible.length) return
+    const topmost = visible.reduce((a, b) =>
+      a.boundingClientRect.top <= b.boundingClientRect.top ? a : b
+    )
+    activeId.value = topmost.target.id
+  }, { rootMargin: `-${headingOffset}px 0px -70% 0px`, threshold: 0 })
+
+  targets.forEach((el) => spyObserver.observe(el))
 }
 
-watch(() => route.path, async () => {
-  headings.value = []
-  activeId.value = ''
+watch(headings, async (list) => {
+  activeId.value = list[0]?.id || ''
   await nextTick()
-  setTimeout(() => {
-    extractHeadings()
-    setupObserver()
-    updateActive()
-  }, 100)
+  setupScrollSpy()
+  syncActiveToScroll()
 }, { immediate: true })
 
 onMounted(() => {
-  extractHeadings()
-  setupObserver()
   syncDrawerForViewport()
   viewportMedia = window.matchMedia(desktopMediaQuery)
   viewportMedia.addEventListener('change', syncDrawerForViewport)
-  window.addEventListener('scroll', updateActive, { passive: true })
 })
 
 onUnmounted(() => {
-  observer?.disconnect()
+  spyObserver?.disconnect()
   viewportMedia?.removeEventListener('change', syncDrawerForViewport)
-  window.removeEventListener('scroll', updateActive)
   syncDrawerScrollLock(false)
 })
 </script>

@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=5.0">
+  <script>
+    // 在首帧渲染前同步应用主题，避免暗色模式闪白（FOUC）
+    (function () {
+      try {
+        var saved = localStorage.getItem('mdui-theme')
+        var theme = saved === 'light' || saved === 'dark' ? saved : 'auto'
+        var root = document.documentElement
+        root.classList.remove('mdui-theme-auto', 'mdui-theme-light', 'mdui-theme-dark')
+        root.classList.add('mdui-theme-' + theme)
+        root.style.colorScheme = theme === 'auto' ? 'light dark' : theme
+      } catch (e) { /* localStorage 不可用时保持默认 auto */ }
+    })()
+  </script>
   <title>MDDocs - Open-source docs system built on mdui 2</title>
   <meta name="description" content="MDDocs is an open-source documentation system built on mdui 2, Vue, and Markdown, with localized content, sticky navigation, table of contents, and code-copy interactions.">
   <meta property="og:title" content="MDDocs - Open-source docs system built on mdui 2">

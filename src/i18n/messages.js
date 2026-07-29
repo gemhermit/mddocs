@@ -18,6 +18,7 @@ export const messages = {
       title: 'Search docs',
       placeholder: 'Search documentation...',
       close: 'Close search',
+      loading: 'Loading search index...',
       empty: 'Type a keyword to search page titles and content.',
       noResults: 'No matching documents found.',
       results: '{count} results'
@@ -83,6 +84,14 @@ export const messages = {
     navPrev: 'Previous',
     navNext: 'Up Next',
     comingSoon: 'Coming soon',
+    theme: {
+      auto: 'Theme: Auto',
+      light: 'Theme: Light',
+      dark: 'Theme: Dark'
+    },
+    code: {
+      copy: 'Copy code'
+    },
     sidebar: {
       gettingStarted: 'Getting Started',
       resources: 'Resources',
@@ -119,6 +128,11 @@ export const messages = {
       description: 'The page you are looking for does not exist or has been moved.',
       backHome: 'Back to home',
       backDocs: 'Browse docs'
+    },
+    docMissing: {
+      title: 'Content not available',
+      description: 'This page has no content in the current language yet, or it failed to load.',
+      backDocs: 'Back to docs home'
     }
   },
   'zh-cn': {
@@ -140,6 +154,7 @@ export const messages = {
       title: '搜索文档',
       placeholder: '搜索文档内容...',
       close: '关闭搜索',
+      loading: '正在加载搜索索引...',
       empty: '输入关键词搜索标题和正文内容。',
       noResults: '没有找到匹配的文档。',
       results: '找到 {count} 条结果'
@@ -205,6 +220,14 @@ export const messages = {
     navPrev: '上一章',
     navNext: '下一章',
     comingSoon: '即将上线',
+    theme: {
+      auto: '主题：跟随系统',
+      light: '主题：浅色',
+      dark: '主题：深色'
+    },
+    code: {
+      copy: '复制代码'
+    },
     sidebar: {
       gettingStarted: '开发指南',
       resources: '资源',
@@ -241,6 +264,21 @@ export const messages = {
       description: '您访问的页面不存在或已被移动。',
       backHome: '返回首页',
       backDocs: '浏览文档'
+    },
+    docMissing: {
+      title: '内容暂缺',
+      description: '该页面在当前语言下暂无内容，或加载失败。',
+      backDocs: '返回文档首页'
     }
   }
+}
+
+// 按 locale 取文案：浏览器端 useI18n().t 与 Node 脚本（prerender / sitemap）共用
+export function translate(locale, key) {
+  const keys = String(key).split('.')
+  let value = messages[locale]
+  for (const k of keys) {
+    value = value?.[k]
+  }
+  return value || key
 }

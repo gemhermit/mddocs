@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import DocsLayout from '@/views/docs/DocsLayout.vue'
-import MarkdownDoc from '@/views/docs/MarkdownDoc.vue'
-import NotFound from '@/views/NotFound.vue'
 import { docsPages } from '@/data/docs.js'
 import { useI18n } from '@/i18n/index.js'
-import { getLocaleFromPath, toAbsoluteUrl } from '@/utils/site.js'
+import { getLocaleFromPath, toAbsoluteUrl, stripLocalePrefix } from '@/utils/site.js'
+
+// 视图懒加载：按路由拆分 chunk，减小首屏 JS 体积
+const Home = () => import('@/views/Home.vue')
+const DocsLayout = () => import('@/views/docs/DocsLayout.vue')
+const MarkdownDoc = () => import('@/views/docs/MarkdownDoc.vue')
+const NotFound = () => import('@/views/NotFound.vue')
 
 function createDocsChildren(locale = 'en') {
   return docsPages.map((page) => ({
@@ -72,6 +74,17 @@ function setLinkRel(rel, href) {
   el.setAttribute('href', href)
 }
 
+function setAlternate(hreflang, href) {
+  let el = document.head.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`)
+  if (!el) {
+    el = document.createElement('link')
+    el.setAttribute('rel', 'alternate')
+    el.setAttribute('hreflang', hreflang)
+    document.head.appendChild(el)
+  }
+  el.setAttribute('href', href)
+}
+
 router.afterEach((to) => {
   const { t } = useI18n()
   const titleKey = to.meta?.titleKey
@@ -95,6 +108,12 @@ router.afterEach((to) => {
   setMeta('name', 'twitter:title', document.title)
   setMeta('name', 'twitter:description', description)
   setLinkRel('canonical', canonicalUrl)
+
+  // hreflang 跟随当前页面更新，与预渲染产物保持一致
+  const alternateBase = stripLocalePrefix(to.path)
+  setAlternate('en', toAbsoluteUrl(alternateBase))
+  setAlternate('zh-cn', toAbsoluteUrl(`/zh-cn${alternateBase}`))
+  setAlternate('x-default', toAbsoluteUrl(alternateBase))
 })
 
 export default router

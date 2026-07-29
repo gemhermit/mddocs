@@ -1,15 +1,30 @@
 import hljs from 'highlight.js/lib/core'
 import bash from 'highlight.js/lib/languages/bash'
-import javascript from 'highlight.js/lib/languages/javascript'
-import xml from 'highlight.js/lib/languages/xml'
 import css from 'highlight.js/lib/languages/css'
+import diff from 'highlight.js/lib/languages/diff'
+import javascript from 'highlight.js/lib/languages/javascript'
+import json from 'highlight.js/lib/languages/json'
+import markdown from 'highlight.js/lib/languages/markdown'
+import plaintext from 'highlight.js/lib/languages/plaintext'
+import scss from 'highlight.js/lib/languages/scss'
+import shell from 'highlight.js/lib/languages/shell'
+import typescript from 'highlight.js/lib/languages/typescript'
+import xml from 'highlight.js/lib/languages/xml'
+import yaml from 'highlight.js/lib/languages/yaml'
 
+// 注册文档常用语言；别名（js/ts/html/sh/yml/md 等）由语言定义自带
 hljs.registerLanguage('bash', bash)
-hljs.registerLanguage('js', javascript)
-hljs.registerLanguage('javascript', javascript)
-hljs.registerLanguage('html', xml)
-hljs.registerLanguage('xml', xml)
 hljs.registerLanguage('css', css)
+hljs.registerLanguage('diff', diff)
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('json', json)
+hljs.registerLanguage('markdown', markdown)
+hljs.registerLanguage('plaintext', plaintext)
+hljs.registerLanguage('scss', scss)
+hljs.registerLanguage('shell', shell)
+hljs.registerLanguage('typescript', typescript)
+hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('yaml', yaml)
 
 async function copyToClipboard(text) {
   try {
@@ -54,9 +69,10 @@ export function highlightElement(el) {
   if (language && hljs.getLanguage(language)) {
     const result = hljs.highlight(codeEl.textContent, { language })
     codeEl.innerHTML = result.value
-  } else {
-    // Auto-detect as a fallback
-    codeEl.textContent = codeEl.textContent
+  } else if (codeEl.textContent.trim()) {
+    // 语言未声明或未注册时，在已注册语言里自动检测
+    const result = hljs.highlightAuto(codeEl.textContent)
+    codeEl.innerHTML = result.value
   }
   codeEl.classList.add('hljs')
   codeEl.dataset.highlighted = 'yes'
@@ -65,12 +81,12 @@ export function highlightElement(el) {
 /**
  * Highlight every <pre><code> inside a given root element.
  */
-export function highlightAll(root = document) {
+export function highlightAll(root = document, options = {}) {
   root.querySelectorAll('pre code').forEach((code) => highlightElement(code))
-  enhanceCodeBlocks(root)
+  enhanceCodeBlocks(root, options)
 }
 
-export function enhanceCodeBlocks(root = document) {
+export function enhanceCodeBlocks(root = document, { copyLabel = 'Copy code' } = {}) {
   root.querySelectorAll('pre').forEach((pre) => {
     if (pre.dataset.copyReady === 'yes') return
 
@@ -87,7 +103,7 @@ export function enhanceCodeBlocks(root = document) {
 
     const button = document.createElement('mdui-button-icon')
     button.className = 'code-copy-button'
-    button.setAttribute('aria-label', 'Copy code')
+    button.setAttribute('aria-label', copyLabel)
     const icon = document.createElement('mdui-icon')
     icon.setAttribute('name', 'content_copy--rounded')
     button.appendChild(icon)
@@ -111,12 +127,13 @@ export function enhanceCodeBlocks(root = document) {
 /**
  * Vue directive: v-highlight — attach to a container; it highlights all
  * descendant code blocks on mount and whenever the subtree mutates.
+ * 可选 binding 值作为 options（如 { copyLabel }）透传给 highlightAll。
  */
 export const vHighlight = {
-  mounted(el) {
-    highlightAll(el)
+  mounted(el, binding) {
+    highlightAll(el, binding?.value || {})
   },
-  updated(el) {
-    highlightAll(el)
+  updated(el, binding) {
+    highlightAll(el, binding?.value || {})
   },
 }

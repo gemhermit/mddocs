@@ -2,9 +2,10 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { docsPages } from '../src/data/docs.js'
-import { messages } from '../src/i18n/messages.js'
-import { SITE_URL, getLocalePrefix } from '../src/utils/site.js'
+import { translate } from '../src/i18n/messages.js'
+import { SITE_URL, getLocalePrefix, stripLocalePrefix } from '../src/utils/site.js'
 import { renderMarkdown } from '../src/utils/markdown.js'
+import { escapeHtml, escapeRegExp } from '../src/utils/text.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -25,25 +26,6 @@ function readMd(locale, pagePath) {
   return readFileSync(filePath, 'utf-8')
 }
 
-function translate(locale, key) {
-  const keys = key.split('.')
-  let val = messages[locale]
-  for (const k of keys) val = val?.[k]
-  return val || key
-}
-
-function escapeHtml(value = '') {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
-function escapeRegExp(s) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
 function upsertMeta(html, attr, val, content) {
   const selector = escapeRegExp(`${attr}="${val}"`)
   const regex = new RegExp(`<meta\\s+[^>]*${selector}[^>]*>`, 'i')
@@ -57,6 +39,15 @@ function upsertMeta(html, attr, val, content) {
 function upsertLink(html, rel, href) {
   const regex = new RegExp(`<link\\s+[^>]*rel=["']${escapeRegExp(rel)}["'][^>]*>`, 'i')
   const newTag = `<link rel="${rel}" href="${escapeHtml(href)}">`
+  if (regex.test(html)) {
+    return html.replace(regex, newTag)
+  }
+  return html.replace('</head>', `  ${newTag}\n</head>`)
+}
+
+function upsertAlternate(html, hreflang, href) {
+  const regex = new RegExp(`<link\\s+[^>]*rel=["']alternate["'][^>]*hreflang=["']${escapeRegExp(hreflang)}["'][^>]*>`, 'i')
+  const newTag = `<link rel="alternate" hreflang="${hreflang}" href="${escapeHtml(href)}">`
   if (regex.test(html)) {
     return html.replace(regex, newTag)
   }
@@ -90,6 +81,12 @@ function renderPageHtml({ route, locale, page }) {
   html = upsertMeta(html, 'name', 'twitter:title', title)
   html = upsertMeta(html, 'name', 'twitter:description', description)
   html = upsertLink(html, 'canonical', canonicalUrl)
+
+  // hreflang 按页面更新，避免模板里的静态 alternate 全部指向首页
+  const alternateBase = stripLocalePrefix(route)
+  html = upsertAlternate(html, 'en', `${BASE_URL}${alternateBase}`)
+  html = upsertAlternate(html, 'zh-cn', `${BASE_URL}/zh-cn${alternateBase}`)
+  html = upsertAlternate(html, 'x-default', `${BASE_URL}${alternateBase}`)
 
   // #app 注入渲染的 markdown 正文（爬虫可读，client hydrate 时替换）
   let appContent = ''
