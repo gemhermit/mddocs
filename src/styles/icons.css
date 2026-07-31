@@ -1,4 +1,8 @@
-/* Material Icons 字体本地托管，由 Vite 处理资源路径 */
+/* Material Icons 字体本地托管，由 Vite 处理资源路径
+   仅保留实际使用的两种变体：
+   - Material Icons（实心，对应无后缀图标，如 auto_awesome）
+   - Material Icons Round（圆角，对应 --rounded 图标，如 menu--rounded）
+   Outlined / Sharp / Two Tone 全站无引用，已清理。 */
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -7,30 +11,9 @@
   src: url('../assets/fonts/MaterialIcons-Regular.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Material Icons Outlined';
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url('../assets/fonts/MaterialIconsOutlined-Regular.woff2') format('woff2');
-}
-@font-face {
   font-family: 'Material Icons Round';
   font-style: normal;
   font-weight: 400;
   font-display: block;
   src: url('../assets/fonts/MaterialIconsRound-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Material Icons Sharp';
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url('../assets/fonts/MaterialIconsSharp-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Material Icons Two Tone';
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url('../assets/fonts/MaterialIconsTwoTone-Regular.woff2') format('woff2');
 }
