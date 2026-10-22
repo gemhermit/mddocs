@@ -1,4 +1,7 @@
 {
   "buildCommand": "pnpm run build",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/en/:path*", "destination": "/", "permanent": true }
+  ]
 }
