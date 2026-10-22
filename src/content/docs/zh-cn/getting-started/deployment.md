@@ -55,14 +55,11 @@ Vercel 会自动识别 Vite 项目，通常不需要额外配置。如果仓库�
 ```json
 {
   "buildCommand": "pnpm run build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "outputDirectory": "dist"
 }
 ```
 
-`rewrites` 规则确保所有路径都回退到 `index.html`，由 Vue Router 接管客户端路由。
+所有路由都会预渲染成独立的 HTML 文件，因此不需要 catch-all 回退规则。不写这条规则对 404 页面同样重要：`/(.*)` → `/index.html` 会让所有未知路径都返回 200 状态码，搜索引擎会把这些页面当成首页的重复内容。去掉之后，Vercel 会用真正的 404 状态码返回生成的 `404.html`，再由站内的 404 页面接管。
 
 ## Cloudflare Pages {#cloudflare-pages}
 
@@ -79,10 +76,10 @@ Vercel 会自动识别 Vite 项目，通常不需要额外配置。如果仓库�
 4. 在 Environment variables 中添加 `SITE_URL`，值设为 Cloudflare Pages 分配的域名，例如 `https://your-project.pages.dev`。
 5. 点击 "Save and Deploy"。
 
-Cloudflare Pages 会自动为 SPA 配置回退规则。如果遇到刷新 404 的问题，在项目根目录添加 `public/_redirects` 文件：
+所有路由都已预渲染，不需要 `_redirects` 文件。Cloudflare Pages 会用真正的 404 状态码返回生成的 `404.html`。如果以后新增了不预渲染的纯客户端路由，再加一条指向 `404.html` 的兜底（不要指向 `index.html`）：
 
 ```text
-/*  /index.html  200
+/*  /404.html  404
 ```
 
 ## GitHub Pages {#github-pages}
@@ -171,18 +168,20 @@ jobs:
 在项目根目录添加 `public/_redirects` 文件处理 SPA 路由：
 
 ```text
-/*  /index.html  200
+/*  /404.html  404
 ```
+
+所有路由都已预渲染，Netlify 本身就会用真正的 404 状态码返回生成的 `404.html`。上面这条规则只在新增了不预渲染的纯客户端路由时才需要 —— 指向 `404.html` 而不是 `index.html`，否则未知路径会返回 200 状态码，被搜索引擎当成首页的重复内容收录。
 
 ## 其他静态服务器 {#other-servers}
 
-对于 Nginx、Apache 等传统服务器，需要手动配置 SPA 回退规则。
+对于 Nginx、Apache 等传统服务器，未知路径应指向生成的 `404.html` 而不是 `index.html`，这样响应才能保持真正的 404 状态码。
 
 ### Nginx {#nginx}
 
 ```nginx
 location / {
-  try_files $uri $uri/ /index.html;
+  try_files $uri $uri/ /404.html;
 }
 ```
 
@@ -194,7 +193,9 @@ location / {
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ /index.html [L]
+RewriteRule ^ /404.html [L]
+
+ErrorDocument 404 /404.html
 ```
 
 ## 404 页面 {#not-found}
@@ -202,7 +203,7 @@ RewriteRule ^ /index.html [L]
 构建产物里还会生成 `dist/404.html`，访问不存在的路径时会渲染站内的 404 页面，而不是服务器自带的报错页。
 
 - GitHub Pages 会自动使用 `404.html`（并返回真正的 404 状态码）。
-- Netlify、Cloudflare Pages 对未知路径回退到 `index.html`；如果需要 404 状态码，额外配置一下 `public/404.html`。
+- Vercel、Netlify、Cloudflare Pages 同样会自动使用 `404.html`（前提是**不要**配置指向 `index.html` 的 catch-all 回退规则）。
 - Nginx / Apache 需要把错误页指向这个文件，避免状态码变成 200：
 
 ```nginx

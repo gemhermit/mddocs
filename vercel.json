@@ -3,8 +3,5 @@
   "outputDirectory": "dist",
   "engines": {
     "node": "22.23.4"
-  },
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  }
 }

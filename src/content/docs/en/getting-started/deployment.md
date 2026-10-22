@@ -55,14 +55,11 @@ To override the configuration manually, the `vercel.json` in the project root lo
 ```json
 {
   "buildCommand": "pnpm run build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "outputDirectory": "dist"
 }
 ```
 
-The `rewrites` rule ensures all paths fall back to `index.html`, letting Vue Router handle client-side routing.
+Every route is prerendered into its own HTML file, so no catch-all rewrite is needed. Leaving the rewrite out also matters for the 404 page: a `/(.*)` → `/index.html` rule would answer every unknown path with a 200 status, and search engines would treat those pages as duplicates of the home page. Without it, Vercel serves the generated `404.html` with a real 404 status and the in-site 404 page takes over.
 
 ## Cloudflare Pages {#cloudflare-pages}
 
@@ -79,10 +76,10 @@ The `rewrites` rule ensures all paths fall back to `index.html`, letting Vue Rou
 4. Under Environment variables, add `SITE_URL` set to the Cloudflare Pages domain, e.g. `https://your-project.pages.dev`.
 5. Click "Save and Deploy".
 
-Cloudflare Pages configures SPA fallback rules automatically. If you encounter 404 errors on refresh, add a `public/_redirects` file to the project root:
+All routes are prerendered, so no `_redirects` file is needed. Cloudflare Pages serves the generated `404.html` for unknown paths with a real 404 status. If you ever add a client-only route that is not prerendered, add a fallback that points at `404.html` rather than `index.html`:
 
 ```text
-/*  /index.html  200
+/*  /404.html  404
 ```
 
 ## GitHub Pages {#github-pages}
@@ -171,18 +168,20 @@ If deploying to a custom domain at the root path, use `pnpm run build` instead o
 Add a `public/_redirects` file to the project root to handle SPA routing:
 
 ```text
-/*  /index.html  200
+/*  /404.html  404
 ```
+
+All routes are prerendered, so Netlify already serves the generated `404.html` for unknown paths with a real 404 status. The rule above is only needed if you add a client-only route that is not prerendered — point it at `404.html`, not `index.html`, otherwise unknown paths answer with a 200 status and get indexed as duplicates of the home page.
 
 ## Other Static Servers {#other-servers}
 
-For traditional servers like Nginx or Apache, configure SPA fallback rules manually.
+For traditional servers like Nginx or Apache, point unknown paths at the generated `404.html` instead of `index.html`, so the response keeps a real 404 status.
 
 ### Nginx {#nginx}
 
 ```nginx
 location / {
-  try_files $uri $uri/ /index.html;
+  try_files $uri $uri/ /404.html;
 }
 ```
 
@@ -194,7 +193,9 @@ Create a `.htaccess` file in the `dist` directory:
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ /index.html [L]
+RewriteRule ^ /404.html [L]
+
+ErrorDocument 404 /404.html
 ```
 
 ## Not Found Pages {#not-found}
