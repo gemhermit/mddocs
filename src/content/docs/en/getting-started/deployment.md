@@ -61,6 +61,35 @@ To override the configuration manually, the `vercel.json` in the project root lo
 
 Every route is prerendered into its own HTML file, so no catch-all rewrite is needed. Leaving the rewrite out also matters for the 404 page: a `/(.*)` → `/index.html` rule would answer every unknown path with a 200 status, and search engines would treat those pages as duplicates of the home page. Without it, Vercel serves the generated `404.html` with a real 404 status and the in-site 404 page takes over.
 
+## Reduce Build Frequency {#build-frequency}
+
+Every push to the production branch triggers a Vercel deployment, and each deployment runs a full build: rendering every page, bundling, and prerendering. Routine changes — fixing a typo in the README, adjusting a CI workflow, aligning notes with a teammate — do not need a deployment.
+
+Enable the **Ignored Build Step** once in the Vercel dashboard:
+
+1. Open the project on [vercel.com](https://vercel.com) and go to **Settings → Build and Deployment**.
+2. Set **Ignored Build Step** to `npm run vercel-ignore`.
+3. Save.
+
+After that, the script decides per push:
+
+| Change | Result |
+| --- | --- |
+| Only files that do not affect the site output (README, LICENSE, CI workflows, ESLint config) | Build skipped |
+| The commit message contains `[skip deploy]` | Build skipped |
+| Anything else (source, docs content, scripts, dependencies, `vercel.json`) | Build and deploy |
+
+Check the decision locally before pushing:
+
+```bash
+node scripts/vercel-ignore.mjs HEAD     # 0 = would skip, 1 = would build
+node scripts/vercel-ignore.mjs --self-test
+```
+
+The exit code matches what Vercel expects: `0` skips the build, anything else continues.
+
+> Batch related changes into a single commit and push once — a push containing several commits still only builds once. The same idea applies to pull requests, which create preview deployments.
+
 ## Cloudflare Pages {#cloudflare-pages}
 
 1. Push your code to a Git repository.

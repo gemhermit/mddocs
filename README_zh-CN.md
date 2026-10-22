@@ -94,6 +94,12 @@ pnpm run build
 - `.github/workflows/ci.yml`：每次 push 和 pull request 执行 lint、双语内容校验、生产构建、预渲染产物校验与生产依赖漏洞审计。
 - `.github/workflows/deploy.yml`：发布到 GitHub Pages。先在 **Settings → Pages → Source** 选 GitHub Actions，再手动运行；也可以打开文件里注释掉的 `push` 触发器，改为合并到 `main` 即发布。
 
+## 部署频率
+
+每次推到生产分支都会触发一次 Vercel 部署，而每次部署都要跑一遍完整构建。为了不把构建额度浪费在不影响站点产物的改动上（README、CI 工作流、ESLint 配置），在 Vercel 控制台把 **Settings → Build and Deployment → Ignored Build Step** 填成 `npm run vercel-ignore`（一次性配置）。
+
+之后脚本会跳过「只改了无关文件」的提交，以及提交信息里带 `[skip deploy]` 标记的提交，其余照常构建部署。本地可以用 `node scripts/vercel-ignore.mjs HEAD` 预览某个提交的判定结果，详见部署文档。
+
 ## 文档内容
 
 文档页面位于 `src/content/docs` 目录：

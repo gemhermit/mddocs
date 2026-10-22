@@ -94,6 +94,12 @@ The production output is written to `dist/`.
 - `.github/workflows/ci.yml` runs lint, the bilingual content check, the production build, the prerender check and a production dependency audit on every push and pull request.
 - `.github/workflows/deploy.yml` publishes the site to GitHub Pages. Enable it once in **Settings → Pages → Source: GitHub Actions**, then run it manually (or uncomment the `push` trigger to publish on every merge to `main`).
 
+## Deployment Frequency
+
+Every push that reaches the production branch triggers a Vercel deployment, and each deployment runs a full build. To avoid spending build quota on changes that cannot alter the site output (README, CI workflows, ESLint config), set **Settings → Build and Deployment → Ignored Build Step** to `npm run vercel-ignore` once in the Vercel dashboard.
+
+The script then skips the build for commits that only touch non-output files, or that carry a `[skip deploy]` marker in the commit message, and builds everything else. Run `node scripts/vercel-ignore.mjs HEAD` locally to see what a commit would do, and see the deployment guide for details.
+
 ## Content
 
 Documentation pages live in `src/content/docs`:

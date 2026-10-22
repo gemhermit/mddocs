@@ -17,8 +17,10 @@
     "lint": "eslint .",
     "check:docs": "node scripts/check-docs.mjs",
     "check:icons": "node scripts/check-icons.mjs",
+    "check:ignore": "node scripts/vercel-ignore.mjs --self-test",
     "icons:subset": "node scripts/subset-icons.mjs",
-    "check": "pnpm run check:docs && pnpm run check:icons && pnpm run lint && pnpm run build"
+    "vercel-ignore": "node scripts/vercel-ignore.mjs",
+    "check": "pnpm run check:docs && pnpm run check:icons && pnpm run check:ignore && pnpm run lint && pnpm run build"
   },
   "dependencies": {
     "dompurify": "^3.4.17",

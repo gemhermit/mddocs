@@ -61,6 +61,35 @@ Vercel 会自动识别 Vite 项目，通常不需要额外配置。如果仓库�
 
 所有路由都会预渲染成独立的 HTML 文件，因此不需要 catch-all 回退规则。不写这条规则对 404 页面同样重要：`/(.*)` → `/index.html` 会让所有未知路径都返回 200 状态码，搜索引擎会把这些页面当成首页的重复内容。去掉之后，Vercel 会用真正的 404 状态码返回生成的 `404.html`，再由站内的 404 页面接管。
 
+## 减少构建次数 {#build-frequency}
+
+每次往生产分支推送都会触发一次 Vercel 部署，而每次部署都要跑一遍完整构建：渲染全部页面、打包、预渲染。日常改动 —— 改 README 的错字、调 CI 参数、跟同伴对齐说明 —— 并不需要发版。
+
+在 Vercel 控制台一次性开启 **Ignored Build Step**：
+
+1. 打开 [vercel.com](https://vercel.com) 上的项目，进入 **Settings → Build and Deployment**。
+2. 把 **Ignored Build Step** 填成 `npm run vercel-ignore`。
+3. 保存。
+
+之后每次推送由脚本判定：
+
+| 改动内容 | 结果 |
+| --- | --- |
+| 只涉及不影响站点产物的文件（README、LICENSE、CI 工作流、ESLint 配置） | 跳过构建 |
+| 提交信息里带 `[skip deploy]` | 跳过构建 |
+| 其他情况（源码、文档正文、脚本、依赖、`vercel.json`） | 正常构建并部署 |
+
+推送前可以先在本地看一眼判定结果：
+
+```bash
+node scripts/vercel-ignore.mjs HEAD     # 0 = 会跳过，1 = 会构建
+node scripts/vercel-ignore.mjs --self-test
+```
+
+退出码与 Vercel 的约定一致：`0` 跳过构建，其他值继续构建。
+
+> 把相关的改动合成一个提交、一次推送即可 —— 一次推送里包含多个提交也只会构建一次。Pull Request 同理，它会产生 preview 部署。
+
 ## Cloudflare Pages {#cloudflare-pages}
 
 1. 将代码推送到 Git 仓库。
