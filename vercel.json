@@ -1,9 +1,6 @@
 {
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
-  "engines": {
-    "node": "24.x"
-  },
   "redirects": [
     { "source": "/en", "destination": "/", "permanent": true }
   ]
