@@ -90,6 +90,22 @@ node scripts/vercel-ignore.mjs --self-test
 
 > 把相关的改动合成一个提交、一次推送即可 —— 一次推送里包含多个提交也只会构建一次。Pull Request 同理，它会产生 preview 部署。
 
+## 社交分享图 {#social-image}
+
+`public/og-image.png` 是站点被分享到社交平台、聊天工具时显示的卡片图。体积要控制：1200×630、调色板受限的 PNG 就够了，而爬虫每次分享都会下载它。
+
+仓库里的这张图已经量化到 256 色，体积约 40 KB。重新生成时别直接导出全彩 PNG（轻松就能到 300 KB）：
+
+```bash
+python3 -c "
+from PIL import Image
+im = Image.open('og-image.png').convert('RGB')
+im.quantize(colors=256, method=Image.Quantize.MAXCOVERAGE).save('og-image.png', optimize=True)
+"
+```
+
+用质量 82 的 JPEG（约 50 KB）也可以 —— 把 `index.html` 里的 `og:image` 与 `twitter:image` 改成对应文件名即可。
+
 ## Cloudflare Pages {#cloudflare-pages}
 
 1. 将代码推送到 Git 仓库。

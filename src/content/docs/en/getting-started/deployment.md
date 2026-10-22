@@ -90,6 +90,22 @@ The exit code matches what Vercel expects: `0` skips the build, anything else co
 
 > Batch related changes into a single commit and push once — a push containing several commits still only builds once. The same idea applies to pull requests, which create preview deployments.
 
+## Social Preview Image {#social-image}
+
+`public/og-image.png` is the card shown when the site is shared on social platforms and chat apps. Keep it small: a 1200×630 PNG with a limited palette is enough, and crawlers download it on every share.
+
+The bundled file is quantized to 256 colors and weighs about 40 KB. When regenerating it, keep the same budget instead of exporting a full-color PNG, which can easily reach 300 KB:
+
+```bash
+python3 -c "
+from PIL import Image
+im = Image.open('og-image.png').convert('RGB')
+im.quantize(colors=256, method=Image.Quantize.MAXCOVERAGE).save('og-image.png', optimize=True)
+"
+```
+
+A JPEG at quality 82 (about 50 KB) works as well — just update the `og:image` and `twitter:image` URLs in `index.html` to match the file name.
+
 ## Cloudflare Pages {#cloudflare-pages}
 
 1. Push your code to a Git repository.
