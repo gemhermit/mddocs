@@ -3,5 +3,8 @@
   "outputDirectory": "dist",
   "engines": {
     "node": "22.23.4"
-  }
+  },
+  "redirects": [
+    { "source": "/en", "destination": "/", "permanent": true }
+  ]
 }
