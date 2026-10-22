@@ -128,13 +128,24 @@ function renderSitemapIndex(sitemaps) {
 }
 
 function renderRobotsTxt(sitemapUrl) {
+  // ROBOTS_NOINDEX=1：用于「镜像部署」—— 站点主域名在别处（如 Vercel），
+  // 这份副本只作为可访问的备份，必须让搜索引擎不要收录，否则两份内容互相竞争。
+  if (process.env.ROBOTS_NOINDEX === '1') {
+    return [
+      'User-agent: *',
+      'Disallow: /',
+      '',
+      ''
+    ].join('\n')
+  }
+
   return [
     'User-agent: *',
     'Allow: /',
     '',
     `Sitemap: ${sitemapUrl}`,
     '',
-    '',
+    ''
   ].join('\n')
 }
 

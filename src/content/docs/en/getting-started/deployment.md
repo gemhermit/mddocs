@@ -131,13 +131,23 @@ All routes are prerendered, so no `_redirects` file is needed. Cloudflare Pages 
 
 GitHub Pages is typically hosted under a subpath like `https://username.github.io/repo-name/`, which requires setting `BASE_URL`.
 
-The project includes a `build:gh` script that automatically sets `BASE_URL=/mddocs/`:
+The project includes a `build:gh` script that defaults to `BASE_URL=/mddocs/`:
 
 ```bash
 pnpm run build:gh
 ```
 
-If your repository name is not `mddocs`, update the `build:gh` script in `package.json` to replace `/mddocs/` with `/<your-repo-name>/`.
+Override the base path with the `BASE_URL` environment variable when your repository name differs:
+
+```bash
+BASE_URL=/my-repo/ pnpm run build:gh
+```
+
+### Mirror deployments {#mirror-deployments}
+
+The site has one canonical home — the primary domain you serve from. If you also publish a copy somewhere else (GitHub Pages, a second CDN, a fork), point that copy's `canonical`, `hreflang`, and sitemap at the primary domain and keep it out of the search index. Otherwise the two copies compete for the same queries.
+
+The bundled `deploy.yml` already does this: it builds with the repository's own sub-path but sets `SITE_URL` to the primary domain, and `ROBOTS_NOINDEX=1` makes the generated `robots.txt` disallow everything. Change `PRIMARY_SITE_URL` at the top of the workflow to your own domain.
 
 ### Automatic deployment with GitHub Actions {#github-actions}
 

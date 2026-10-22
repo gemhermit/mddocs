@@ -13,6 +13,11 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  # 站点主域名（canonical / hreflang / sitemap 都指向它）。
+  # GitHub Pages 只是镜像部署，搜索引擎只应收录主域名这一份。
+  PRIMARY_SITE_URL: https://mddocs.bago.top
+
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -41,7 +46,15 @@ jobs:
         env:
           # 子路径部署：站点挂在 https://<owner>.github.io/<repo>/
           BASE_URL: /${{ github.event.repository.name }}/
-          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+          # canonical / hreflang / sitemap 一律指向主域名。
+          # GitHub Pages 这份只是镜像：主域名在 Vercel，两边都自指 canonical 会变成重复内容。
+          SITE_URL: ${{ env.PRIMARY_SITE_URL }}
+          # 镜像副本不参与索引（GitHub Pages 不支持自定义响应头，用 robots.txt 实现）
+          ROBOTS_NOINDEX: '1'
+
+      - name: Verify prerendered output
+        # 确认子路径下的每个路由都产出了 HTML，避免把半成品发到 Pages
+        run: pnpm run check:docs
 
       - uses: actions/configure-pages@v5
 

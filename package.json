@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/generate-sitemap.mjs && node scripts/build-content.mjs && vite build && node scripts/prerender.mjs",
-    "build:gh": "BASE_URL=/mddocs/ node scripts/generate-sitemap.mjs && BASE_URL=/mddocs/ node scripts/build-content.mjs && BASE_URL=/mddocs/ vite build && node scripts/prerender.mjs",
+    "build:gh": "BASE_URL=${BASE_URL:-/mddocs/} node scripts/generate-sitemap.mjs && BASE_URL=${BASE_URL:-/mddocs/} node scripts/build-content.mjs && BASE_URL=${BASE_URL:-/mddocs/} vite build && node scripts/prerender.mjs",
     "build:fast": "node scripts/generate-sitemap.mjs && node scripts/build-content.mjs && vite build",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",

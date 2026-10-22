@@ -131,13 +131,23 @@ im.quantize(colors=256, method=Image.Quantize.MAXCOVERAGE).save('og-image.png', 
 
 GitHub Pages 通常部署在 `https://username.github.io/repo-name/` 子路径下，需要设置 `BASE_URL`。
 
-项目已内置 `build:gh` 脚本，会自动设置 `BASE_URL=/mddocs/`：
+项目已内置 `build:gh` 脚本，默认使用 `BASE_URL=/mddocs/`：
 
 ```bash
 pnpm run build:gh
 ```
 
-如果你的仓库名不是 `mddocs`，需要修改 `package.json` 中的 `build:gh` 脚本，将 `/mddocs/` 替换为 `/<你的仓库名>/`。
+仓库名不同时用 `BASE_URL` 环境变量覆盖即可：
+
+```bash
+BASE_URL=/my-repo/ pnpm run build:gh
+```
+
+### 镜像部署 {#mirror-deployments}
+
+站点只有一个「正式地址」，就是你对外提供访问的那个主域名。如果同时还发布了一份副本（GitHub Pages、第二条 CDN、某个 fork），请把副本的 `canonical`、`hreflang`、sitemap 全部指向主域名，并让它退出搜索引擎索引 —— 否则两份内容会互相争夺同一批查询。
+
+仓库自带的 `deploy.yml` 已经按这个策略配置：构建时用仓库自己的子路径，但 `SITE_URL` 指向主域名，同时 `ROBOTS_NOINDEX=1` 让生成的 `robots.txt` 禁止抓取。用自己的域名时改一下工作流顶部的 `PRIMARY_SITE_URL` 即可。
 
 ### 通过 GitHub Actions 自动部署 {#github-actions}
 
