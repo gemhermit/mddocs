@@ -392,6 +392,18 @@ mdui-layout-main,
   max-width: calc(800px + var(--docs-gap) + var(--toc-width));
 }
 
+/* 预渲染外壳：构建期写进 HTML 的正文，样式尽量贴近 Vue 渲染后的最终布局，
+   避免「首屏预渲染内容 → Vue 接管」之间出现明显的位置跳动。 */
+.prerender-shell {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: calc(var(--app-bar-height) + 1.5rem) 2rem 4rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
 .container h1 {
   font-size: 2rem;
   font-weight: 400;
@@ -573,31 +585,79 @@ mdui-layout-main,
   height: 0.2rem;
 }
 
-.contents .item::part(container) {
+.toc-items .item::part(container) {
   min-height: auto;
 }
 
-.contents .item::part(headline) {
+.toc-items .item::part(headline) {
   font-size: 0.8125rem;
   font-weight: var(--mdui-typescale-body-small-weight);
   letter-spacing: var(--mdui-typescale-body-small-tracking);
   line-height: var(--mdui-typescale-body-small-line-height);
 }
 
-.contents .item-bold::part(headline) {
+.toc-items .item-bold::part(headline) {
   font-size: var(--mdui-typescale-body-large-size);
   font-weight: var(--mdui-typescale-body-large-weight);
   letter-spacing: var(--mdui-typescale-body-large-tracking);
   line-height: var(--mdui-typescale-body-large-line-height);
 }
 
-.contents .item.active {
+.toc-items .item.active {
   color: rgb(var(--mdui-color-primary));
 }
 
-.contents .item.active::part(headline) {
+.toc-items .item.active::part(headline) {
   color: rgb(var(--mdui-color-primary));
   font-weight: var(--mdui-typescale-title-small-weight);
+}
+
+/* ========== TOC (inline, 窄屏) ========== */
+.toc-inline {
+  display: none;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgb(var(--mdui-color-surface-container-low, var(--mdui-color-surface)));
+  overflow: hidden;
+}
+
+.toc-inline-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  color: rgb(var(--mdui-color-on-surface-variant));
+  font-size: var(--mdui-typescale-title-small-size);
+  font-weight: var(--mdui-typescale-title-small-weight);
+  user-select: none;
+}
+
+.toc-inline-summary::-webkit-details-marker {
+  display: none;
+}
+
+.toc-inline-summary:hover {
+  background: var(--surface-hover);
+}
+
+.toc-inline-title {
+  flex: 1;
+}
+
+.toc-inline-arrow {
+  transition: transform 0.2s;
+}
+
+.toc-inline[open] .toc-inline-arrow {
+  transform: rotate(180deg);
+}
+
+.toc-inline .items {
+  padding: 0 0.5rem 0.5rem;
+  overflow: visible;
 }
 
 /* Nav cards at bottom of docs */
@@ -667,6 +727,13 @@ mdui-layout-main,
 }
 
 /* ========== Responsive ========== */
+@media (max-width: 1439px) {
+  /* 右侧目录不显示，改为正文上方的折叠目录 */
+  .toc-inline {
+    display: block;
+  }
+}
+
 @media (max-width: 1280px) {
   .main {
     max-width: none;

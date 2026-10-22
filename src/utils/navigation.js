@@ -1,6 +1,8 @@
 // 站内链接拦截：把 <a> / mdui 组件 href 的同域左键点击转交给 vue-router，
 // 避免整页刷新；保留 href 以支持 SEO、中键 / Cmd+Click 新标签等原生行为。
 
+import { stripBase } from './site.js'
+
 function findLinkElement(event) {
   // mdui 组件的 <a> 在 shadow DOM 内，需要用 composedPath 穿透查找
   const path = typeof event.composedPath === 'function' ? event.composedPath() : []
@@ -40,6 +42,7 @@ export function installLinkInterceptor(router) {
     if (!href.startsWith('/') || href.startsWith('//')) return
 
     event.preventDefault()
-    router.push(href)
+    // href 带部署前缀（子路径部署时），推给 router 前先剥掉
+    router.push(stripBase(href))
   })
 }

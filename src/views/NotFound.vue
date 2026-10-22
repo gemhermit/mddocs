@@ -2,7 +2,7 @@
   <mdui-layout class="layout">
     <AppBar />
 
-    <mdui-layout-main class="layout-main not-found-main">
+    <mdui-layout-main id="main-content" tabindex="-1" class="layout-main not-found-main">
       <section class="not-found">
         <div class="code">{{ t('notFound.title') }}</div>
         <p class="desc">{{ t('notFound.description') }}</p>

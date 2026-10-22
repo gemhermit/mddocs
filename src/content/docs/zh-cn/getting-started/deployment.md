@@ -29,6 +29,8 @@ dist/
 
 部署在域名根路径时 `BASE_URL` 设为 `/`（默认值，可省略）；部署在子路径下时设为 `/repo-name/`。`SITE_URL` 不带尾部斜杠，且应与最终访问地址一致。
 
+同一个 `SITE_URL` 变量同时决定构建脚本和浏览器端的 canonical / hreflang，在部署平台里配置一次即可。完全不设置时，规范地址默认使用 `https://mddocs.bago.top`。
+
 ## 本地预览 {#preview}
 
 发布前建议先预览生产产物：
@@ -97,15 +99,15 @@ pnpm run build:gh
 
 ### 通过 GitHub Actions 自动部署 {#github-actions}
 
-在仓库中创建 `.github/workflows/deploy.yml`：
+本仓库已经内置了 `.github/workflows/deploy.yml`：在仓库 **Settings → Pages** 里把 Source 设为 "GitHub Actions"，然后到 Actions 页手动运行即可发布；想改成合并到 `main` 自动发布，把工作流里注释掉的 `push` 触发器打开。工作流会自动带上子路径 `BASE_URL` 和对应的 `SITE_URL`：
 
 ```yaml
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+  # push:
+  #   branches: [main]
 
 permissions:
   contents: read
@@ -126,12 +128,13 @@ jobs:
           version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run build:gh
+      - run: pnpm run build
         env:
-          SITE_URL: https://username.github.io/repo-name
+          BASE_URL: /${{ github.event.repository.name }}/
+          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -147,7 +150,7 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-将 `username` 和 `repo-name` 替换为你的实际值。然后在仓库 Settings → Pages 中将 Source 设为 "GitHub Actions"。
+工作流会根据仓库名自动推导子路径与站点地址，无需手动替换。然后在仓库 Settings → Pages 中将 Source 设为 "GitHub Actions"。
 
 如果部署在自定义域名的根路径，使用 `pnpm run build` 代替 `pnpm run build:gh`，并将 `SITE_URL` 设为自定义域名。
 
@@ -193,6 +196,24 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ /index.html [L]
 ```
+
+## 404 页面 {#not-found}
+
+构建产物里还会生成 `dist/404.html`，访问不存在的路径时会渲染站内的 404 页面，而不是服务器自带的报错页。
+
+- GitHub Pages 会自动使用 `404.html`（并返回真正的 404 状态码）。
+- Netlify、Cloudflare Pages 对未知路径回退到 `index.html`；如果需要 404 状态码，额外配置一下 `public/404.html`。
+- Nginx / Apache 需要把错误页指向这个文件，避免状态码变成 200：
+
+```nginx
+error_page 404 /404.html;
+```
+
+```apache
+ErrorDocument 404 /404.html
+```
+
+回退到 `index.html` 且状态码为 200 的情况属于"软 404"：搜索引擎会把它当成首页的重复内容，所以平台允许时务必让未知路径返回真正的 404 状态码。
 
 ## 发布检查清单 {#checklist}
 

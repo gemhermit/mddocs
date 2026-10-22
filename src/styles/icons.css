@@ -2,7 +2,14 @@
    仅保留实际使用的两种变体：
    - Material Icons（实心，对应无后缀图标，如 auto_awesome）
    - Material Icons Round（圆角，对应 --rounded 图标，如 menu--rounded）
-   Outlined / Sharp / Two Tone 全站无引用，已清理。 */
+   Outlined / Sharp / Two Tone 全站无引用，已清理。
+
+   这两个字体已经按站点实际用到的图标做过子集化：
+   完整字体 295 KB → 子集 3.9 KB（Vite 会把 < 4KB 的字体内联进 CSS，不产生额外请求）。
+
+   ⚠️ 新增图标后必须重新生成，否则浏览器找不到字形，图标会直接显示成 "menu_book--rounded" 这类文字：
+     pnpm run icons:subset      # 需要 python3 + fonttools（pip install fonttools brotli）
+   CI 里 `pnpm run check:icons` 会比对清单，新增图标没重新子集化会直接让流水线失败。 */
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;

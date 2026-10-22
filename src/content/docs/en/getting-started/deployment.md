@@ -29,6 +29,8 @@ Configure two environment variables before deploying:
 
 When deploying to the domain root, set `BASE_URL` to `/` (the default, can be omitted). When deploying under a subpath, set it to `/repo-name/`. `SITE_URL` must not have a trailing slash and should match the final access URL.
 
+The same `SITE_URL` variable drives the browser-side canonical and hreflang tags, so setting it once in your deployment platform covers both the build scripts and the runtime. If it is not set at all, `https://mddocs.bago.top` is used as the canonical origin.
+
 ## Local Preview {#preview}
 
 Preview the production build before publishing:
@@ -126,12 +128,13 @@ jobs:
           version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run build:gh
+      - run: pnpm run build
         env:
-          SITE_URL: https://username.github.io/repo-name
+          BASE_URL: /${{ github.event.repository.name }}/
+          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -147,7 +150,7 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-Replace `username` and `repo-name` with your actual values. Then go to Settings → Pages in your repository and set Source to "GitHub Actions".
+The workflow derives the sub-path and the site URL from the repository, so there is nothing to replace by hand. Go to Settings → Pages in your repository and set Source to "GitHub Actions".
 
 If deploying to a custom domain at the root path, use `pnpm run build` instead of `pnpm run build:gh` and set `SITE_URL` to the custom domain.
 
@@ -193,6 +196,24 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ /index.html [L]
 ```
+
+## Not Found Pages {#not-found}
+
+The build also writes `dist/404.html`, so a request for a missing path renders the in-site 404 page instead of a bare server error.
+
+- GitHub Pages serves `404.html` automatically (with a real 404 status).
+- Netlify and Cloudflare Pages fall back to `index.html` for unknown routes; add `public/404.html` handling if you need a 404 status.
+- On Nginx or Apache, point the error page at the generated file so the status code stays 404 instead of 200:
+
+```nginx
+error_page 404 /404.html;
+```
+
+```apache
+ErrorDocument 404 /404.html
+```
+
+A route that falls back to `index.html` with a 200 status is a "soft 404": search engines treat it as a duplicate of the home page, so make sure unknown paths return a real 404 status whenever the platform allows it.
 
 ## Release Checklist {#checklist}
 

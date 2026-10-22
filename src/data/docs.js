@@ -73,8 +73,12 @@ export const docsPages = docsSections.flatMap((section) =>
 )
 
 export function findDocPageByPath(pathname = '') {
+  // 先去掉尾部斜杠：静态托管（GitHub Pages 等）会把 /docs/xxx 规范化成 /docs/xxx/，
+  // 不归一化的话侧边栏高亮会匹配不上，落到第一页去。
+  const normalized = String(pathname).replace(/\/+$/, '')
+
   return docsPages.find((page) =>
-    pathname.endsWith(`/docs/${page.path}`) ||
-    (page.path === '' && pathname.match(/\/docs\/?$/))
+    normalized.endsWith(`/docs/${page.path}`) ||
+    (page.path === '' && normalized.match(/\/docs$/))
   )
 }

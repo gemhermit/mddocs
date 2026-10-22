@@ -54,6 +54,13 @@
             <span class="doc-search-excerpt" v-html="result.excerptHtml"></span>
           </a>
         </div>
+
+        <div v-else-if="localeSuggestion" class="doc-search-hint">
+          <span>{{ t('search.otherLocaleHint') }}</span>
+          <mdui-button variant="tonal" @click="switchToOtherLocale">
+            {{ locale === 'en' ? '中文' : 'English' }}
+          </mdui-button>
+        </div>
       </section>
     </div>
   </Teleport>
@@ -61,51 +68,31 @@
 
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { docsPages, docsSections } from '@/data/docs.js'
 import { useI18n } from '@/i18n/index.js'
 import { translate } from '@/i18n/messages.js'
-import { getDocsBase } from '@/utils/site.js'
-import { escapeHtml, escapeRegExp, slugify, stripHeadingAnchor } from '@/utils/text.js'
+import { getDocsBase, toLocalePath } from '@/utils/site.js'
+import { escapeHtml, escapeRegExp } from '@/utils/text.js'
 
-// 懒加载全部 Markdown：首次打开搜索时才拉取并构建索引
-const markdownLoaders = import.meta.glob('/src/content/docs/**/*.md', {
-  query: '?raw',
-  import: 'default'
-})
+// 搜索索引在构建期生成，每个语言一个文件；首次打开搜索时只加载当前语言的那一个。
+const indexLoaders = import.meta.glob('/src/content/generated/search/*.js')
 
-const docsByLocale = ref({})
-const isIndexLoading = ref(false)
-let indexLoadPromise = null
+const localeLoaders = Object.entries(indexLoaders).reduce((result, [filePath, loader]) => {
+  const match = filePath.match(/\/content\/generated\/search\/(.+)\.js$/)
+  if (match) result[match[1]] = loader
+  return result
+}, {})
 
-function ensureIndexLoaded() {
-  if (indexLoadPromise) return indexLoadPromise
-
-  isIndexLoading.value = true
-  indexLoadPromise = Promise.all(
-    Object.entries(markdownLoaders).map(async ([filePath, loader]) => [filePath, await loader()])
-  ).then((entries) => {
-    docsByLocale.value = entries.reduce((result, [filePath, source]) => {
-      const match = filePath.match(/\/content\/docs\/([^/]+)\/(.+)\.md$/)
-      if (match) {
-        const [, docLocale, docPath] = match
-        result[docLocale] ||= {}
-        result[docLocale][docPath] = source
-      }
-      return result
-    }, {})
-  }).catch(() => {
-    // 加载失败允许下次打开时重试
-    indexLoadPromise = null
-  }).finally(() => {
-    isIndexLoading.value = false
-  })
-
-  return indexLoadPromise
-}
+// 索引在组件外缓存：切换语言时不必重新拉取，组件重建后查询词也能保留
+const indexCache = new Map()
+// 已加载的索引同时存一份响应式副本，computed 才能感知「索引加载完成」
+const loadedRecords = ref({})
+let lastQuery = ''
 
 const router = useRouter()
-const { t, locale } = useI18n()
+const route = useRoute()
+const { t, locale, setLocale } = useI18n()
 const isOpen = ref(false)
 const query = ref('')
 // 输入防抖后再参与检索，避免文档规模大时每个字符都全量匹配
@@ -114,35 +101,12 @@ const activeIndex = ref(0)
 const inputRef = ref(null)
 const panelRef = ref(null)
 
-let debounceTimer = null
-watch(query, (value) => {
-  if (typeof window === 'undefined') return
-  window.clearTimeout(debounceTimer)
-  debounceTimer = window.setTimeout(() => {
-    debouncedQuery.value = value
-  }, 120)
-})
+const pageById = new Map(docsPages.map((page) => [page.id, page]))
 
 const sectionTitleKeys = docsSections.reduce((result, section) => {
   result[section.value] = section.titleKey
   return result
 }, {})
-
-function stripMarkdown(source = '') {
-  return source
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
-    .replace(/\s*\{#[A-Za-z0-9_-]+\}\s*/g, ' ')
-    .replace(/^[\s>*-]*[-*+]\s+/gm, '')
-    .replace(/^\s*\d+\.\s+/gm, '')
-    .replace(/[|*_~>#]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
 
 function normalizeSearch(value = '') {
   return String(value).toLocaleLowerCase().replace(/\s+/g, ' ').trim()
@@ -152,9 +116,24 @@ function getQueryTerms(value = '') {
   return normalizeSearch(value).split(' ').filter(Boolean)
 }
 
-function headingIdFromLine(rawHeading = '', fallback = 'heading') {
-  const explicitId = rawHeading.match(/\s*\{#([A-Za-z0-9_-]+)\}\s*$/)?.[1]
-  return explicitId || slugify(stripHeadingAnchor(rawHeading)) || fallback
+async function ensureIndexLoaded(activeLocale) {
+  if (indexCache.has(activeLocale)) return indexCache.get(activeLocale)
+  if (!localeLoaders[activeLocale]) return null
+
+  const promise = localeLoaders[activeLocale]()
+    .then((module) => {
+      const records = module?.records || []
+      indexCache.set(activeLocale, records)
+      loadedRecords.value = { ...loadedRecords.value, [activeLocale]: records }
+      return records
+    })
+    .catch(() => {
+      indexCache.set(activeLocale, [])
+      loadedRecords.value = { ...loadedRecords.value, [activeLocale]: [] }
+      return []
+    })
+
+  return promise
 }
 
 function createHighlightedExcerpt(text = '', terms = []) {
@@ -183,90 +162,25 @@ function createHighlightedExcerpt(text = '', terms = []) {
   }).join('')
 }
 
-function getHeadingIds(source = '') {
-  const seen = new Map()
-  const ids = new Map()
-
-  source.split(/\r?\n/).forEach((line, index) => {
-    const match = line.match(/^\s{0,3}(#{1,6})\s+(.+?)\s*$/)
-    if (!match) return
-
-    const baseId = headingIdFromLine(match[2], `heading-${index}`)
-    const count = seen.get(baseId) || 0
-    seen.set(baseId, count + 1)
-    ids.set(index, count > 0 ? `${baseId}-${count + 1}` : baseId)
-  })
-
-  return ids
-}
-
-function getSectionRecords(source = '', page) {
-  const lines = source.split(/\r?\n/)
-  const headingIds = getHeadingIds(source)
-  const sections = []
-  let current = null
-
-  lines.forEach((line, index) => {
-    const match = line.match(/^\s{0,3}(#{2,3})\s+(.+?)\s*$/)
-    if (match) {
-      if (current) sections.push(current)
-      current = {
-        id: headingIds.get(index) || headingIdFromLine(match[2], `section-${index}`),
-        heading: stripHeadingAnchor(match[2]),
-        body: []
-      }
-      return
-    }
-
-    if (current) {
-      current.body.push(line)
-    }
-  })
-
-  if (current) sections.push(current)
-
-  return sections.map((section, index) => {
-    const bodyText = stripMarkdown(section.body.join('\n'))
-    return {
-      id: `${page.id}-${section.id || index}`,
-      type: 'section',
-      page,
-      hash: section.id,
-      title: section.heading,
-      bodyText,
-      searchText: normalizeSearch(`${section.heading} ${bodyText}`)
-    }
-  })
-}
-
-// 索引按语言缓存，切换语言后再切回来不会重建；文档源加载完成后失效重建
-const searchIndexCache = new Map()
-watch(docsByLocale, () => searchIndexCache.clear())
-
 const searchIndex = computed(() => {
   const activeLocale = locale.value
-  if (searchIndexCache.has(activeLocale)) return searchIndexCache.get(activeLocale)
+  const records = loadedRecords.value[activeLocale] || []
 
-  const docs = docsByLocale.value[activeLocale] || {}
-  const index = docsPages.flatMap((page) => {
-    const source = docs[page.path || 'introduction'] || ''
-    const pageTitle = translate(activeLocale, page.titleKey)
-    const bodyText = stripMarkdown(source)
-    const pageRecord = {
-      id: `${page.id}-page`,
-      type: 'page',
+  return records.map((record) => {
+    const page = pageById.get(record.pageId)
+    const pageTitle = page ? translate(activeLocale, page.titleKey) : ''
+    const title = record.type === 'page' ? pageTitle : record.title
+
+    return {
+      id: record.id,
+      type: record.type,
       page,
-      hash: '',
-      title: pageTitle,
-      bodyText,
-      searchText: normalizeSearch(`${pageTitle} ${bodyText}`)
+      hash: record.hash,
+      title,
+      bodyText: record.bodyText,
+      searchText: normalizeSearch(`${title} ${record.bodyText}`)
     }
-
-    return [pageRecord, ...getSectionRecords(source, page)]
   })
-
-  searchIndexCache.set(activeLocale, index)
-  return index
 })
 
 function scoreRecord(record, terms, fullQuery) {
@@ -328,8 +242,21 @@ const results = computed(() => {
     }))
 })
 
+// 索引按语言隔离：英文页搜中文词（或中文页搜英文词）时无结果，
+// 这里给出「换个语言再搜」的提示，而不是干巴巴一句「没有找到」。
+const localeSuggestion = computed(() => {
+  if (results.value.length) return ''
+  const trimmed = debouncedQuery.value.trim()
+  if (!trimmed) return ''
+
+  const hasCjk = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/.test(trimmed)
+  if (locale.value === 'en' && hasCjk) return 'zh-cn'
+  if (locale.value === 'zh-cn' && !hasCjk && /[a-z]/i.test(trimmed)) return 'en'
+  return ''
+})
+
 const statusText = computed(() => {
-  if (isIndexLoading.value) return t('search.loading')
+  if (!loadedRecords.value[locale.value]) return t('search.loading')
   const trimmedQuery = debouncedQuery.value.trim()
   if (!trimmedQuery) return t('search.empty')
   if (!results.value.length) return t('search.noResults')
@@ -338,11 +265,20 @@ const statusText = computed(() => {
 
 function openSearch() {
   isOpen.value = true
-  ensureIndexLoaded()
+  ensureIndexLoaded(locale.value)
 }
 
 function closeSearch() {
   isOpen.value = false
+}
+
+async function switchToOtherLocale() {
+  const target = localeSuggestion.value
+  if (!target) return
+
+  setLocale(target)
+  await ensureIndexLoaded(target)
+  router.push(toLocalePath(route.fullPath, target))
 }
 
 async function openActiveResult() {
@@ -363,6 +299,7 @@ function moveActive(delta) {
 function getPanelFocusables() {
   const panel = panelRef.value
   if (!panel) return []
+
   return Array.from(panel.querySelectorAll(
     'input, a[href], button, mdui-button-icon, [tabindex]:not([tabindex="-1"])'
   ))
@@ -408,6 +345,15 @@ function onPanelKeydown(event) {
   }
 }
 
+watch(query, (value) => {
+  lastQuery = value
+  if (typeof window === 'undefined') return
+  window.clearTimeout(debounceTimer)
+  debounceTimer = window.setTimeout(() => {
+    debouncedQuery.value = value
+  }, 120)
+})
+
 watch(results, () => {
   activeIndex.value = 0
 })
@@ -415,6 +361,11 @@ watch(results, () => {
 watch(activeIndex, async (index) => {
   await nextTick()
   panelRef.value?.querySelector(`#doc-search-option-${index}`)?.scrollIntoView({ block: 'nearest' })
+})
+
+// 切换语言时补载另一种语言的索引
+watch(locale, (activeLocale) => {
+  if (isOpen.value) ensureIndexLoaded(activeLocale)
 })
 
 function isTextInput(target) {
@@ -438,6 +389,7 @@ function onKeydown(event) {
 }
 
 let previouslyFocused = null
+let debounceTimer = null
 
 watch(isOpen, async (open) => {
   if (typeof document !== 'undefined') {
@@ -447,6 +399,10 @@ watch(isOpen, async (open) => {
   if (open) {
     previouslyFocused = document.activeElement
     await nextTick()
+    if (lastQuery) {
+      query.value = lastQuery
+      debouncedQuery.value = lastQuery
+    }
     inputRef.value?.focus()
   } else {
     // 关闭后把焦点还给触发入口
@@ -461,6 +417,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
+  window.clearTimeout(debounceTimer)
   if (typeof document !== 'undefined') {
     document.documentElement.classList.remove('doc-search-open')
   }
@@ -539,6 +496,17 @@ onUnmounted(() => {
   line-height: var(--mdui-typescale-body-small-line-height);
 }
 
+.doc-search-hint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.5rem 1.25rem;
+  color: rgb(var(--mdui-color-on-surface-variant));
+  font-size: var(--mdui-typescale-body-small-size);
+  line-height: var(--mdui-typescale-body-small-line-height);
+}
+
 .doc-search-results {
   overflow: auto;
   padding: 0 1rem 1rem;
@@ -612,6 +580,12 @@ onUnmounted(() => {
 
   .doc-search-status {
     padding: 0.875rem 1rem 0.625rem;
+  }
+
+  .doc-search-hint {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 1rem 1.25rem;
   }
 
   .doc-search-results {

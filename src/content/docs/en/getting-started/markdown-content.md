@@ -2,6 +2,16 @@
 
 MDDocs uses Markdown as the primary content format so documentation can be reviewed, searched, versioned, and maintained like source code.
 
+## Rendering Pipeline {#rendering-pipeline}
+
+Markdown is rendered during the build, not in the browser:
+
+- `scripts/build-content.mjs` renders every page to HTML, generates heading ids, highlights code blocks, and sanitizes the result with DOMPurify.
+- The result is written to `src/content/generated/` and shipped as one small chunk per page.
+- The browser only inserts that HTML, so no Markdown parser is shipped to visitors.
+
+Because of this, raw HTML inside a Markdown file is sanitized once at build time, and the pre-rendered page and the client-rendered page always stay identical.
+
 ## Page Title {#page-title}
 
 Each page should usually have one top-level heading:

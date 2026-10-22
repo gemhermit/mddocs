@@ -8,15 +8,41 @@ MDDocs 的目录设计尽量保持直观：内容放在 Markdown 中，导航放
 
 ```text
 src/
-├── components/        # AppBar、Sidebar、Footer 等公共组件
+├── components/        # AppBar、Sidebar、TocList 等公共组件
 ├── content/docs/      # 中英文 Markdown 文档内容
+├── content/generated/ # 构建产物：预渲染 HTML 与搜索索引（自动生成）
 ├── data/docs.js       # 左侧侧边栏和文档顺序
 ├── i18n/index.js      # 界面文案和菜单标题翻译
 ├── router/index.js    # 页面路由，根据 docs.js 自动生成文档路由
 ├── styles/main.css    # 全局样式、文档排版和响应式布局
-├── utils/markdown.js  # Markdown 解析、标题锚点、代码块包装
+├── utils/             # 浏览器与构建脚本共用的工具函数
 └── views/docs/        # 文档布局和 Markdown 渲染视图
+
+scripts/
+├── build-content.mjs  # 把 Markdown 渲染成 HTML 与搜索索引
+├── lib/               # 构建期的 Markdown 渲染、消毒、索引生成
+├── generate-sitemap.mjs
+└── prerender.mjs      # 往 dist/ 写入各路由的 HTML 与 404.html
 ```
+
+## 构建流程 {#build-pipeline}
+
+Markdown 在构建期完成渲染，浏览器端不再解析 Markdown：
+
+```text
+src/content/docs/**/*.md
+  → scripts/build-content.mjs
+  → src/content/generated/pages/<locale>/<page>.js   （HTML + 标题列表）
+  → src/content/generated/search/<locale>.js          （搜索索引）
+  → vite build → dist/assets/*.js
+  → scripts/prerender.mjs → dist/**/index.html + dist/404.html
+```
+
+由于渲染、语法高亮和消毒都在构建期完成，浏览器包里不再包含 `markdown-it`、
+`highlight.js` 和 `DOMPurify`，页面只需要加载自己那一小份 HTML。
+
+`src/content/generated/` 是构建产物，不纳入版本管理。只想重新生成内容时执行
+`pnpm run build:content`，完整构建用 `pnpm run build`。
 
 ## 内容目录 {#content-folder}
 

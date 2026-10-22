@@ -5,3 +5,17 @@ dist
 .env
 .env.*
 !.env.example
+
+# 构建期生成的产物：每次构建都会重写，不进版本库
+# （由 scripts/generate-sitemap.mjs 在构建时生成到 public/，再随构建产物发布）
+public/sitemap.xml
+public/sitemap-*.xml
+public/robots.txt
+public/llms.txt
+public/llms-full.txt
+
+# 构建期生成的页面 HTML 与搜索索引（由 scripts/build-content.mjs 产出）
+src/content/generated/
+
+# Playwright CLI 临时产物
+.playwright-cli

@@ -11,7 +11,7 @@
         {{ t('docMissing.backDocs') }}
       </mdui-button>
     </div>
-    <div v-else ref="contentRef" v-html="html"></div>
+    <div v-else ref="contentRef" class="markdown-body" v-html="html"></div>
 
     <div class="nav">
       <mdui-card
@@ -54,19 +54,15 @@ import { useRoute } from 'vue-router'
 import { useI18n } from '@/i18n/index.js'
 import { docsPages } from '@/data/docs.js'
 import { getDocsBase } from '@/utils/site.js'
-import { renderMarkdownWithMeta } from '@/utils/markdown.js'
-import { sanitizeHtml } from '@/utils/sanitize.js'
-import { highlightAll } from '@/utils/highlight.js'
+import { enhanceCodeBlocks } from '@/utils/code-copy.js'
 import { useToc } from '@/composables/toc.js'
 
-// 懒加载 Markdown 源文件：每篇文档单独成 chunk，按需拉取
-const markdownLoaders = import.meta.glob('/src/content/docs/**/*.md', {
-  query: '?raw',
-  import: 'default'
-})
+// 正文在构建期已渲染成 HTML 并完成消毒，这里按需加载对应页面模块。
+// 浏览器端因此不需要 markdown-it / dompurify / highlight.js。
+const pageLoaders = import.meta.glob('/src/content/generated/pages/**/*.js')
 
-const docLoaders = Object.entries(markdownLoaders).reduce((result, [filePath, loader]) => {
-  const match = filePath.match(/\/content\/docs\/([^/]+)\/(.+)\.md$/)
+const pageModules = Object.entries(pageLoaders).reduce((result, [filePath, loader]) => {
+  const match = filePath.match(/\/content\/generated\/pages\/([^/]+)\/(.+)\.js$/)
   if (match) {
     const [, docLocale, docPath] = match
     result[docLocale] ||= {}
@@ -75,30 +71,18 @@ const docLoaders = Object.entries(markdownLoaders).reduce((result, [filePath, lo
   return result
 }, {})
 
-const docCache = new Map()
-
 const route = useRoute()
 const { t, locale } = useI18n()
 const { setHeadings } = useToc()
 const contentRef = ref(null)
-const source = ref('')
+const html = ref('')
 const isLoading = ref(false)
 const isMissing = ref(false)
 
 const docId = computed(() => route.meta?.docId || 'introduction')
 const docPath = computed(() => route.meta?.docPath || docId.value)
-const renderCache = new Map()
-const rendered = computed(() => {
-  const sourceValue = source.value
-  if (renderCache.has(sourceValue)) {
-    return renderCache.get(sourceValue)
-  }
-  const result = renderMarkdownWithMeta(sourceValue)
-  renderCache.set(sourceValue, result)
-  return result
-})
-const html = computed(() => sanitizeHtml(rendered.value.html))
 
+const docCache = new Map()
 let loadToken = 0
 
 async function loadDoc(activeLocale, activePath) {
@@ -107,36 +91,41 @@ async function loadDoc(activeLocale, activePath) {
 
   // 命中缓存时同步渲染，避免 loading 闪烁
   if (docCache.has(cacheKey)) {
-    source.value = docCache.get(cacheKey)
-    isMissing.value = false
+    applyModule(docCache.get(cacheKey))
     return
   }
 
-  // 文档缺失时给出明确提示，而不是静默白屏
-  const loader = docLoaders[activeLocale]?.[activePath]
+  const loader = pageModules[activeLocale]?.[activePath]
   if (!loader) {
-    source.value = ''
+    html.value = ''
     isMissing.value = true
+    setHeadings([])
     return
   }
 
   isLoading.value = true
   try {
-    const content = await loader()
-    docCache.set(cacheKey, content)
+    const module = await loader()
+    docCache.set(cacheKey, module)
     // 仅应用最后一次请求的结果，避免快速切页时串内容
     if (token === loadToken) {
-      source.value = content
-      isMissing.value = false
+      applyModule(module)
     }
   } catch {
     if (token === loadToken) {
-      source.value = ''
+      html.value = ''
       isMissing.value = true
+      setHeadings([])
     }
   } finally {
     if (token === loadToken) isLoading.value = false
   }
+}
+
+function applyModule(module) {
+  html.value = module?.html || ''
+  isMissing.value = false
+  setHeadings(module?.headings || [])
 }
 
 watch([locale, docPath], ([activeLocale, activePath]) => {
@@ -154,19 +143,15 @@ function pageHref(path) {
   return path ? `${getDocsBase(locale.value)}/${path}` : `${getDocsBase(locale.value)}`
 }
 
-// 标题元数据在渲染 markdown 时直接产出，响应式交给 DocsLayout 的 TOC
-watch(() => rendered.value.headings, (headings) => {
-  setHeadings(headings)
+// 代码块的复制按钮在正文渲染后挂上
+watch(html, async () => {
+  await nextTick()
+  if (contentRef.value) enhanceCodeBlocks(contentRef.value, { copyLabel: t('code.copy') })
 }, { immediate: true })
 
 onUnmounted(() => {
   setHeadings([])
 })
-
-watch(html, async () => {
-  await nextTick()
-  if (contentRef.value) highlightAll(contentRef.value, { copyLabel: t('code.copy') })
-}, { immediate: true })
 </script>
 
 <style scoped>

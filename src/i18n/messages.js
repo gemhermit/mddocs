@@ -4,6 +4,9 @@ export const messages = {
       name: 'MDDocs',
       tagline: 'Open-source docs system built on mdui 2'
     },
+    a11y: {
+      skipToContent: 'Skip to content'
+    },
     nav: {
       docs: 'Docs',
     },
@@ -21,6 +24,7 @@ export const messages = {
       loading: 'Loading search index...',
       empty: 'Type a keyword to search page titles and content.',
       noResults: 'No matching documents found.',
+      otherLocaleHint: 'Nothing here. Try searching in the other language:',
       results: '{count} results'
     },
     home: {
@@ -61,7 +65,7 @@ export const messages = {
       materialYou: { title: 'Material You', desc: 'Following Material Design 3 (Material You) guidelines for a user-friendly, visually pleasing product.' },
       dynamicColor: { title: 'Dynamic Color', desc: 'Creates a full color scheme from a color or image, usable across all mdui components.' },
       darkMode: { title: 'Dark Mode', desc: "Supports dark mode and automatic switching based on the system's light/dark preference." },
-      lightweight: { title: 'Lightweight', desc: 'With GZIP, the CSS + JavaScript totals 85KB. Choose selective imports for further size reduction.' },
+      lightweight: { title: 'Lightweight', desc: 'The home page ships about 100 KB of gzipped JavaScript and CSS on first view, and under 150 KB including web fonts. Documentation pages load their content on demand. Choose selective imports to trim the bundle further.' },
       ideSupport: { title: 'IDE Support', desc: 'Enjoy smooth code hints in VSCode and WebStorm. Use our VSCode extensions and WebStorm plugins for a superior development experience.' },
       frameworkSupport: { title: 'Framework Support', desc: 'mdui smoothly integrates with Vue, React, Angular, and other web apps.' },
       typescriptSupport: { title: 'TypeScript Support', desc: 'Built with TypeScript, mdui provides excellent type hints.' },
@@ -140,6 +144,9 @@ export const messages = {
       name: 'MDDocs',
       tagline: '基于 mdui 2 的开源文档系统'
     },
+    a11y: {
+      skipToContent: '跳到正文'
+    },
     nav: {
       docs: '文档',
     },
@@ -157,6 +164,7 @@ export const messages = {
       loading: '正在加载搜索索引...',
       empty: '输入关键词搜索标题和正文内容。',
       noResults: '没有找到匹配的文档。',
+      otherLocaleHint: '当前语言没有结果，换一种语言试试：',
       results: '找到 {count} 条结果'
     },
     home: {
@@ -197,7 +205,7 @@ export const messages = {
       materialYou: { title: 'Material You', desc: '遵循 Material Design 3 (Material You) 规范，打造用户友好、视觉美观的产品。' },
       dynamicColor: { title: '动态配色', desc: '从颜色或图片中提取完整配色方案，应用于所有 mdui 组件。' },
       darkMode: { title: '深色模式', desc: '支持深色模式，并可根据系统的浅色/深色偏好自动切换。' },
-      lightweight: { title: '轻量级', desc: 'CSS + JavaScript 经 GZIP 压缩后总计 85KB，支持按需引入以进一步减小体积。' },
+      lightweight: { title: '轻量级', desc: '首页首屏 JS + CSS 约 100 KB（gzip 后），含网页字体不超过 150 KB；文档页内容按需加载。组件支持按需引入，可进一步减小体积。' },
       ideSupport: { title: 'IDE 支持', desc: '在 VSCode 和 WebStorm 中享受流畅的代码提示。使用我们的 VSCode 扩展和 WebStorm 插件获得更好的开发体验。' },
       frameworkSupport: { title: '框架支持', desc: 'mdui 可以顺畅地与 Vue、React、Angular 及其他 Web 应用集成。' },
       typescriptSupport: { title: 'TypeScript 支持', desc: '使用 TypeScript 构建，mdui 提供优秀的类型提示。' },

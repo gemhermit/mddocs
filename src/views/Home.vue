@@ -2,7 +2,7 @@
   <mdui-layout class="layout">
     <AppBar />
 
-    <mdui-layout-main class="layout-main home-main">
+    <mdui-layout-main id="main-content" tabindex="-1" class="layout-main home-main">
       <section class="home-hero">
         <div class="hero-copy">
           <div class="eyebrow">{{ t('home.eyebrow') }}</div>

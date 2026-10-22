@@ -2,6 +2,16 @@
 
 MDDocs 使用 Markdown 作为文档的主要内容格式。这样文档可以像源码一样被审查、搜索、版本管理和开源协作。
 
+## 渲染流程 {#rendering-pipeline}
+
+Markdown 在构建期完成渲染，浏览器端不再解析 Markdown：
+
+- `scripts/build-content.mjs` 把每个页面渲染成 HTML，生成标题 id，完成代码高亮，并用 DOMPurify 消毒。
+- 渲染结果写入 `src/content/generated/`，按页面拆成很小的 chunk 分发。
+- 浏览器只负责把这段 HTML 放进页面，因此访客不需要下载任何 Markdown 解析器。
+
+也正因为如此，Markdown 里的原生 HTML 只会在构建期被消毒一次，预渲染页面与客户端渲染出来的内容始终保持一致。
+
 ## 页面标题 {#page-title}
 
 每个页面建议只保留一个一级标题：

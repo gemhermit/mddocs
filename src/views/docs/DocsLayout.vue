@@ -19,30 +19,21 @@
 
     <mdui-layout-main class="layout-main">
       <div class="main" :class="{ 'docs-sidebar-collapsed': isSidebarCollapsed }">
-        <main class="container mdui-prose">
+        <main id="main-content" class="container mdui-prose" tabindex="-1">
+          <!-- 窄屏（<1440px）没有右侧目录，这里给一个可折叠的页内目录 -->
+          <details v-if="headings.length" ref="inlineTocRef" class="toc-inline">
+            <summary class="toc-inline-summary">
+              <mdui-icon name="format_list_bulleted--rounded"></mdui-icon>
+              <span class="toc-inline-title">{{ t('toc') }}</span>
+              <mdui-icon name="expand_more" class="toc-inline-arrow"></mdui-icon>
+            </summary>
+            <TocList :headings="headings" :active-id="activeId" @select="onTocSelect" />
+          </details>
           <router-view />
         </main>
         <div class="contents" v-if="headings.length">
           <div class="title">{{ t('toc') }}</div>
-          <mdui-list class="items">
-            <template v-for="(h, index) in headings" :key="h.id">
-              <div v-if="index > 0 && h.level === 2" class="divider"></div>
-              <mdui-list-item
-                :href="'#' + h.id"
-                rounded
-                alignment="center"
-                :active="activeId === h.id"
-                :class="[
-                  'item',
-                  'toc-level-' + h.level,
-                  { 'item-bold': h.level === 2, active: activeId === h.id }
-                ]"
-                @click.prevent="scrollTo(h.id)"
-              >
-                {{ h.text }}
-              </mdui-list-item>
-            </template>
-          </mdui-list>
+          <TocList :headings="headings" :active-id="activeId" @select="onTocSelect" />
         </div>
       </div>
     </mdui-layout-main>
@@ -53,15 +44,19 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import AppBar from '@/components/AppBar.vue'
 import Sidebar from '@/components/Sidebar.vue'
+import TocList from '@/components/TocList.vue'
 import { useI18n } from '@/i18n/index.js'
 import { useToc } from '@/composables/toc.js'
 
 const { t } = useI18n()
 const { headings: tocHeadings } = useToc()
 const drawerRef = ref(null)
+const inlineTocRef = ref(null)
 const activeId = ref('')
 const headingOffset = 96
 const desktopMediaQuery = '(min-width: 840px)'
+// 右侧目录在 1440px 以上才显示，窄屏折叠目录与之互斥
+const wideMediaQuery = '(min-width: 1440px)'
 
 // 标题数据由 MarkdownDoc 在渲染 markdown 时直接产出，TOC 只展示 h2/h3
 const headings = computed(() =>
@@ -125,17 +120,13 @@ function syncDrawerForViewport() {
   setDrawerOpen(isDesktop.value)
 }
 
-function scrollTo(id) {
-  const heading = document.getElementById(id)
-  if (heading) {
-    const rect = heading.getBoundingClientRect()
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-    window.scrollTo({
-      top: scrollTop + rect.top - headingOffset,
-      behavior: 'smooth'
-    })
-    activeId.value = id
-  }
+// 目录条目是真实锚点，滚动与 URL 里的 #id 都由浏览器原生处理；
+// 这里只负责窄屏点完把折叠目录收起来，避免挡住刚滚动到的位置。
+function onTocSelect() {
+  const details = inlineTocRef.value
+  if (!details) return
+  const isWide = typeof window !== 'undefined' && window.matchMedia(wideMediaQuery).matches
+  if (!isWide) details.open = false
 }
 
 // 初始化 / 切页时按当前滚动位置对齐一次高亮（处理带 hash 直达页面中部的情况）

@@ -1,0 +1,61 @@
+name: Deploy to GitHub Pages
+
+# 仓库默认不自动发布（避免和 Vercel / Cloudflare 等其它渠道冲突）。
+# 用 GitHub Pages 发布时：先在 Settings → Pages 里把 Source 设为 GitHub Actions，
+# 然后手动运行本工作流；也可以把下面注释掉的 push 触发打开，改为推 main 即发布。
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for sub-path deployment
+        run: pnpm run build
+        env:
+          # 子路径部署：站点挂在 https://<owner>.github.io/<repo>/
+          BASE_URL: /${{ github.event.repository.name }}/
+          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

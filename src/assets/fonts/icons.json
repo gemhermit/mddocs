@@ -1,0 +1,48 @@
+{
+  "generatedBy": "scripts/subset-icons.mjs",
+  "families": {
+    "Material Icons": {
+      "file": "MaterialIcons-Regular.woff2",
+      "glyphs": [
+        "auto_awesome",
+        "brightness_auto",
+        "dark_mode",
+        "expand_more",
+        "light_mode"
+      ],
+      "sourceBytes": 128352,
+      "subsetBytes": 968
+    },
+    "Material Icons Round": {
+      "file": "MaterialIconsRound-Regular.woff2",
+      "glyphs": [
+        "account_tree",
+        "arrow_forward",
+        "article",
+        "close",
+        "code",
+        "content_copy",
+        "download",
+        "east",
+        "explore",
+        "format_list_bulleted",
+        "functions",
+        "home",
+        "layers",
+        "local_mall",
+        "menu",
+        "menu_book",
+        "near_me",
+        "rocket_launch",
+        "search",
+        "terminal",
+        "translate",
+        "west",
+        "widgets",
+        "workspaces"
+      ],
+      "sourceBytes": 173620,
+      "subsetBytes": 2956
+    }
+  }
+}
